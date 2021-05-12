@@ -1,6 +1,4 @@
-// import React from 'react';
-// import ReactDOM from 'react-dom';
-
+const axios = require('axios');
 class Booking extends React.Component {
   constructor(props) {
     super(props);
@@ -23,21 +21,12 @@ class Booking extends React.Component {
         year: 0
       },
     };
-    this.fetcher = this.fetcher.bind(this);
   }
 
   componentDidMount() {
-    this.fetcher();
-  }
-
-  fetcher() {
-    ///:campId
-    fetch("http://localhost:3002/book")
+    //initialize with Twisselman
+    axios.get('/book', { params: { campId: 0 } })
       .then(response => {
-        return response.json();
-      })
-      .then((res) => {
-        console.log('res: ', res);
         this.setState({
           campId: res.campId,
           check_in_date: res.check_in_date,
@@ -54,9 +43,9 @@ class Booking extends React.Component {
           year: res.year
         });
       })
-      .catch((err) => {
+      .catch((err)=> {
         throw err;
-      })
+      });
   }
 
   render() {
