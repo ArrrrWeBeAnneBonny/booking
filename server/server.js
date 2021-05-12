@@ -12,16 +12,14 @@ app.use(express.static(__dirname + '/../client/dist'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-
-app.get('/book/', async (req, res) => {
-  //:campId'
-  console.log('req.params.campId: ', req.params.campId);
-    await db.Booking.find({campId: 0})
-    .then((site) => {
-      console.log('site: ', site);
-      res.status(200).send(site);
-    })
-    .catch((err) => {
-      throw err;
-    });
+app.get('/booking', async (req, res) => {
+  let campId = parseInt(req.query.campId);
+  await db.Booking.find({campId: campId})
+  .then((site) => {
+    let siteObj = site[0];
+    res.status(200).send(siteObj);
+  })
+  .catch((err) => {
+    throw err;
+  });
 });

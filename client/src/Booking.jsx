@@ -1,6 +1,5 @@
-// import React from 'react';
-// import ReactDOM from 'react-dom';
-
+import React from 'react';
+import ReactDOM from 'react-dom';
 class Booking extends React.Component {
   constructor(props) {
     super(props);
@@ -23,40 +22,32 @@ class Booking extends React.Component {
         year: 0
       },
     };
-    this.fetcher = this.fetcher.bind(this);
   }
 
   componentDidMount() {
-    this.fetcher();
-  }
-
-  fetcher() {
-    ///:campId
-    fetch("http://localhost:3002/book")
-      .then(response => {
-        return response.json();
-      })
-      .then((res) => {
-        console.log('res: ', res);
-        this.setState({
-          campId: res.campId,
-          check_in_date: res.check_in_date,
-          check_out_date: res.check_out_date,
-          cleaning_fee: res.cleaning_fee,
-          how_many_months_out_booking_can_be_made: res.how_many_months_out_booking_can_be_made,
-          instant_book: res.instant_book,
-          month: res.month,
-          number_guests: res.number_guests,
-          number_nights: res.number_nights,
-          price_per_night: res.price_per_night,
-          request_to_book: res.request_to_book,
-          weeknight_discount: res.weeknight_discount,
-          year: res.year
-        });
-      })
-      .catch((err) => {
-        throw err;
-      })
+    axios.get('/booking', { params: { campId: 0 } })
+    .then((res) => {
+      let site = res.data;
+      console.log('site: ', site);
+      this.setState({
+        campId: site.campId,
+        check_in_date: site.check_in_date,
+        check_out_date: site.check_out_date,
+        cleaning_fee: site.cleaning_fee,
+        how_many_months_out_booking_can_be_made: site.how_many_months_out_booking_can_be_made,
+        instant_book: site.instant_book,
+        month: site.month,
+        number_guests: site.number_guests,
+        number_nights: site.number_nights,
+        price_per_night: site.price_per_night,
+        request_to_book: site.request_to_book,
+        weeknight_discount: site.weeknight_discount,
+        year: site.year
+      });
+    })
+    .catch((err) => {
+      throw err;
+    });
   }
 
   render() {
