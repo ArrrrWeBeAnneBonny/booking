@@ -141,7 +141,7 @@ const seedDb = async () => {
         request_to_book: false,
         year: 2021,
         month: 6,
-        booked: [3, 10, 24],
+        booked: [[3, 4], [10, 14], [24, 26], [30, 2]],
         check_in_date: '2021-06-07T14:48:00.000Z',
         check_out_date: '2021-06-10T14:48:00.000Z',
         number_nights: 3,

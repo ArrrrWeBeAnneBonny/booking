@@ -31,7 +31,8 @@ class Booking extends React.Component {
   }
 
   fetcher() {
-    fetch("http://localhost:3002/book/:campId")
+    ///:campId
+    fetch("http://localhost:3002/book")
       .then(response => {
         return response.json();
       })
