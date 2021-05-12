@@ -5,25 +5,52 @@ class Booking extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      seed: []
+      init: {
+        init: false,
+        campId: 0,
+        check_in_date: "",
+        check_out_date: "",
+        cleaning_fee: 0,
+        how_many_months_out_booking_can_be_made: 0,
+        instant_book: false,
+        month: 0,
+        number_guests: 0,
+        number_nights: 0,
+        price_per_night: 0,
+        request_to_book: false,
+        subTotal: 0,
+        weeknight_discount: 0,
+        year: 0
+      },
     };
     this.fetcher = this.fetcher.bind(this);
   }
 
   componentDidMount() {
-    console.log('hi');
     this.fetcher();
   }
 
   fetcher() {
-    fetch("http://localhost:3002/booking")
+    fetch("http://localhost:3002/book/:campId")
       .then(response => {
         return response.json();
       })
       .then((res) => {
         console.log('res: ', res);
         this.setState({
-          seed: res
+          campId: res.campId,
+          check_in_date: res.check_in_date,
+          check_out_date: res.check_out_date,
+          cleaning_fee: res.cleaning_fee,
+          how_many_months_out_booking_can_be_made: res.how_many_months_out_booking_can_be_made,
+          instant_book: res.instant_book,
+          month: res.month,
+          number_guests: res.number_guests,
+          number_nights: res.number_nights,
+          price_per_night: res.price_per_night,
+          request_to_book: res.request_to_book,
+          weeknight_discount: res.weeknight_discount,
+          year: res.year
         });
       })
       .catch((err) => {
@@ -34,7 +61,7 @@ class Booking extends React.Component {
   render() {
     return (
       <div>
-        <h1>Booking Service</h1>
+        <h1>{this.state.perNightPrice}</h1>
       </div>
     );
   }
@@ -44,3 +71,6 @@ ReactDOM.render(
   <Booking />,
   document.getElementById('booking')
 );
+
+//add Conditional rendering on App
+  //instantBook or RequestToBook

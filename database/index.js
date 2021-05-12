@@ -16,13 +16,19 @@ db.once('connected', function() {
   console.log('success connecting to mongo faulkner luvs you');
 });
 
+const Booking = mongoose.model('Booking');
+
 const seeder = async () => {
-  seedDb();
+  await Booking.find()
+    .then(result => {
+      if (result.length === 100) {
+        console.log('finished seeding db');
+      } else {
+        seedDb();
+      }
+    });
 };
 
 seeder();
 
-const Booking = mongoose.model('Booking');
-
-module.exports.Booking = Booking;
-module.exports.db = db;
+module.exports = {db, Booking};
