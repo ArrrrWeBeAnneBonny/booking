@@ -1,4 +1,6 @@
-const axios = require('axios');
+import React from 'react';
+import ReactDOM from 'react-dom'
+import axios from 'axios';
 class Booking extends React.Component {
   constructor(props) {
     super(props);
@@ -24,9 +26,9 @@ class Booking extends React.Component {
   }
 
   componentDidMount() {
-    //initialize with Twisselman
-    axios.get('/book', { params: { campId: 0 } })
-      .then(response => {
+    axios.get('/booking', { params: { campId: 0 } })
+      .then(res => {
+        console.log('res: ', res);
         this.setState({
           campId: res.campId,
           check_in_date: res.check_in_date,
@@ -51,7 +53,8 @@ class Booking extends React.Component {
   render() {
     return (
       <div>
-        <h1>{this.state.perNightPrice}</h1>
+        <h1>Booking Service</h1>
+        <h2>{this.state.perNightPrice}</h2>
       </div>
     );
   }

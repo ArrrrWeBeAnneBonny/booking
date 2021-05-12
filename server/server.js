@@ -10,19 +10,22 @@ app.listen(PORT, () => {
 
 app.use(express.static(__dirname + '/../client/dist'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: true}));
 
 
-app.get('/book', async (req, res) => {
-  // console.log('req.params.campId: ', req.params.campId);
-    await db.Booking.find({campId: 0})
-    .then((site) => {
-      console.log('site: ', site);
-      res.status(200).send(site);
-    })
-    .catch((err) => {
-      throw err;
-    });
+app.get('/booking', async (req, res) => {
+  console.log(req);
+  let campId = req.query.campId;
+  let numbCampId = Number(campId);
+  console.log('numbCampId: ', numbCampId);
+  await db.Booking.find({campId: numbCampId})
+  .then((site) => {
+    console.log('site: ', site);
+    res.send(site);
+  })
+  .catch((err) => {
+    throw err;
+  });
 });
 
 module.exports = { app };
