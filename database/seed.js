@@ -3,6 +3,7 @@ const faker = require('faker');
 const mongoUri = 'mongodb://localhost/booking';
 const db = require('./index.js');
 
+//SCHEMA
 const booking_schema = new mongoose.Schema({
   campId: Number,
   price_per_night: Number,
@@ -26,106 +27,106 @@ const Booking = mongoose.model('Booking', booking_schema);
 
 const seedDb = async () => {
 
-  for (let i = 0; i <= 99; i++) {
+  monthMaker = function() {
+    let months = [5, 6, 7, 8];
+    let month = months[Math.floor(Math.random() * months.length)];
+    return month;
+  };
 
-    monthMaker = function() {
-      let months = [5, 6, 7, 8];
-      let month = months[Math.floor(Math.random() * months.length)];
-      return month;
-    };
+  monthDays = function(month) {
+    let days = [];
+    if (month === 2) {
+      days = Array.from({length: 28}, (_, i) => i + 1);
+    }
+    let thirty = [4, 6, 9, 11];
+    let thirtyOne = [1, 3, 5, 7, 8, 10, 12];
+    if (thirty.indexOf(month) === -1) {
+      days = Array.from({length: 31}, (_, i) => i + 1);
+    } else {
+      days = Array.from({length: 30}, (_, i) => i + 1);
+    }
+    return days;
+  };
 
-    monthDays = function(month) {
-      let days = [];
-      if (month === 2) {
-        days = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28];
+  unavailableDays = function(array) {
+    let indexes = [];
+    let unavailable = [];
+    let ranges = [1, 2, 3, 4, 5];
+    let randomNumb = ranges[Math.floor(Math.random() * ranges.length)];
+    while (indexes.length < randomNumb) {
+      let index = array[Math.floor(Math.random() * array.length)];
+      if (indexes.indexOf(index) === -1) {
+        indexes.push(index);
       }
-      let thirty = [4, 6, 9, 11];
-      let thirtyOne = [1, 3, 5, 7, 8, 10, 12];
-      if (thirty.indexOf(month) === -1) {
-        days = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31];
+    }
+    indexes.forEach(index => {
+      let numb = array[index];
+      let rangeEnd = (numb + randomNumb);
+      let overflow = 0;
+      let range = [];
+      if (rangeEnd > array.length) {
+        overflow += (rangeEnd - array.length);
+        range = [array[index], overflow];
       } else {
-        days = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30];
+        overflow += randomNumb;
+        let end = (numb + overflow);
+        range = [numb, end];
       }
-      return days;
-    };
+      unavailable.push(range);
+    });
+    return unavailable;
+  };
 
-    unavailableDays = function(array) {
-      let indexes = [];
-      let unavailable = [];
-      let ranges = [1, 2, 3, 4, 5];
-      let randomNumb = ranges[Math.floor(Math.random() * ranges.length)];
-      while (indexes.length < randomNumb) {
-        let index = array[Math.floor(Math.random() * array.length)];
-        if (indexes.indexOf(index) === -1) {
-          indexes.push(index);
-        }
-      }
-      indexes.forEach(index => {
-        let numb = array[index];
-        let rangeEnd = (numb + randomNumb);
-        let overflow = 0;
-        let range = [];
-        if (rangeEnd > array.length) {
-          overflow += (rangeEnd - array.length);
-          range = [array[index], overflow];
-        } else {
-          overflow += randomNumb;
-          let end = (numb + overflow);
-          range = [numb, end];
-        }
-        unavailable.push(range);
-      });
-      return unavailable;
-    };
+  avgPrice = function(max, min) {
+    return Math.floor(Math.random() * (max - min) + min);
+  };
 
-    avgPrice = function(max, min) {
-      return Math.floor(Math.random() * (max - min) + min);
-    };
+  discountMaker = function() {
+    let discounts = [5, 10, 15, 20];
+    let discount = discounts[Math.floor(Math.random() * discounts.length)];
+    return discount;
+  };
 
-    discountMaker = function() {
-      let discounts = [5, 10, 15, 20];
-      let discount = discounts[Math.floor(Math.random() * discounts.length)];
-      return discount;
-    };
+  booleanMaker = function() {
+    let bools = [true, false];
+    let bool = bools[Math.floor(Math.random() * bools.length)];
+    return bool;
+  };
 
-    booleanMaker = function() {
-      let bools = [true, false];
-      let bool = bools[Math.floor(Math.random() * bools.length)];
-      return bool;
-    };
+  far = function() {
+    let farOutOptions = [30, 60, 90];
+    let farOut = farOutOptions[Math.floor(Math.random() * farOutOptions.length)];
+    return farOut;
+  };
 
-    far = function() {
-      let farOutOptions = [30, 60, 90];
-      let farOut = farOutOptions[Math.floor(Math.random() * farOutOptions.length)];
-      return farOut;
-    };
+  randomNumberMaker = function() {
+    let daysRange = [1, 2, 3, 4, 5, 6, 7];
+    let numbDays = daysRange[Math.floor(Math.random() * daysRange.length)];
+    return numbDays;
+  };
 
-    randomNumberMaker = function() {
-      let daysRange = [1, 2, 3, 4, 5, 6, 7];
-      let numbDays = daysRange[Math.floor(Math.random() * daysRange.length)];
-      return numbDays;
-    };
-
-    startDay = function(b, d) {
-      let bookedStartDates = [];
-      for (let i = 0; i < b.length; i++) {
-        for (let j = 0; j < b[i].length; j++) {
-          if (j === 0) {
-            bookedStartDates.push(b[i][j]);
-          }
+  startDay = function(b, d) {
+    let bookedStartDates = [];
+    for (let i = 0; i < b.length; i++) {
+      for (let j = 0; j < b[i].length; j++) {
+        if (j === 0) {
+          bookedStartDates.push(b[i][j]);
         }
       }
-      let randomStartDate = d[Math.floor(Math.random() * d.length)];
-      const walk = function(r) {
-        if (bookedStartDates.indexOf(r) === -1) {
-          return r;
-        } else {
-          let otherRandomStartDate = d[Math.floor(Math.random() * d.length)];
-          return walk(otherRandomStartDate);
-        }
-      };
-      return walk(randomStartDate);
+    }
+    let randomStartDate = d[Math.floor(Math.random() * d.length)];
+    const walk = function(r) {
+      if (bookedStartDates.indexOf(r) === -1) {
+        return r;
+      } else {
+        let otherRandomStartDate = d[Math.floor(Math.random() * d.length)];
+        return walk(otherRandomStartDate);
+      }
     };
+    return walk(randomStartDate);
+  };
+
+  for (let i = 0; i <= 99; i++) {
 
     let newBooking = {};
 
