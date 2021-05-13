@@ -66,5 +66,3 @@ ReactDOM.render(
   document.getElementById('booking')
 );
 
-//add Conditional rendering on App
-  //instantBook or RequestToBook
