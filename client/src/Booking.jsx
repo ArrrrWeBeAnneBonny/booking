@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom'
 import axios from 'axios';
+
+//booking contains all of my init info that I get from 'overview API' aka Twisselman Ranch
 class Booking extends React.Component {
   constructor(props) {
     super(props);
@@ -28,21 +30,21 @@ class Booking extends React.Component {
   componentDidMount() {
     axios.get('/booking', { params: { campId: 0 } })
       .then(res => {
-        console.log('res: ', res);
+        let site = res.data[0];
         this.setState({
-          campId: res.campId,
-          check_in_date: res.check_in_date,
-          check_out_date: res.check_out_date,
-          cleaning_fee: res.cleaning_fee,
-          how_many_months_out_booking_can_be_made: res.how_many_months_out_booking_can_be_made,
-          instant_book: res.instant_book,
-          month: res.month,
-          number_guests: res.number_guests,
-          number_nights: res.number_nights,
-          price_per_night: res.price_per_night,
-          request_to_book: res.request_to_book,
-          weeknight_discount: res.weeknight_discount,
-          year: res.year
+          campId: site.campId,
+          check_in_date: site.check_in_date,
+          check_out_date: site.check_out_date,
+          cleaning_fee: site.cleaning_fee,
+          how_many_months_out_booking_can_be_made: site.how_many_months_out_booking_can_be_made,
+          instant_book: site.instant_book,
+          month: site.month,
+          number_guests: site.number_guests,
+          number_nights: site.number_nights,
+          price_per_night: site.price_per_night,
+          request_to_book: site.request_to_book,
+          weeknight_discount: site.weeknight_discount,
+          year: site.year
         });
       })
       .catch((err)=> {
@@ -53,8 +55,7 @@ class Booking extends React.Component {
   render() {
     return (
       <div>
-        <h1>Booking Service</h1>
-        <h2>{this.state.perNightPrice}</h2>
+        <h5>{this.state.init.price_per_night}</h5>
       </div>
     );
   }

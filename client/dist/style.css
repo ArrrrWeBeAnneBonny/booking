@@ -1,0 +1,22 @@
+@font-face {
+  font-family:"Calibre";
+  src:url("CalibreWeb-Regular.eot");
+  src:url("CalibreWeb-Regular.eot?#iefix") format("embedded-opentype"),
+  url("CalibreWeb-Regular.woff") format("woff"),
+  url("CalibreWeb-Regular.woff2") format("woff2");
+  font-weight:400;
+  font-style:normal;
+}
+
+/* pricing widget */
+h5 {
+  font-family: "Calibre", Helvetica, Arial, sans-serif;
+  font-weight: 700;
+  display: block;
+  font-size: 0.83em;
+  margin-block-start: 1.67em;
+  margin-block-end: 1.67em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  font-weight: bold;
+}
