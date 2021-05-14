@@ -11,7 +11,7 @@
     "testEnvironment": "node"
   },
   "scripts": {
-    "start": "nodemon ./server/server.js",
+    "start": "nodemon ./server/index.js",
     "react-dev": "webpack --config webpack.config.js",
     "test": "jest"
   },
