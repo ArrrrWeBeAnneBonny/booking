@@ -40,10 +40,10 @@ describe('Test the seedDb method', () => {
     done()
   })
 
-  // it('Should pull all calendar availability associated with a particular site from the database', async done => {
-  //   const res = await request.get('/booking')
-  //   done()
-  // })
+  it('Should pull all calendar availability associated with a particular site from the database', async done => {
+    const res = await request.get('/booking')
+    done()
+  })
 
 }
 
