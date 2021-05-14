@@ -151,15 +151,6 @@ const seedDb = async () => {
         subTotal: 426
       };
 
-      await Booking.create(newBooking)
-      .then(data => {
-        console.log(`twisselman record saved`);
-      })
-      .catch((err) => {
-        throw err;
-      });
-      continue;
-
     } else {
 
     let price = avgPrice(75, 325);
