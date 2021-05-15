@@ -125,6 +125,23 @@ const seedDb = async () => {
     };
     return walk(randomStartDate);
   };
+  isoMaker = function(month, inDate) {
+    //"2011-12-19T15:28:46.493Z"
+    const hour = function(min, max) {
+      return Math.floor(Math.random() * (max - min) + min);
+    }
+    const min = function(min, max) {
+      return Math.floor(Math.random() * (max - min) + min);
+    }
+    const sec = function(min, max) {
+      return Math.floor(Math.random() * (max - min) + min);
+    }
+    let h = hour(0, 23);
+    let m = min(0, 59);
+    let s = sec(0, 60);
+    let str =`2021-${month}-${inDate}T${h}:${m}.${s}Z`;
+    return str;
+  }
 
   for (let i = 0; i <= 99; i++) {
 
@@ -171,8 +188,8 @@ const seedDb = async () => {
       year: 2021,
       month: month,
       booked: unavailable,
-      check_in_date: inDay,
-      check_out_date: outDay,
+      check_in_date: isoMaker(month, inDay),
+      check_out_date: isoMaker(month, outDay),
       number_nights: (outDay - inDay),
       cleaning_fee: (price / 10),
       weeknight_discount: discountMaker(),
