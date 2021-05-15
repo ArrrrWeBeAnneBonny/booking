@@ -1,9 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 class Booking extends React.Component {
+
   constructor(props) {
     super(props);
     this.state = {
+      checkIn: false,
+      checkOut: false,
       init: {
         init: false,
         campId: 0,
@@ -20,7 +23,7 @@ class Booking extends React.Component {
         subTotal: 0,
         weeknight_discount: 0,
         year: 0
-      },
+      }
     };
   }
 
@@ -51,12 +54,13 @@ class Booking extends React.Component {
   }
 
   render() {
-    return (
-      <div>
-        <h1>{this.state.perNightPrice}</h1>
-      </div>
-    );
+    if (this.state.init.instant_book) {
+      return <InstantBook />;
+    } else if (this.state.init.request_to_book) {
+      return <RequestToBook />;
+    }
   }
+
 }
 
 ReactDOM.render(
@@ -66,3 +70,28 @@ ReactDOM.render(
 
 //add Conditional rendering on App
   //instantBook or RequestToBook
+
+  class InstantBook extends React.Component {
+    constructor(props) {
+      super(props);
+    }
+
+    render() {
+      return (
+        <div>InstantBook Component</div>
+      );
+    }
+  }
+
+  class RequestToBook extends React.Component {
+    constructor(props) {
+      super(props);
+    }
+
+    render() {
+      return (
+        <div>RequestToBook</div>
+      );
+    }
+
+  }
