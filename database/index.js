@@ -31,4 +31,4 @@ const seeder = async () => {
 
 seeder();
 
-module.exports = {db, Booking};
+module.exports = {Booking, db};
