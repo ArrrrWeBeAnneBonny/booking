@@ -1,5 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Container, Header, List, Button } from "semantic-ui-react";
+import pkg from 'semantic-ui-react/package.json'
+import ButtonExampleAnimated from './components/ButtonExampleAnimated.jsx'
 class Booking extends React.Component {
 
   constructor(props) {
@@ -52,7 +55,6 @@ class Booking extends React.Component {
         weeknightDiscount: site.weeknight_discount,
         year: site.year
       });
-      console.log('this.state: ', this.state);
     })
     .catch((err) => {
       throw err;
@@ -60,40 +62,26 @@ class Booking extends React.Component {
   }
 
   render() {
+    return (
     <div>
-      <BookingButton bookingType={this.state.bookingType}/>
+      <div className="btn.block">
+        <div className="btn">
+          <ButtonExampleAnimated bookingType={this.state.bookingType}/>
+        </div>
+      </div>
     </div>
-    let bookingType = this.state.requestToBook;
-    if (bookingType) {
-      return
-    } else {
-      return <InstantBook />;
-    }
+    );
   }
 }
-class BookingButton extends React.Component {
-  constructor(props) {
-    super(props);
-  }
 
-  render() {
-    if (props.bookingType === 'request') {
-      return (
-        <div>
-          <button></button>
-        </div>
-      );
-    } else {
-      return (
-        <div>
-          <button></button>
-        </div>
-      );
-    }
-  }
-}
+const styleLink = document.createElement("link");
+styleLink.rel = "stylesheet";
+styleLink.href = "https://cdn.jsdelivr.net/npm/semantic-ui/dist/semantic.min.css";
+document.head.appendChild(styleLink);
 
 ReactDOM.render(
-  <Booking />,
+  <Booking>
+    <ButtonExampleAnimated />
+  </Booking>,
   document.getElementById('booking')
 );
