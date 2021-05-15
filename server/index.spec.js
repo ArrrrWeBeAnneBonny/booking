@@ -81,7 +81,3 @@ describe("Test the root path to booking API", () => {
     done();
   });
 });
-
-//GOAL:
-//test each function that I have
-//test for happy path as well as edge cases
