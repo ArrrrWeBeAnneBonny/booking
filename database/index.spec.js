@@ -1,11 +1,13 @@
 const mongoose = require('mongoose');
 const connection = require('./index.js');
+const request = require("supertest");
+const app = require("../server/server.js");
 const Model = connection.Booking;
 const databaseName = 'booking';
 
 describe('Test the seedDb method', () => {
   beforeAll(() => {
-    const url = `mongodb://127.0.0.1/${databaseName}`
+    const url = `mongodb://localhost:3002/${databaseName}`
     mongoose.connect(url, { useNewUrlParser: true })
   });
 
@@ -15,36 +17,19 @@ describe('Test the seedDb method', () => {
     });
   });
 
-  it('Should save check-in date to the database', async done => {
-    const res = await request.post('/checkin')
-    .send({
-        day: 0,
-        month: 0,
-        year: 2021
-      })
+});
 
-    // Searches the user in the database
-    const date = await Booking.findOne({ campId: })
+test('should store booking data to database', async done => {
+  const booking = await Model.findOne({ campId: 0 })
+  await request(app)
+  .get('/booking?campId=0')
+  .then((data) => {
+    let site = JSON.parse(data.text);
+    expect(Array.isArray(site.booked)).toBeTruthy();
+  });
+  done()
+})
 
-    done()
-  })
 
-  it('Should save booking to database', async done => {
-    // Sends request...
-
-    // Searches the booking in the database...
-
-    // Ensures response contains array of booked date ranges
-    expect(res.body.booked).toBeTruthy()
-    expect(res.body.booked).toBeTruthy() //array
-    done()
-  })
-
-  it('Should pull all calendar availability associated with a particular site from the database', async done => {
-    const res = await request.get('/booking')
-    done()
-  })
-
-}
 
 
