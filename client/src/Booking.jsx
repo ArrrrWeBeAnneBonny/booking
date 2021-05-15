@@ -7,44 +7,45 @@ class Booking extends React.Component {
     this.state = {
       checkIn: false,
       checkOut: false,
-      init: {
-        init: false,
-        campId: 0,
-        check_in_date: "",
-        check_out_date: "",
-        cleaning_fee: 0,
-        how_many_months_out_booking_can_be_made: 0,
-        instant_book: false,
-        month: 0,
-        number_guests: 0,
-        number_nights: 0,
-        price_per_night: 0,
-        request_to_book: false,
-        subTotal: 0,
-        weeknight_discount: 0,
-        year: 0
-      }
+      campId: 0,
+      checkInDate: "",
+      checkOutDate: "",
+      cleaningFee: 0,
+      howManyMonthsOutBookingCanBeMade: 0,
+      instantBook: false,
+      month: 0,
+      numberGuests: 0,
+      numberNights: 0,
+      pricePerNight: 0,
+      requestToBook: false,
+      subTotal: 0,
+      weeknightDiscount: 0,
+      year: 0
     };
+    this.fetcher = this.fetcher.bind(this);
   }
 
   componentDidMount() {
+    this.fetcher();
+  }
+
+  fetcher() {
     axios.get('/booking', { params: { campId: 0 } })
     .then((res) => {
       let site = res.data;
-      console.log('site: ', site);
       this.setState({
         campId: site.campId,
-        check_in_date: site.check_in_date,
-        check_out_date: site.check_out_date,
-        cleaning_fee: site.cleaning_fee,
-        how_many_months_out_booking_can_be_made: site.how_many_months_out_booking_can_be_made,
-        instant_book: site.instant_book,
+        checkInDate: site.check_in_date,
+        checkOutDate: site.check_out_date,
+        cleaningFee: site.cleaning_fee,
+        howManyMonths_out_booking_can_be_made: site.how_many_months_out_booking_can_be_made,
+        instantBook: site.instant_book,
         month: site.month,
-        number_guests: site.number_guests,
-        number_nights: site.number_nights,
-        price_per_night: site.price_per_night,
-        request_to_book: site.request_to_book,
-        weeknight_discount: site.weeknight_discount,
+        numberGuests: site.number_guests,
+        numberNights: site.number_nights,
+        pricePerNight: site.price_per_night,
+        requestToBook: site.request_to_book,
+        weeknightDiscount: site.weeknight_discount,
         year: site.year
       });
     })
@@ -54,13 +55,41 @@ class Booking extends React.Component {
   }
 
   render() {
-    if (this.state.init.instant_book) {
-      return <InstantBook />;
-    } else if (this.state.init.request_to_book) {
+    if (this.state.requestToBook) {
       return <RequestToBook />;
+    } else if (this.state.instant_book) {
+      return <InstantBook />;
+    } else {
+      return null;
     }
   }
+}
+class RequestToBook extends React.Component {
+  constructor(props) {
+    super(props);
+  }
 
+  render() {
+    return (
+      <div>
+        <h1>RequestToBook</h1>
+      </div>
+    );
+  }
+
+}
+class InstantBook extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return (
+      <div>
+        <h1>InstantBook</h1>
+      </div>
+    );
+  }
 }
 
 ReactDOM.render(
@@ -68,30 +97,3 @@ ReactDOM.render(
   document.getElementById('booking')
 );
 
-//add Conditional rendering on App
-  //instantBook or RequestToBook
-
-  class InstantBook extends React.Component {
-    constructor(props) {
-      super(props);
-    }
-
-    render() {
-      return (
-        <div>InstantBook Component</div>
-      );
-    }
-  }
-
-  class RequestToBook extends React.Component {
-    constructor(props) {
-      super(props);
-    }
-
-    render() {
-      return (
-        <div>RequestToBook</div>
-      );
-    }
-
-  }

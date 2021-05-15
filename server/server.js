@@ -13,6 +13,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/booking', async (req, res) => {
+  console.log('req: ', req);
   let campId = parseInt(req.query.campId);
   await db.Booking.find({campId: campId})
   .then((site) => {
