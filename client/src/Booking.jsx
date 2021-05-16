@@ -70,12 +70,13 @@ class Booking extends React.Component {
         <span>per night (2 guests)</span>
       </div>
       <div className="col col-xs-6 check-in-btn" data-check-in-btn="">
-        <div class="label">Check in</div>
+        <div class="label"></div>
         <CheckIn />
         <span class="value">Select date</span>
       </div>
       <div className="col col-xs-6 check-out-btn" data-check-out-btn="">
-        <div class="label">Check out</div>
+        <div class="label"></div>
+        <CheckOut />
         <span class="value">Select date</span>
       </div>
       <div></div>
@@ -101,4 +102,3 @@ ReactDOM.render(
   document.getElementById('booking')
 );
 
-//render init stuff on this component
