@@ -64,28 +64,34 @@ class Booking extends React.Component {
 
   render() {
     return (
-    <div className="booking-widget__banner">
-      <div>
-        <h5 className="booking-widget__price">{this.state.pricePerNight}</h5>
-        <span>per night (2 guests)</span>
-      </div>
-      <div className="col col-xs-6 check-in-btn" data-check-in-btn="">
-        <div class="label"></div>
-        <CheckIn />
-        <span class="value">Select date</span>
-      </div>
-      <div className="col col-xs-6 check-out-btn" data-check-out-btn="">
-        <div class="label"></div>
-        <CheckOut />
-        <span class="value">Select date</span>
-      </div>
-      <div></div>
-      <div className="btn.block">
-        <div className="btn btn-primary btn-flashy book-cta">
-          <ButtonExampleAnimated bookingType={this.state.bookingType}/>
+      <div className="booking-widget hipbook" id="booking-widget">
+        <div className="booking-widget__banner">
+          <div className="wrapper">
+            <div className=".booking-widget__standard-price-wrapper">
+              <div>
+                <h5 className="booking-widget__price">${this.state.pricePerNight}</h5>
+                <span>per night (2 guests)</span>
+              </div>
+            </div>
+          </div>
+          <div className="col col-xs-6 check-in-btn" data-check-in-btn="">
+            <div class="label"></div>
+            <CheckIn />
+            <span class="value">Select date</span>
+          </div>
+          <div className="col col-xs-6 check-out-btn" data-check-out-btn="">
+            <div class="label"></div>
+            <CheckOut />
+            <span class="value">Select date</span>
+          </div>
+          <div></div>
+          <div className="btn.block">
+            <div className="btn btn-primary btn-flashy book-cta">
+              <ButtonExampleAnimated bookingType={this.state.bookingType}/>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
     );
   }
 }
