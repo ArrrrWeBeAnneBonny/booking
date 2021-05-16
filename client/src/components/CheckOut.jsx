@@ -1,7 +1,4 @@
 import React from 'react';
-
-import React from 'react';
-
 class CheckOut extends React.Component {
   constructor(props) {
     super(props);

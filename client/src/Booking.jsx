@@ -1,10 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Container, Header, List, Button } from "semantic-ui-react";
-import pkg from 'semantic-ui-react/package.json'
-import ButtonExampleAnimated from './components/ButtonExampleAnimated.jsx'
+import pkg from 'semantic-ui-react/package.json';
+import ButtonExampleAnimated from './components/ButtonExampleAnimated.jsx';
+import CheckIn from './components/CheckIn.jsx';
+import CheckOut from './components/CheckOut.jsx';
 class Booking extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -63,9 +64,23 @@ class Booking extends React.Component {
 
   render() {
     return (
-    <div>
+    <div className="booking-widget__banner">
+      <div>
+        <h5 className="booking-widget__price">{this.state.pricePerNight}</h5>
+        <span>per night (2 guests)</span>
+      </div>
+      <div className="col col-xs-6 check-in-btn" data-check-in-btn="">
+        <div class="label">Check in</div>
+        <CheckIn />
+        <span class="value">Select date</span>
+      </div>
+      <div className="col col-xs-6 check-out-btn" data-check-out-btn="">
+        <div class="label">Check out</div>
+        <span class="value">Select date</span>
+      </div>
+      <div></div>
       <div className="btn.block">
-        <div className="btn">
+        <div className="btn btn-primary btn-flashy book-cta">
           <ButtonExampleAnimated bookingType={this.state.bookingType}/>
         </div>
       </div>
@@ -85,3 +100,5 @@ ReactDOM.render(
   </Booking>,
   document.getElementById('booking')
 );
+
+//render init stuff on this component

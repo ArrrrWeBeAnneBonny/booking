@@ -1,5 +1,5 @@
-import React from 'react'
-import { Button, Icon } from 'semantic-ui-react'
+import React from 'react';
+import { Button } from 'semantic-ui-react';
 
 const ButtonExampleAnimated = (props) => {
   if (props.bookingType === 'request') {
@@ -8,7 +8,6 @@ const ButtonExampleAnimated = (props) => {
         <Button animated>
           <Button.Content visible>Request to book</Button.Content>
           <Button.Content hidden>
-            <Icon name='arrow right' />
           </Button.Content>
         </Button>
       </div>
@@ -19,7 +18,6 @@ const ButtonExampleAnimated = (props) => {
         <Button animated>
           <Button.Content visible>Instant book</Button.Content>
           <Button.Content hidden>
-            <Icon name='arrow right' />
           </Button.Content>
         </Button>
       </div>
