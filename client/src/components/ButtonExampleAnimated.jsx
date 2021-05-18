@@ -2,6 +2,7 @@ import React from 'react';
 import { Button } from 'semantic-ui-react';
 
 const ButtonExampleAnimated = (props) => {
+  //on hover should toggle to .btn-flashy book-cta
   if (props.bookingType === 'request') {
     return (
       <div>

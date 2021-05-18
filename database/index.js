@@ -19,7 +19,7 @@ db.once('connected', function() {
 const Booking = mongoose.model('Booking');
 
 const seeder = async () => {
-  await Booking.find()
+  await Booking.find().exec()
     .then(result => {
       if (result.length === 100) {
         console.log('finished seeding db');

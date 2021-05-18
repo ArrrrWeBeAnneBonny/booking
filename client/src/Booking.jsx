@@ -75,18 +75,18 @@ class Booking extends React.Component {
             </div>
           </div>
           <div className="col col-xs-6 check-in-btn" data-check-in-btn="">
-            <div class="label"></div>
+            <div className="label"></div>
             <CheckIn />
-            <span class="value">Select date</span>
+            <span className="value">Select date</span>
           </div>
           <div className="col col-xs-6 check-out-btn" data-check-out-btn="">
-            <div class="label"></div>
+            <div className="label"></div>
             <CheckOut />
-            <span class="value">Select date</span>
+            <span className="value">Select date</span>
           </div>
           <div></div>
           <div className="btn.block">
-            <div className="btn btn-primary btn-flashy book-cta">
+            <div className="btn btn-primary">
               <ButtonExampleAnimated bookingType={this.state.bookingType}/>
             </div>
           </div>
