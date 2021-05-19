@@ -21,7 +21,7 @@ app.get('/booking', async (req, res) => {
     res.send(site);
   })
   .catch((err) => {
-    throw err;
+    res.send(err);
   });
 });
 
