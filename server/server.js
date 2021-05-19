@@ -12,6 +12,7 @@ app.get('/booking', async (req, res) => {
   await db.Booking.find({campId: campId})
   .then((site) => {
     let siteObj = site[0];
+    console.log('siteObj: ', siteObj);
     res.status(200).send(siteObj);
   })
   .catch((err) => {

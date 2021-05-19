@@ -1,47 +1,59 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Container, Header, List, Button } from "semantic-ui-react";
+import pkg from 'semantic-ui-react/package.json';
+import ButtonExampleAnimated from './components/ButtonExampleAnimated.jsx';
+import CheckIn from './components/CheckIn.jsx';
+import CheckOut from './components/CheckOut.jsx';
 class Booking extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      init: {
-        init: false,
-        campId: 0,
-        check_in_date: "",
-        check_out_date: "",
-        cleaning_fee: 0,
-        how_many_months_out_booking_can_be_made: 0,
-        instant_book: false,
-        month: 0,
-        number_guests: 0,
-        number_nights: 0,
-        price_per_night: 0,
-        request_to_book: false,
-        subTotal: 0,
-        weeknight_discount: 0,
-        year: 0
-      },
+      bookingType: '',
+      checkIn: false,
+      checkOut: false,
+      campId: 0,
+      checkInDate: "",
+      checkOutDate: "",
+      cleaningFee: 0,
+      howManyMonthsOutBookingCanBeMade: 0,
+      month: 0,
+      numberGuests: 0,
+      numberNights: 0,
+      pricePerNight: 0,
+      weeknightDiscount: 0,
+      year: 0
     };
+    this.fetcher = this.fetcher.bind(this);
   }
 
   componentDidMount() {
+    this.fetcher();
+  }
+
+  fetcher() {
     axios.get('/booking', { params: { campId: 0 } })
     .then((res) => {
       let site = res.data;
       console.log('site: ', site);
+      let type = '';
+      if (site.requestToBook) {
+        type = 'request';
+      } else {
+        type = 'instant'
+      }
       this.setState({
+        bookingType: type,
         campId: site.campId,
-        check_in_date: site.check_in_date,
-        check_out_date: site.check_out_date,
-        cleaning_fee: site.cleaning_fee,
-        how_many_months_out_booking_can_be_made: site.how_many_months_out_booking_can_be_made,
-        instant_book: site.instant_book,
+        checkInDate: site.check_in_date,
+        checkOutDate: site.check_out_date,
+        cleaningFee: site.cleaning_fee,
+        howManyMonthsOutBookingCanBeMade: site.how_many_months_out_booking_can_be_made,
         month: site.month,
-        number_guests: site.number_guests,
-        number_nights: site.number_nights,
-        price_per_night: site.price_per_night,
-        request_to_book: site.request_to_book,
-        weeknight_discount: site.weeknight_discount,
+        numberGuests: site.number_guests,
+        numberNights: site.number_nights,
+        pricePerNight: site.price_per_night,
+        weeknightDiscount: site.weeknight_discount,
         year: site.year
       });
     })
@@ -52,17 +64,47 @@ class Booking extends React.Component {
 
   render() {
     return (
-      <div>
-        <h1>{this.state.perNightPrice}</h1>
+      <div className="booking-widget hipbook" id="booking-widget">
+        <div className="booking-widget__banner">
+          <div className="wrapper">
+            <div className=".booking-widget__standard-price-wrapper">
+              <div>
+                <h5 className="booking-widget__price">${this.state.pricePerNight}</h5>
+                <span>per night (2 guests)</span>
+              </div>
+            </div>
+          </div>
+          <div className="col col-xs-6 check-in-btn" data-check-in-btn="">
+            <div className="label"></div>
+            <CheckIn />
+            <span className="value">Select date</span>
+          </div>
+          <div className="col col-xs-6 check-out-btn" data-check-out-btn="">
+            <div className="label"></div>
+            <CheckOut />
+            <span className="value">Select date</span>
+          </div>
+          <div></div>
+          <div className="btn.block">
+            <div className="btn btn-primary">
+              <ButtonExampleAnimated bookingType={this.state.bookingType}/>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
 }
 
+const styleLink = document.createElement("link");
+styleLink.rel = "stylesheet";
+styleLink.href = "https://cdn.jsdelivr.net/npm/semantic-ui/dist/semantic.min.css";
+document.head.appendChild(styleLink);
+
 ReactDOM.render(
-  <Booking />,
+  <Booking>
+    <ButtonExampleAnimated />
+  </Booking>,
   document.getElementById('booking')
 );
 
-//add Conditional rendering on App
-  //instantBook or RequestToBook

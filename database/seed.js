@@ -7,11 +7,10 @@ const db = require('./index.js');
 const booking_schema = new mongoose.Schema({
   campId: Number,
   price_per_night: Number,
+  booked: [Array],
   max_guests: Number,
   guests: Number,
-  year: Number,
-  month: Number,
-  booked: [Array],
+  howFarOut: Number,
   year: Number,
   month: Number,
   check_in_date: String,
@@ -94,7 +93,7 @@ const seedDb = async () => {
   };
 
   far = function() {
-    let farOutOptions = [30, 60, 90];
+    let farOutOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18];
     let farOut = farOutOptions[Math.floor(Math.random() * farOutOptions.length)];
     return farOut;
   };
@@ -152,24 +151,24 @@ const seedDb = async () => {
       newBooking = {
         campId: 0,
         price_per_night: 165,
+        booked: [[3, 4], [10, 14], [24, 26], [30, 2]],
+        max_guests: 6,
         guests: 2,
         howFarOut: 6,
-        instant_book: true,
-        request_to_book: false,
         year: 2021,
         month: 6,
-        booked: [[3, 4], [10, 14], [24, 26], [30, 2]],
         check_in_date: '2021-06-07T14:48:00.000Z',
         check_out_date: '2021-06-10T14:48:00.000Z',
         number_nights: 3,
-        number_guests: 2,
         cleaning_fee: 15,
         weeknight_discount: .2,
-        subTotal: 426
+        instant_book: true,
+        request_to_book: false,
       };
-
     } else {
 
+    let max = randomNumberMaker();
+    let g = (max - 1);
     let price = avgPrice(75, 325);
     let numb = randomNumberMaker();
     let month = monthMaker();
@@ -177,24 +176,25 @@ const seedDb = async () => {
     let unavailable = unavailableDays(days);
     let inDay = startDay(unavailable, days);
     let outDay = (inDay + randomNumberMaker());
+    let farOut = far();
 
     newBooking = {
       campId: i,
       price_per_night: price,
-      guests: randomNumberMaker(),
-      howFarOut: far(),
-      instant_book: booleanMaker(),
-      request_to_book: !booleanMaker(),
+      booked: unavailable,
+      max_guests: max,
+      guests: g,
+      howFarOut: farOut,
       year: 2021,
       month: month,
-      booked: unavailable,
       check_in_date: isoMaker(month, inDay),
       check_out_date: isoMaker(month, outDay),
       number_nights: (outDay - inDay),
       cleaning_fee: (price / 10),
       weeknight_discount: discountMaker(),
+      instant_book: booleanMaker(),
+      request_to_book: !booleanMaker(),
       }
-
     }
 
     Booking.create(newBooking)
