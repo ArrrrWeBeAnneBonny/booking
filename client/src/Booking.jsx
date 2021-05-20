@@ -1,8 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Container, Header, List, Button } from "semantic-ui-react";
-import pkg from 'semantic-ui-react/package.json';
-import ButtonExampleAnimated from './components/ButtonExampleAnimated.jsx';
 import CheckIn from './components/CheckIn.jsx';
 import CheckOut from './components/CheckOut.jsx';
 class Booking extends React.Component {
@@ -87,7 +84,7 @@ class Booking extends React.Component {
           <div></div>
           <div className="btn.block">
             <div className="btn btn-primary">
-              <ButtonExampleAnimated bookingType={this.state.bookingType}/>
+              <BookingButton bookingType={this.state.bookingType}/>
             </div>
           </div>
         </div>
@@ -101,10 +98,30 @@ styleLink.rel = "stylesheet";
 styleLink.href = "https://cdn.jsdelivr.net/npm/semantic-ui/dist/semantic.min.css";
 document.head.appendChild(styleLink);
 
+class BookingButton extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    if (this.props.bookingType === 'request') {
+      return (
+        <div>
+          <button></button>
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          <button></button>
+        </div>
+      );
+    }
+  }
+}
+
 ReactDOM.render(
-  <Booking>
-    <ButtonExampleAnimated />
-  </Booking>,
+  <Booking />,
   document.getElementById('booking')
 );
 
