@@ -9,6 +9,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/booking', async (req, res) => {
   let campId = parseInt(req.query.campId);
+  res.setHeader('Content-Type', 'application/json');
   await db.Booking.find({campId: campId})
   .then((site) => {
     let siteObj = site[0];

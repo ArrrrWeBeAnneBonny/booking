@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const faker = require('faker');
 const mongoUri = 'mongodb://localhost/booking';
 const db = require('./index.js');
 
