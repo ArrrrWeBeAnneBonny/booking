@@ -2,6 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import CheckIn from './components/CheckIn.jsx';
 import CheckOut from './components/CheckOut.jsx';
+
+//I need a way to replace calling my service directly
+//i need a url variable
+//depending on...call either proxy or service
+//env variables
+//default behavior = my service campId = 0
+//special cases send to proxy
+
 class Booking extends React.Component {
   constructor(props) {
     super(props);
@@ -125,3 +133,4 @@ ReactDOM.render(
   document.getElementById('booking')
 );
 
+//1 component per api route

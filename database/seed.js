@@ -162,7 +162,6 @@ const seedDb = async () => {
         cleaning_fee: 15,
         weeknight_discount: .2,
         instant_book: true,
-        request_to_book: false,
       };
     } else {
 
