@@ -9,16 +9,14 @@ const booking_schema = new mongoose.Schema({
   booked: [Array],
   max_guests: Number,
   guests: Number,
-  howFarOut: Number,
-  year: Number,
-  month: Number,
+  min_nights: Number,
+  how_far_out: Number,
   check_in_date: String,
   check_out_date: String,
   number_nights: Number,
   cleaning_fee: Number,
   weeknight_discount: Number,
-  instant_book: Boolean,
-  request_to_book: Boolean
+  instant_book: Boolean
 });
 
 const Booking = mongoose.model('Booking', booking_schema);
@@ -153,9 +151,8 @@ const seedDb = async () => {
         booked: [[3, 4], [10, 14], [24, 26], [30, 2]],
         max_guests: 6,
         guests: 2,
-        howFarOut: 6,
-        year: 2021,
-        month: 6,
+        min_nights: 3,
+        how_far_out: 6,
         check_in_date: '2021-06-07T14:48:00.000Z',
         check_out_date: '2021-06-10T14:48:00.000Z',
         number_nights: 3,
@@ -182,16 +179,14 @@ const seedDb = async () => {
       booked: unavailable,
       max_guests: max,
       guests: g,
-      howFarOut: farOut,
-      year: 2021,
-      month: month,
+      min_nights: randomNumberMaker(),
+      how_far_out: farOut,
       check_in_date: isoMaker(month, inDay),
       check_out_date: isoMaker(month, outDay),
       number_nights: (outDay - inDay),
       cleaning_fee: (price / 10),
       weeknight_discount: discountMaker(),
-      instant_book: booleanMaker(),
-      request_to_book: !booleanMaker(),
+      instant_book: booleanMaker()
       }
     }
 

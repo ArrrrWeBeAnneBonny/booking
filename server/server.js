@@ -92,9 +92,7 @@ app.get('/booking/?campId=&check_in_date=&check_out_date=/bookingTotal', async (
   // Number
 });
 
-
 module.exports = app;
-
 
 // *back-end can grab date (current month)
 //*define what value campId is
