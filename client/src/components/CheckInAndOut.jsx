@@ -8,7 +8,15 @@ class CheckInAndOut extends React.Component {
   render() {
     return (
       <div>
-        <button>Check in</button>
+        <div className="col col-xs-6 check-in-btn" data-check-in-btn="">
+          <div className="label"></div>
+            <button>Check in</button>
+            // *use input type Date
+          </div>
+          <div className="col col-xs-6 check-out-btn" data-check-out-btn="">
+            <div className="label"></div>
+              <button>Check out</button>
+          </div>
         <Guests />
       </div>
     );

@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import BookingButton from './components/BookingButton.jsx'
 import CheckInAndOut from './components/CheckInAndOut.jsx';
 import Guests from './components/Guests.jsx';
 import axios from 'axios';
@@ -40,6 +41,7 @@ class Booking extends React.Component {
 
   componentDidMount() {
     this.init();
+    this.bookingTotal(); //just right now for testing endpt 3
   }
 
   init() {
@@ -71,6 +73,7 @@ class Booking extends React.Component {
     this.postData(event);
   }
 
+  //invoked when user clicks checkin button
   book() {
     axios.get('http://localhost:3002/booking/book', { params: { campId: 0 } })
     .then((res) => {
@@ -87,11 +90,19 @@ class Booking extends React.Component {
     });
   }
 
+  //invoked when user clicks eligible checkout date
   bookingTotal() {
-    return axios.get('http://localhost:3002/booking/book', { params: {
+    // return axios.get('http://localhost:3002/booking/bookingTotal', { params: {
+    //   campId: 0,
+    //   check_in_date: this.state.check_in_date,
+    //   check_out_date: this.state.check_in_date
+    //   }
+    // })
+    //testing version:
+    return axios.get('http://localhost:3002/booking/bookingTotal', { params: {
       campId: 0,
-      check_in_date: this.state.check_in_date,
-      check_out_date: this.state.check_in_date
+      check_in_date: '5/23/21',
+      check_out_date: '5/27/21'
       }
     })
       .then((res) => {
@@ -107,43 +118,27 @@ class Booking extends React.Component {
   render() {
     return (
       <div className="widget-container">
-        <div className="booking-widget hipbook" id="booking-widget">
-          <div className="booking-widget__banner">
-            <div className="wrapper">
-              <div className=".booking-widget__standard-price-wrapper">
-                <div>
-                  <h5 className="booking-widget__price">${this.state.pricePerNight}</h5>
-                  <span>per night (2 guests)</span>
-                </div>
-              </div>
-            </div>
-            <div className="col col-xs-6 check-in-btn" data-check-in-btn="">
-              <div className="label"></div>
-              <CheckIn submit={this.handleSubmit}/>
-            </div>
-            <div className="col col-xs-6 check-out-btn" data-check-out-btn="">
-              <div className="label"></div>
-              <CheckOut />
-            </div>
-            <div></div>
-            <div className="btn.block">
-              <div className="btn btn-primary">
-                <BookingButton bookingType={this.state.instant_book}/>
-              </div>
-            </div>
-          </div>
+        <h5 className="booking-widget__price">${this.state.price_per_night}</h5>
+        <span>per night (2 guests)</span>
+        <CheckInAndOut  submit={this.handleSubmit}/>
+        <div className="btn.block">
+        <div className="btn btn-primary">
+          <BookingButton bookingType={this.state.instant_book}/>
         </div>
+          </div>
       </div>
     );
   }
 }
+
+ReactDOM.render(
+  <Booking />,
+  document.getElementById('booking')
+);
+
 
 // const styleLink = document.createElement("link");
 // styleLink.rel = "stylesheet";
 // styleLink.href = "https://cdn.jsdelivr.net/npm/semantic-ui/dist/semantic.min.css";
 // document.head.appendChild(styleLink);
 
-ReactDOM.render(
-  <Booking />,
-  document.getElementById('booking')
-);

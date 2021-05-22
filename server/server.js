@@ -129,26 +129,22 @@ app.get('/booking/book', async (req, res) => {
 
 //this endpt is triggered after user clicks eligible checkOut date, both checkin/checkout stored in state
 //renders new view with all the booking totals
-app.get('/booking/?campId=&check_in_date=&check_out_date=/bookingTotal', async (req, res) => {
-  // camp_id
-  // Number
-  // check_in_date
-  // Timestamp (ISO 8601)
-  // check_out_date
-  // Timestamp (ISO 8601)
+app.get('/booking/bookingTotal', async (req, res) => {
+  let campId = req.query.campId;
+  let check_in_date = '5/23/21'; //should b // Timestamp (ISO 8601)
+  let check_out_date = '5/27/21'; //should b // Timestamp (ISO 8601)
+  //book this range in my db if  get to advanced content
+  //Average price × X nights
+  //subtotal
+
 });
 
 module.exports = app;
 
-// *back-end can grab date (current month)
-//*define what value campId is
-// *1 endpt for both checkin/checkout
-// *need 2 dates (checkin and checkout)
-// *the problem with year/month/date is timezones
-// *use date std 8601, date.now
-// *should be thinking about how am I going to parse this?
-// *each block = type date
-// *use input type Date
+
+
+
+
 // *in html element for type date, can’t do 2 selections
 // *need to have two cals (2 forms, encapsulate in another form?)
 // *user click book needs access to both dates
