@@ -1,6 +1,6 @@
 import React from 'react';
 
-class CheckIn extends React.Component {
+class CheckInAndOut extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -8,13 +8,14 @@ class CheckIn extends React.Component {
   render() {
     return (
       <div>
-        <h1>CheckIn</h1>
+        <button>Check in</button>
       </div>
     );
   }
 }
+//on click updte check in date in top-level app state and switch to checkout (checkin date highlighted in green)
 
-export default CheckIn;
+export default CheckInAndOut;
 
 //monthly calendar fills
 //7 columns across

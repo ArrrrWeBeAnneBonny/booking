@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import CheckIn from './components/CheckIn.jsx';
+import CheckInAndOut from './components/CheckInAndOut.jsx';
 import CheckOut from './components/CheckOut.jsx';
 import axios from 'axios';
 
@@ -31,15 +31,19 @@ class Booking extends React.Component {
       numberNights: 0,
       pricePerNight: 0,
       weeknightDiscount: 0,
-      year: 0
+      year: 0,
+      check_in_date: '',
+      check_out_date: ''
     };
     this.init= this.init.bind(this);
     this.book = this.book.bind(this);
+    this.bookingTotal = this.bookingTotal.bind(this);
   }
 
   componentDidMount() {
     this.init();
     this.book();
+    this.bookingTotal();//for testing only before other PR's merged. otherwise should be invoked when checkout button clicked by user
   }
 
   init() {
@@ -95,6 +99,23 @@ class Booking extends React.Component {
     .catch((err) => {
       throw err;
     });
+  }
+
+  bookingTotal() {
+    return axios.get('http://localhost:3002/booking/book', { params: {
+      campId: 0,
+      check_in_date: this.state.check_in_date,
+      check_out_date: this.state.check_in_date
+      }
+    })
+      .then((res) => {
+        console.log('res: ', res);
+        // this.setState({
+        // });
+      })
+      .catch((err) => {
+        throw err;
+      });
   }
 
   render() {

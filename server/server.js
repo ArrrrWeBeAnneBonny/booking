@@ -114,7 +114,8 @@ app.get('/booking/book', async (req, res) => {
   });
 });
 
-//this endpt is triggered when user clicks eligible checkOut date
+//this endpt is triggered after user clicks eligible checkOut date, both checkin/checkout stored in state
+//renders new view with all the booking totals
 app.get('/booking/?campId=&check_in_date=&check_out_date=/bookingTotal', async (req, res) => {
   // camp_id
   // Number
@@ -122,16 +123,6 @@ app.get('/booking/?campId=&check_in_date=&check_out_date=/bookingTotal', async (
   // Timestamp (ISO 8601)
   // check_out_date
   // Timestamp (ISO 8601)
-  // number_nights
-  // Number
-  // total
-  // Number
-  // subTotal
-  // Number
-  // cleaning_fee
-  // Number
-  // weeknight_discount
-  // Number
 });
 
 module.exports = app;
