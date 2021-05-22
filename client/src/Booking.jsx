@@ -1,8 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import axios from 'axios';
+
+import BookingButton from './components/BookingButton.jsx';
 import CheckIn from './components/CheckIn.jsx';
 import CheckOut from './components/CheckOut.jsx';
-import axios from 'axios';
+
 
 //I need a way to replace calling my service directly
 //i need a url variable
@@ -33,19 +36,18 @@ class Booking extends React.Component {
     };
 
     this.init= this.init.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
     this.book = this.book.bind(this);
   }
 
   componentDidMount() {
     this.init();
-    this.book();
   }
 
   init() {
-    axios.get('http://localhost:3002/booking', { params: { campId: 0 } })
+    axios.get('http://localhost:3002/booking')
     .then((res) => {
       let site = res.data;
-      console.log('site from /booking: ', site);
       let instant = false;
       if (site.instant_book) {
         instant = true;
@@ -66,18 +68,17 @@ class Booking extends React.Component {
     });
   }
 
+  handleSubmit(e) {
+    e.preventDefault();
+    this.postData(event);
+  }
+
   book() {
     axios.get('http://localhost:3002/booking/book', { params: { campId: 0 } })
     .then((res) => {
-      console.log('res: ', res);
       let site = res.data;
-      console.log('site from booking/book: ', site);
-      let month = res.data.month;
-      let inventory = res.data.inventory;
-      let instant = false;
-      if (site.instant_book) {
-        instant = true;
-      }
+      let month = site.month;
+      let inventory = site.inventory;
       this.setState({
         current_month: site.month,
         inventory: site.inventory
@@ -90,30 +91,30 @@ class Booking extends React.Component {
 
   render() {
     return (
-      <div className="booking-widget hipbook" id="booking-widget">
-        <div className="booking-widget__banner">
-          <div className="wrapper">
-            <div className=".booking-widget__standard-price-wrapper">
-              <div>
-                <h5 className="booking-widget__price">${this.state.pricePerNight}</h5>
-                <span>per night (2 guests)</span>
+      <div className="widget-container">
+        <div className="booking-widget hipbook" id="booking-widget">
+          <div className="booking-widget__banner">
+            <div className="wrapper">
+              <div className=".booking-widget__standard-price-wrapper">
+                <div>
+                  <h5 className="booking-widget__price">${this.state.pricePerNight}</h5>
+                  <span>per night (2 guests)</span>
+                </div>
               </div>
             </div>
-          </div>
-          <div className="col col-xs-6 check-in-btn" data-check-in-btn="">
-            <div className="label"></div>
-            <CheckIn />
-            <span className="value">Select date</span>
-          </div>
-          <div className="col col-xs-6 check-out-btn" data-check-out-btn="">
-            <div className="label"></div>
-            <CheckOut />
-            <span className="value">Select date</span>
-          </div>
-          <div></div>
-          <div className="btn.block">
-            <div className="btn btn-primary">
-              {/* <BookingButton bookingType={this.state.bookingType}/> */}
+            <div className="col col-xs-6 check-in-btn" data-check-in-btn="">
+              <div className="label"></div>
+              <CheckIn submit={this.handleSubmit}/>
+            </div>
+            <div className="col col-xs-6 check-out-btn" data-check-out-btn="">
+              <div className="label"></div>
+              <CheckOut />
+            </div>
+            <div></div>
+            <div className="btn.block">
+              <div className="btn btn-primary">
+                <BookingButton bookingType={this.state.instant_book}/>
+              </div>
             </div>
           </div>
         </div>
@@ -122,32 +123,10 @@ class Booking extends React.Component {
   }
 }
 
-const styleLink = document.createElement("link");
-styleLink.rel = "stylesheet";
-styleLink.href = "https://cdn.jsdelivr.net/npm/semantic-ui/dist/semantic.min.css";
-document.head.appendChild(styleLink);
-
-class BookingButton extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    if (this.props.bookingType === 'request') {
-      return (
-        <div>
-          <button></button>
-        </div>
-      );
-    } else {
-      return (
-        <div>
-          <button></button>
-        </div>
-      );
-    }
-  }
-}
+// const styleLink = document.createElement("link");
+// styleLink.rel = "stylesheet";
+// styleLink.href = "https://cdn.jsdelivr.net/npm/semantic-ui/dist/semantic.min.css";
+// document.head.appendChild(styleLink);
 
 ReactDOM.render(
   <Booking />,
