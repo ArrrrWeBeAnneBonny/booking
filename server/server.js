@@ -16,24 +16,28 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 //root route initializes data from Overview api
 app.get('/booking', async (req, res) => {
+  console.log('inside /booking');
   let campId = parseInt(req.query.campId);
   let name = '';
+  let init = {};
+  //these calls to overview API are erroring
   await axios.get('http://localhost:3003/overview', { params: { campId: campId } })
     .then((response) => {
+      console.log('inside localhost:3003/overview')
       name = response.data.name;
     })
     .then(() => {
       axios.get('http://localhost:3003/overview/pricing', { params: { campId: campId } })
         .then((response) => {
-          let init = {};
+          console.log('inside localhost:3003/overview/pricing')
+          console.log('turbo res: ', response);
           init.name = name;
           init.average_price_per_night = response.data.averagePricePerNight;
           init.months_out_for_booking = response.data.monthsOutForBooking;
           init.weeknight_discount = response.data.weeknightDiscount;
           init.instant_book = response.data.instantBook;
           init.cleaning_fee = response.data.cleaningFee;
-          //init.max_guests = data.max_guests; ask turbo to add
-          console.log('init: ', init);
+          init.max_guests = data.max_guests;
           res.status(200).send(init);
         })
         .catch((err) => {
@@ -42,11 +46,17 @@ app.get('/booking', async (req, res) => {
     })
     .catch((err) => {
       db.Booking.find({campId: 0})
-        .then((site) => {
-          let siteObj = site[0];
-          let today = moment().format("MMM Do YY");
-          let currentMonth
-          res.status(200).send(siteObj);
+        .then((response) => {
+          let site = response[0];
+          init.name = 'Twisselman\’s Glamping by the Pond';
+          init.campId = 0;
+          init.price_per_night = site.price_per_night;
+          init.how_far_out = site.how_far_out;
+          init.weeknight_discount = site.weeknight_discount;
+          init.instant_book = site.instant_book;
+          init.cleaning_fee = site.cleaning_fee;
+          init.max_guests = site.max_guests;
+          res.status(200).send(init);
         })
         .catch((err) => {
           res.status(201).send(err);
@@ -107,7 +117,10 @@ app.get('/booking/book', async (req, res) => {
           inventories.push(next_month_inventory);
         }
       }
-      res.status(200).send(inventories);
+      let inventory_data = {};
+      inventory_data.inventory = inventories;
+      inventory_data.month = current_month;
+      res.status(200).send(JSON.stringify(inventory_data));
   })
   .catch((err) => {
     res.status(201).send(err);

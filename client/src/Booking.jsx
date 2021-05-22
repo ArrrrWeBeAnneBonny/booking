@@ -10,29 +10,28 @@ import axios from 'axios';
 //env variables
 //default behavior = my service campId = 0
 //special cases send to proxy
-
 //use react router
 //grab url off product itself
+
+//get current month/day in call to init
 class Booking extends React.Component {
+
   constructor(props) {
     super(props);
+
     this.state = {
-      instant_book: false,
-      current_month: 0,
-      checkIn: false,
-      checkOut: false,
+      name: '',
       campId: 0,
-      checkInDate: "",
-      checkOutDate: "",
-      cleaningFee: 0,
-      howManyMonthsOutBookingCanBeMade: 0,
-      month: 0,
-      numberGuests: 0,
-      numberNights: 0,
-      pricePerNight: 0,
-      weeknightDiscount: 0,
-      year: 0
+      price_per_night: 0,
+      how_far_out: 0,
+      weeknight_discount: 0,
+      instant_book: false,
+      cleaning_fee: 0,
+      max_guests: 0,
+      current_month: 0,
+      inventory: []
     };
+
     this.init= this.init.bind(this);
     this.book = this.book.bind(this);
   }
@@ -43,7 +42,7 @@ class Booking extends React.Component {
   }
 
   init() {
-    return axios.get('http://localhost:3002/booking', { params: { campId: 0 } })
+    axios.get('http://localhost:3002/booking', { params: { campId: 0 } })
     .then((res) => {
       let site = res.data;
       console.log('site from /booking: ', site);
@@ -52,17 +51,14 @@ class Booking extends React.Component {
         instant = true;
       }
       this.setState({
-        instant_book: instant,
+        name: site.name,
         campId: site.campId,
-        checkInDate: site.check_in_date,
-        checkOutDate: site.check_out_date,
-        cleaningFee: site.cleaning_fee,
-        howManyMonthsOutBookingCanBeMade: site.how_many_months_out_booking_can_be_made,
-        numberGuests: site.number_guests,
-        numberNights: site.number_nights,
-        pricePerNight: site.price_per_night,
-        weeknightDiscount: site.weeknight_discount,
-        year: site.year
+        price_per_night: site.price_per_night,
+        how_far_out: site.how_far_out,
+        weeknight_discount: site.weeknight_discount,
+        instant_book: instant,
+        cleaning_fee: site.cleaning_fee,
+        max_guests: site.max_guests,
       });
     })
     .catch((err) => {
@@ -71,7 +67,7 @@ class Booking extends React.Component {
   }
 
   book() {
-    return axios.get('http://localhost:3002/booking/book', { params: { campId: 0 } })
+    axios.get('http://localhost:3002/booking/book', { params: { campId: 0 } })
     .then((res) => {
       console.log('res: ', res);
       let site = res.data;
@@ -83,17 +79,8 @@ class Booking extends React.Component {
         instant = true;
       }
       this.setState({
-        bookingType: instant,
-        campId: site.campId,
-        checkInDate: site.check_in_date,
-        checkOutDate: site.check_out_date,
-        cleaningFee: site.cleaning_fee,
-        howManyMonthsOutBookingCanBeMade: site.how_many_months_out_booking_can_be_made,
-        numberGuests: site.number_guests,
-        numberNights: site.number_nights,
-        pricePerNight: site.price_per_night,
-        weeknightDiscount: site.weeknight_discount,
-        year: site.year
+        current_month: site.month,
+        inventory: site.inventory
       });
     })
     .catch((err) => {
