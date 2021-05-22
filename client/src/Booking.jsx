@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import CheckInAndOut from './components/CheckInAndOut.jsx';
-import CheckOut from './components/CheckOut.jsx';
+import Guests from './components/Guests.jsx';
 import axios from 'axios';
 
 //I need a way to replace calling my service directly

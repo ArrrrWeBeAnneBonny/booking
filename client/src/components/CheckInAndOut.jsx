@@ -1,5 +1,5 @@
 import React from 'react';
-
+import Guests from './Guests.jsx';
 class CheckInAndOut extends React.Component {
   constructor(props) {
     super(props);
@@ -9,6 +9,7 @@ class CheckInAndOut extends React.Component {
     return (
       <div>
         <button>Check in</button>
+        <Guests />
       </div>
     );
   }
