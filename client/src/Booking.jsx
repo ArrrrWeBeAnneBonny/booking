@@ -17,7 +17,7 @@ class Booking extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      bookingType: '',
+      binstant_book: false,
       current_month: 0,
       checkIn: false,
       checkOut: false,
@@ -46,6 +46,7 @@ class Booking extends React.Component {
     return axios.get('http://localhost:3002/booking', { params: { campId: 0 } })
     .then((res) => {
       let site = res.data;
+      console.log('site: ', site);
       let type = '';
       if (site.instant_book) {
         type = 'instant';

@@ -1,7 +1,14 @@
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require('path');
+
 module.exports = {
   entry: './client/src/Booking.jsx',
   watch: true,
   mode: "development",
+  plugins: [new HtmlWebpackPlugin({
+    hash: true,
+    template: './client/templates/index.html'
+  })],
   output: {
     filename: 'booking.js',
     path: __dirname + '/client/dist'
