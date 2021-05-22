@@ -1,3 +1,60 @@
+@font-face {
+  font-family:"Calibre";
+  src:url("./asset/CalibreWeb-Regular.eot");
+  src:url("./asset/CalibreWeb-Regular.eot?#iefix") format("embedded-opentype"),
+  url("./asset/CalibreWeb-Regular.woff") format("woff"),
+  url("./asset/CalibreWeb-Regular.woff2") format("woff2");
+  font-weight:400;
+  font-style:normal;
+}
+
+@font-face{
+  font-family:"Calibre";
+  src:url("./asset/CalibreWeb-Medium.eot");
+  src:url("./asset/CalibreWeb-Medium.eot?#iefix") format("embedded-opentype"),url("./asset/CalibreWeb-Medium.woff") format("woff"),url("./asset/CalibreWeb-Medium.woff2") format("woff2");
+  font-weight:500;
+  font-style:normal;
+}
+
+@font-face{
+  font-family:"Calibre";
+  src:url("./asset/CalibreWeb-Semibold.eot");
+  src:url("./asset/CalibreWeb-Semibold.eot?#iefix") format("embedded-opentype"),url("./asset/CalibreWeb-Semibold.woff") format("woff"),url("./asset/CalibreWeb-Semibold.woff2") format("woff2");
+  font-weight:700;
+  font-style:normal;
+}
+
+@font-face{
+  font-family:"Calibre";
+  src:url("./asset/CalibreWeb-Light.eot");
+  src:url("./asset/CalibreWeb-Light.eot?#iefix") format("embedded-opentype"),url("./asset/CalibreWeb-Light.woff") format("woff"),url("./asset/CalibreWeb-Light.woff2") format("woff2");
+  font-weight:200;
+  font-style:normal;
+}
+
+@font-face{
+  font-family:"hc-awesome";
+  src:url("./asset/hc-awesome.eot") format("embedded-opentype"),
+  url('./asset/hc-awesome.woff2') format("woff2"),
+  url("./asset/hc-awesome.woff") format("woff"),
+  url("./asset/hc-awesome.ttf") format("truetype"),
+  url("./asset/hc-awesome.svg") format("svg");
+  font-weight:normal;
+  font-style:normal;
+}
+
+.widget-container {
+  position: absolute;
+  width: 100%;
+  top: -61px;
+  z-index: 19;
+}
+
+#booking-widget {
+  position: relative;
+  width: 319px;
+  z-index: 99;
+}
 
 .hc-overlay.hc-overlay-gray {
   background-color: rgba(0,0,0,0.6);
@@ -32,11 +89,7 @@
   -o-transition: opacity 0.15s linear;
   transition: opacity 0.15s linear;
 }
-.booking-widget {
-  position: relative;
-  width: 319px;
-  z-index: 99;
-}
+
 .booking-widget__price {
   -webkit-align-items: center;
   align-items: center;

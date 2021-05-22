@@ -7,7 +7,8 @@ class CheckOut extends React.Component {
   render() {
     return (
       <div>
-        <h1>CheckOut</h1>
+        <button>Check out</button>
+        <span className="value">Select date</span>
       </div>
     );
   }

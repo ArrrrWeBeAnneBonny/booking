@@ -8,7 +8,8 @@ class CheckIn extends React.Component {
   render() {
     return (
       <div>
-        <h1>CheckIn</h1>
+        <button>Check in</button>
+        <span className="value">Select date</span>
       </div>
     );
   }
