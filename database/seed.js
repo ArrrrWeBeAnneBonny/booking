@@ -1,7 +1,10 @@
 const mongoose = require('mongoose');
 const mongoUri = 'mongodb://localhost/booking';
 const db = require('./index.js');
+const moment = require('moment');
 
+//should booked be an array of numbers i then shuffle X number of months times
+//or an array of arrays of numbers that are booked
 //SCHEMA
 const booking_schema = new mongoose.Schema({
   campId: Number,
@@ -9,16 +12,14 @@ const booking_schema = new mongoose.Schema({
   booked: [Array],
   max_guests: Number,
   guests: Number,
-  howFarOut: Number,
-  year: Number,
-  month: Number,
+  min_nights: Number,
+  how_far_out: Number,
   check_in_date: String,
   check_out_date: String,
   number_nights: Number,
   cleaning_fee: Number,
   weeknight_discount: Number,
-  instant_book: Boolean,
-  request_to_book: Boolean
+  instant_book: Boolean
 });
 
 const Booking = mongoose.model('Booking', booking_schema);
@@ -26,9 +27,9 @@ const Booking = mongoose.model('Booking', booking_schema);
 const seedDb = async () => {
 
   monthMaker = function() {
-    let months = [5, 6, 7, 8];
-    let month = months[Math.floor(Math.random() * months.length)];
-    return month;
+    let now = moment().add(10, 'days').calendar();
+    let month = now.slice(0, 2);
+    return month; //number
   };
 
   monthDays = function(month) {
@@ -46,7 +47,7 @@ const seedDb = async () => {
     return days;
   };
 
-  unavailableDays = function(array) {
+  unavailableDays = function(array) { //arr of days based on month
     let indexes = [];
     let unavailable = [];
     let ranges = [1, 2, 3, 4, 5];
@@ -64,11 +65,15 @@ const seedDb = async () => {
       let range = [];
       if (rangeEnd > array.length) {
         overflow += (rangeEnd - array.length);
-        range = [array[index], overflow];
+        for (let i = array[index]; i <= overflow; i++) {
+          range.push(i);
+        }
       } else {
         overflow += randomNumb;
         let end = (numb + overflow);
-        range = [numb, end];
+        for (let i = numb; i <= end; i++) {
+          range.push(i);
+        }
       }
       unavailable.push(range);
     });
@@ -123,6 +128,7 @@ const seedDb = async () => {
     };
     return walk(randomStartDate);
   };
+
   isoMaker = function(month, inDate) {
     //"2011-12-19T15:28:46.493Z"
     const hour = function(min, max) {
@@ -139,7 +145,7 @@ const seedDb = async () => {
     let s = sec(0, 60);
     let str =`2021-${month}-${inDate}T${h}:${m}.${s}Z`;
     return str;
-  }
+  };
 
   for (let i = 0; i <= 99; i++) {
 
@@ -150,12 +156,11 @@ const seedDb = async () => {
       newBooking = {
         campId: 0,
         price_per_night: 165,
-        booked: [[3, 4], [10, 14], [24, 26], [30, 2]],
+        booked: [[1, 2, 3], [15, 16, 17], [25, 26, 27], [28, 29]],
         max_guests: 6,
         guests: 2,
-        howFarOut: 6,
-        year: 2021,
-        month: 6,
+        min_nights: 3,
+        how_far_out: 6,
         check_in_date: '2021-06-07T14:48:00.000Z',
         check_out_date: '2021-06-10T14:48:00.000Z',
         number_nights: 3,
@@ -169,8 +174,8 @@ const seedDb = async () => {
     let g = (max - 1);
     let price = avgPrice(75, 325);
     let numb = randomNumberMaker();
-    let month = monthMaker();
-    let days = monthDays(month);
+    let current_month = monthMaker();
+    let days = monthDays(current_month);
     let unavailable = unavailableDays(days);
     let inDay = startDay(unavailable, days);
     let outDay = (inDay + randomNumberMaker());
@@ -182,22 +187,20 @@ const seedDb = async () => {
       booked: unavailable,
       max_guests: max,
       guests: g,
-      howFarOut: farOut,
-      year: 2021,
-      month: month,
-      check_in_date: isoMaker(month, inDay),
-      check_out_date: isoMaker(month, outDay),
+      min_nights: randomNumberMaker(),
+      how_far_out: farOut,
+      check_in_date: isoMaker(current_month, inDay),
+      check_out_date: isoMaker(current_month, outDay),
       number_nights: (outDay - inDay),
       cleaning_fee: (price / 10),
       weeknight_discount: discountMaker(),
-      instant_book: booleanMaker(),
-      request_to_book: !booleanMaker(),
+      instant_book: booleanMaker()
       }
     }
 
     Booking.create(newBooking)
     .then(data => {
-      console.log(`record ${i} saved`);
+      // console.log(`record ${i} saved`);
     })
     .catch((err) => {
       throw err;
