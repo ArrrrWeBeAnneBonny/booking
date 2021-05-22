@@ -30,10 +30,12 @@ class Booking extends React.Component {
       year: 0
     };
     this.fetcher = this.fetcher.bind(this);
+    this.book = this.book.bind(this);
   }
 
   componentDidMount() {
     this.fetcher();
+    this.book();
   }
 
   fetcher() {
@@ -42,10 +44,10 @@ class Booking extends React.Component {
       let site = res.data;
       console.log('site: ', site);
       let type = '';
-      if (site.requestToBook) {
-        type = 'request';
+      if (site.instant_book) {
+        type = 'instant';
       } else {
-        type = 'instant'
+        type = 'request';
       }
       this.setState({
         bookingType: type,
@@ -54,13 +56,43 @@ class Booking extends React.Component {
         checkOutDate: site.check_out_date,
         cleaningFee: site.cleaning_fee,
         howManyMonthsOutBookingCanBeMade: site.how_many_months_out_booking_can_be_made,
-        month: site.month,
         numberGuests: site.number_guests,
         numberNights: site.number_nights,
         pricePerNight: site.price_per_night,
         weeknightDiscount: site.weeknight_discount,
         year: site.year
       });
+    })
+    .catch((err) => {
+      throw err;
+    });
+  }
+
+  book() {
+    //current month with inventory
+      //an array of booked dates
+    //months x months out with inventory
+      //an array of arrays (months) of booked dates x months out
+    axios.get('booking/book', { params: { campId: 0 } })
+    .then((res) => {
+      console.log('res: ', res);
+      let month = res.data.month;
+      let inventory = res.data.inventory;
+      console.log('month: ', month);
+      console.log('inventory : ', inventory);
+      // this.setState({
+      //   bookingType: type,
+      //   campId: site.campId,
+      //   checkInDate: site.check_in_date,
+      //   checkOutDate: site.check_out_date,
+      //   cleaningFee: site.cleaning_fee,
+      //   howManyMonthsOutBookingCanBeMade: site.how_many_months_out_booking_can_be_made,
+      //   numberGuests: site.number_guests,
+      //   numberNights: site.number_nights,
+      //   pricePerNight: site.price_per_night,
+      //   weeknightDiscount: site.weeknight_discount,
+      //   year: site.year
+      // });
     })
     .catch((err) => {
       throw err;

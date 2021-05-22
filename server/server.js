@@ -1,36 +1,21 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const axios = require('axios');
+const moment = require('moment');
 const cors = require('cors');
 const db = require('../database/index.js');
 const app = express();
 
-//allow my service to accept every other proxy
-const origins = ['http://localhost:2000',
-'http://localhost:5500',
-'http://localhost:3000'];
-  // add michael's proxy port numb when avail.
-
 app.use(cors());
-app.use(cors({ origin: origins }));
 
 app.use(express.static(__dirname + '/../client/dist'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-//root init route
+//root route initializes data from Overview api
 app.get('/booking', async (req, res) => {
   let campId = parseInt(req.query.campId);
   let name = '';
-  let inventory = [];
-  await db.Booking.find({campId: campId})
-  .then((site) => {
-    let siteObj = site[0];
-    inventory = siteObj.booked;
-  })
-  .catch((err) => {
-    throw err;
-  });
   await axios.get('http://localhost:3003/overview', { params: { campId: campId } })
     .then((response) => {
       name = response.data.name;
@@ -40,7 +25,6 @@ app.get('/booking', async (req, res) => {
         .then((response) => {
           let init = {};
           init.name = name;
-          init.inventory = inventory;
           init.average_price_per_night = response.data.averagePricePerNight;
           init.months_out_for_booking = response.data.monthsOutForBooking;
           init.weeknight_discount = response.data.weeknightDiscount;
@@ -66,13 +50,37 @@ app.get('/booking', async (req, res) => {
     });
 });
 
-app.get('/booking/?campId=/book', async (req, res) => {
-  //define current month
+//user clicks checkIn button
+  //user clicks available date
+  //on click switch view to checkOut
+    //user clicks available date
+app.get('/booking/book', async (req, res) => {
+  let campId = parseInt(req.query.campId);
+
+  let now = moment().add(10, 'days').calendar();
+  console.log('now: ', now); // 05/31/2021
+  console.log('now: ', typeof now); //string
+  let current_month = now.slice(0, 2);
+  console.log('current_month: ', current_month); //05
+  let current_day = now.slice(3, 5);
+  console.log('current_day: ', current_day); //31
+
+  let inventory = [];
   //get booked inventory to populate front end
-  //checkIn = Timestamp (ISO 8601)
-  //checkOut = Timestamp (ISO 8601)
+  await db.Booking.find({campId: campId})
+    .then((site) => {
+      let data = {};
+      let siteObj = site[0];
+      data.inventory = siteObj.booked;
+      // data.month = parse now
+      res.status(200).send(data);
+    })
+    .catch((err) => {
+      throw err;
+    });
 });
 
+//this endpt is triggered when user clicks eligible checkOut date
 app.get('/booking/?campId=&check_in_date=&check_out_date=/bookingTotal', async (req, res) => {
   // camp_id
   // Number
