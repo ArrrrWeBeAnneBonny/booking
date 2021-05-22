@@ -15,6 +15,7 @@ class Booking extends React.Component {
     super(props);
     this.state = {
       bookingType: '',
+      current_month: 0,
       checkIn: false,
       checkOut: false,
       campId: 0,
@@ -29,27 +30,20 @@ class Booking extends React.Component {
       weeknightDiscount: 0,
       year: 0
     };
-    this.fetcher = this.fetcher.bind(this);
+    this.init= this.init.bind(this);
     this.book = this.book.bind(this);
   }
 
   componentDidMount() {
-    this.fetcher();
+    this.init();
     this.book();
-    axios.get('/booking/fake', { params: { campId: 0 } })
-      .then((res) => {
-        console.log('res: ', res);
-      })
-      .catch((err) => {
-        throw err;
-      });
   }
 
-  fetcher() {
+  init() {
     axios.get('/booking', { params: { campId: 0 } })
     .then((res) => {
       let site = res.data;
-      console.log('site: ', site);
+      // console.log('site: ', site);
       let type = '';
       if (site.instant_book) {
         type = 'instant';
@@ -76,30 +70,25 @@ class Booking extends React.Component {
   }
 
   book() {
-    //current month with inventory
-      //an array of booked dates
-    //months x months out with inventory
-      //an array of arrays (months) of booked dates x months out
     axios.get('booking/book', { params: { campId: 0 } })
     .then((res) => {
       console.log('res: ', res);
       let month = res.data.month;
       let inventory = res.data.inventory;
-      console.log('month: ', month);
-      console.log('inventory : ', inventory);
-      // this.setState({
-      //   bookingType: type,
-      //   campId: site.campId,
-      //   checkInDate: site.check_in_date,
-      //   checkOutDate: site.check_out_date,
-      //   cleaningFee: site.cleaning_fee,
-      //   howManyMonthsOutBookingCanBeMade: site.how_many_months_out_booking_can_be_made,
-      //   numberGuests: site.number_guests,
-      //   numberNights: site.number_nights,
-      //   pricePerNight: site.price_per_night,
-      //   weeknightDiscount: site.weeknight_discount,
-      //   year: site.year
-      // });
+
+      this.setState({
+        bookingType: type,
+        campId: site.campId,
+        checkInDate: site.check_in_date,
+        checkOutDate: site.check_out_date,
+        cleaningFee: site.cleaning_fee,
+        howManyMonthsOutBookingCanBeMade: site.how_many_months_out_booking_can_be_made,
+        numberGuests: site.number_guests,
+        numberNights: site.number_nights,
+        pricePerNight: site.price_per_night,
+        weeknightDiscount: site.weeknight_discount,
+        year: site.year
+      });
     })
     .catch((err) => {
       throw err;
@@ -131,7 +120,7 @@ class Booking extends React.Component {
           <div></div>
           <div className="btn.block">
             <div className="btn btn-primary">
-              <BookingButton bookingType={this.state.bookingType}/>
+              {/* <BookingButton bookingType={this.state.bookingType}/> */}
             </div>
           </div>
         </div>

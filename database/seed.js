@@ -200,7 +200,7 @@ const seedDb = async () => {
 
     Booking.create(newBooking)
     .then(data => {
-      console.log(`record ${i} saved`);
+      // console.log(`record ${i} saved`);
     })
     .catch((err) => {
       throw err;
