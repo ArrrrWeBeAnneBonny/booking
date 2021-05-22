@@ -1,23 +1,154 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const axios = require('axios');
+const _ = require('underscore');
+const moment = require('moment');
+const cors = require('cors');
 const db = require('../database/index.js');
+
 const app = express();
+
+app.use(cors());
 
 app.use(express.static(__dirname + '/../client/dist'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+//root route initializes data from Overview api
 app.get('/booking', async (req, res) => {
   let campId = parseInt(req.query.campId);
+  let name = '';
+  await axios.get('http://localhost:3003/overview', { params: { campId: campId } })
+    .then((response) => {
+      name = response.data.name;
+    })
+    .then(() => {
+      axios.get('http://localhost:3003/overview/pricing', { params: { campId: campId } })
+        .then((response) => {
+          let init = {};
+          init.name = name;
+          init.average_price_per_night = response.data.averagePricePerNight;
+          init.months_out_for_booking = response.data.monthsOutForBooking;
+          init.weeknight_discount = response.data.weeknightDiscount;
+          init.instant_book = response.data.instantBook;
+          init.cleaning_fee = response.data.cleaningFee;
+          //init.max_guests = data.max_guests; ask turbo to add
+          console.log('init: ', init);
+          res.status(200).send(init);
+        })
+        .catch((err) => {
+          res.status(201).send(err);
+        });
+    })
+    .catch((err) => {
+      db.Booking.find({campId: 0})
+        .then((site) => {
+          let siteObj = site[0];
+          let today = moment().format("MMM Do YY");
+          let currentMonth
+          res.status(200).send(siteObj);
+        })
+        .catch((err) => {
+          res.status(201).send(err);
+        });
+    });
+});
+
+//user clicks checkIn button
+  //user clicks available date
+  //on click switch view to checkOut
+    //user clicks available date
+app.get('/booking/book', async (req, res) => {
+  console.log('inside /booking/book')
+  let campId = parseInt(req.query.campId);
   await db.Booking.find({campId: campId})
-  .then((site) => {
-    let siteObj = site[0];
-    console.log('siteObj: ', siteObj);
-    res.status(200).send(siteObj);
+    .then((site) => {
+      let siteObj = site[0];
+      let months_out = siteObj.how_far_out;
+      let now = moment().format();
+      let current_month = now.slice(5, 7);
+      let current_day = now.slice(8, 10);
+      let current_month_inventory = siteObj.booked;
+      let flattened_inventory = _.flatten(current_month_inventory);
+      //add current day to unavailable inventory
+      if (flattened_inventory.indexOf(current_day) === -1) {
+        let numb_day = Number(current_day);
+        flattened_inventory.push(numb_day);
+      }
+      let inv = [ 1, 2, 3, 15, 16, 17, 25, 26, 27, 28, 29, 21 ]
+      let inventories = [];
+      let index = 0;
+      for (let i = 0; i < 6; i++) {
+        if (!inventories.length) {
+          let next_month_inventory = inv.map(item => {
+            let newItem = (item + 1);
+            if (newItem > 31) {
+              newItem = 1;
+              return newItem;
+            } else {
+              return newItem;
+            }
+          });
+          index ++;
+          next_month_inventory.pop();
+          inventories.push(next_month_inventory);
+        } else {
+          let last_month = inventories[index - 1];
+          let next_month_inventory = last_month.map(item => {
+            let newItem = (item + 1);
+            if (newItem > 31) {
+              newItem = 1;
+              return newItem;
+            } else {
+              return newItem;
+            }
+          });
+          index ++;
+          inventories.push(next_month_inventory);
+        }
+      }
+      res.status(200).send(inventories);
   })
   .catch((err) => {
-    throw err;
+    res.status(201).send(err);
   });
 });
 
+//this endpt is triggered when user clicks eligible checkOut date
+app.get('/booking/?campId=&check_in_date=&check_out_date=/bookingTotal', async (req, res) => {
+  // camp_id
+  // Number
+  // check_in_date
+  // Timestamp (ISO 8601)
+  // check_out_date
+  // Timestamp (ISO 8601)
+  // number_nights
+  // Number
+  // total
+  // Number
+  // subTotal
+  // Number
+  // cleaning_fee
+  // Number
+  // weeknight_discount
+  // Number
+});
+
 module.exports = app;
+
+// *back-end can grab date (current month)
+//*define what value campId is
+// *1 endpt for both checkin/checkout
+// *need 2 dates (checkin and checkout)
+// *the problem with year/month/date is timezones
+// *use date std 8601, date.now
+// *should be thinking about how am I going to parse this?
+// *each block = type date
+// *use input type Date
+// *in html element for type date, can’t do 2 selections
+// *need to have two cals (2 forms, encapsulate in another form?)
+// *user click book needs access to both dates
+// *as part of click event, move over to checkOut
+// *smoke and mirrors
+
+//write unit test for error route

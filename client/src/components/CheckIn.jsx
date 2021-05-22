@@ -15,3 +15,8 @@ class CheckIn extends React.Component {
 }
 
 export default CheckIn;
+
+//monthly calendar fills
+//7 columns across
+//6 rows down
+//current day is automatically crossed off
