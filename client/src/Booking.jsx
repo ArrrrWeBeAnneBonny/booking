@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import CheckIn from './components/CheckIn.jsx';
 import CheckOut from './components/CheckOut.jsx';
+import axios from 'axios';
 
 //I need a way to replace calling my service directly
 //i need a url variable
@@ -15,6 +16,7 @@ class Booking extends React.Component {
     super(props);
     this.state = {
       bookingType: '',
+      current_month: 0,
       checkIn: false,
       checkOut: false,
       campId: 0,
@@ -29,23 +31,24 @@ class Booking extends React.Component {
       weeknightDiscount: 0,
       year: 0
     };
-    this.fetcher = this.fetcher.bind(this);
+    this.init= this.init.bind(this);
+    this.book = this.book.bind(this);
   }
 
   componentDidMount() {
-    this.fetcher();
+    this.init();
+    this.book();
   }
 
-  fetcher() {
-    axios.get('/booking', { params: { campId: 0 } })
+  init() {
+    return axios.get('http://localhost:3002/booking', { params: { campId: 0 } })
     .then((res) => {
       let site = res.data;
-      console.log('site: ', site);
       let type = '';
-      if (site.requestToBook) {
-        type = 'request';
+      if (site.instant_book) {
+        type = 'instant';
       } else {
-        type = 'instant'
+        type = 'request';
       }
       this.setState({
         bookingType: type,
@@ -54,7 +57,32 @@ class Booking extends React.Component {
         checkOutDate: site.check_out_date,
         cleaningFee: site.cleaning_fee,
         howManyMonthsOutBookingCanBeMade: site.how_many_months_out_booking_can_be_made,
-        month: site.month,
+        numberGuests: site.number_guests,
+        numberNights: site.number_nights,
+        pricePerNight: site.price_per_night,
+        weeknightDiscount: site.weeknight_discount,
+        year: site.year
+      });
+    })
+    .catch((err) => {
+      throw err;
+    });
+  }
+
+  book() {
+    return axios.get('http://localhost:3002/booking/book', { params: { campId: 0 } })
+    .then((res) => {
+      console.log('res: ', res);
+      let month = res.data.month;
+      let inventory = res.data.inventory;
+
+      this.setState({
+        bookingType: type,
+        campId: site.campId,
+        checkInDate: site.check_in_date,
+        checkOutDate: site.check_out_date,
+        cleaningFee: site.cleaning_fee,
+        howManyMonthsOutBookingCanBeMade: site.how_many_months_out_booking_can_be_made,
         numberGuests: site.number_guests,
         numberNights: site.number_nights,
         pricePerNight: site.price_per_night,
@@ -92,7 +120,7 @@ class Booking extends React.Component {
           <div></div>
           <div className="btn.block">
             <div className="btn btn-primary">
-              <BookingButton bookingType={this.state.bookingType}/>
+              {/* <BookingButton bookingType={this.state.bookingType}/> */}
             </div>
           </div>
         </div>
@@ -132,5 +160,3 @@ ReactDOM.render(
   <Booking />,
   document.getElementById('booking')
 );
-
-//1 component per api route
