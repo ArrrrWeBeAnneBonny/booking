@@ -17,7 +17,7 @@ class Booking extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      binstant_book: false,
+      instant_book: false,
       current_month: 0,
       checkIn: false,
       checkOut: false,
@@ -46,15 +46,13 @@ class Booking extends React.Component {
     return axios.get('http://localhost:3002/booking', { params: { campId: 0 } })
     .then((res) => {
       let site = res.data;
-      console.log('site: ', site);
-      let type = '';
+      console.log('site from /booking: ', site);
+      let instant = false;
       if (site.instant_book) {
-        type = 'instant';
-      } else {
-        type = 'request';
+        instant = true;
       }
       this.setState({
-        bookingType: type,
+        instant_book: instant,
         campId: site.campId,
         checkInDate: site.check_in_date,
         checkOutDate: site.check_out_date,
@@ -76,11 +74,16 @@ class Booking extends React.Component {
     return axios.get('http://localhost:3002/booking/book', { params: { campId: 0 } })
     .then((res) => {
       console.log('res: ', res);
+      let site = res.data;
+      console.log('site from booking/book: ', site);
       let month = res.data.month;
       let inventory = res.data.inventory;
-
+      let instant = false;
+      if (site.instant_book) {
+        instant = true;
+      }
       this.setState({
-        bookingType: type,
+        bookingType: instant,
         campId: site.campId,
         checkInDate: site.check_in_date,
         checkOutDate: site.check_out_date,
