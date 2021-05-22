@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import CheckIn from './components/CheckIn.jsx';
 import CheckOut from './components/CheckOut.jsx';
+import axios from 'axios';
 
 //I need a way to replace calling my service directly
 //i need a url variable
@@ -40,10 +41,9 @@ class Booking extends React.Component {
   }
 
   init() {
-    axios.get('/booking', { params: { campId: 0 } })
+    return axios.get('http://localhost:3002/booking', { params: { campId: 0 } })
     .then((res) => {
       let site = res.data;
-      // console.log('site: ', site);
       let type = '';
       if (site.instant_book) {
         type = 'instant';
@@ -70,7 +70,7 @@ class Booking extends React.Component {
   }
 
   book() {
-    axios.get('booking/book', { params: { campId: 0 } })
+    return axios.get('http://localhost:3002/booking/book', { params: { campId: 0 } })
     .then((res) => {
       console.log('res: ', res);
       let month = res.data.month;
