@@ -1,9 +1,11 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const axios = require('axios');
+const _ = require('underscore');
 const moment = require('moment');
 const cors = require('cors');
 const db = require('../database/index.js');
+
 const app = express();
 
 app.use(cors());
@@ -42,12 +44,57 @@ app.get('/booking', async (req, res) => {
       db.Booking.find({campId: 0})
         .then((site) => {
           let siteObj = site[0];
+          console.log('siteObj: ', siteObj);
+          let today = moment().format("MMM Do YY");
+          let currentMonth
           res.status(200).send(siteObj);
         })
         .catch((err) => {
           res.status(201).send(err);
         });
     });
+});
+
+//booked is now an array of random consecutive numbers
+  //shuffle X months out times
+  //return as inventory
+
+app.get('/booking/fake', async (req, res) => {
+  console.log('insie /booking/fake')
+  await db.Booking.find({campId: 0})
+    .then((site) => {
+      let siteObj = site[0];
+      let months_out = siteObj.how_far_out;
+      let inventories = [];
+      let newInventory = [];
+      let inventory = siteObj.booked;
+      //[[3,4],[10,14],[24,26],[30,2]]
+      inventory.forEach(item => {
+        let start = item[0];
+        let end = item[item.length - 1];
+        let newItem = [];
+        for ( let i = start; i <= end; i++ ) {
+          newItem.push(i);
+        }
+        newInventory.push(newItem);
+      });
+
+    // for ( let i = 0; i < months_out; i++ ) {
+    //   let new
+    // }
+
+    // inventory
+
+    // let now = moment().add(10, 'days').calendar();
+    // let current_month = now.slice(0, 2);
+    // console.log('current_month: ', current_month); //05
+    // let current_day = now.slice(3, 5);
+    // console.log('current_day: ', current_day); //31
+    // res.status(200).send(siteObj);
+  })
+  .catch((err) => {
+    res.status(201).send(err);
+  });
 });
 
 //user clicks checkIn button
@@ -66,7 +113,7 @@ app.get('/booking/book', async (req, res) => {
   console.log('current_day: ', current_day); //31
 
   let inventory = [];
-  //get booked inventory to populate front end
+
   await db.Booking.find({campId: campId})
     .then((site) => {
       let data = {};
@@ -117,3 +164,4 @@ module.exports = app;
 // *as part of click event, move over to checkOut
 // *smoke and mirrors
 
+//write unit test for error route

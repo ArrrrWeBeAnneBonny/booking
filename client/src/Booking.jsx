@@ -36,6 +36,13 @@ class Booking extends React.Component {
   componentDidMount() {
     this.fetcher();
     this.book();
+    axios.get('/booking/fake', { params: { campId: 0 } })
+      .then((res) => {
+        console.log('res: ', res);
+      })
+      .catch((err) => {
+        throw err;
+      });
   }
 
   fetcher() {
@@ -166,3 +173,4 @@ ReactDOM.render(
 );
 
 //1 component per api route
+

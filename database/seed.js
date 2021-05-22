@@ -1,7 +1,10 @@
 const mongoose = require('mongoose');
 const mongoUri = 'mongodb://localhost/booking';
 const db = require('./index.js');
+const moment = require('moment');
 
+//should booked be an array of numbers i then shuffle X number of months times
+//or an array of arrays of numbers that are booked
 //SCHEMA
 const booking_schema = new mongoose.Schema({
   campId: Number,
@@ -24,9 +27,9 @@ const Booking = mongoose.model('Booking', booking_schema);
 const seedDb = async () => {
 
   monthMaker = function() {
-    let months = [5, 6, 7, 8];
-    let month = months[Math.floor(Math.random() * months.length)];
-    return month;
+    let now = moment().add(10, 'days').calendar();
+    let month = now.slice(0, 2);
+    return month; //number
   };
 
   monthDays = function(month) {
@@ -44,7 +47,7 @@ const seedDb = async () => {
     return days;
   };
 
-  unavailableDays = function(array) {
+  unavailableDays = function(array) { //arr of days based on month
     let indexes = [];
     let unavailable = [];
     let ranges = [1, 2, 3, 4, 5];
@@ -62,11 +65,15 @@ const seedDb = async () => {
       let range = [];
       if (rangeEnd > array.length) {
         overflow += (rangeEnd - array.length);
-        range = [array[index], overflow];
+        for (let i = array[index]; i <= overflow; i++) {
+          range.push(i);
+        }
       } else {
         overflow += randomNumb;
         let end = (numb + overflow);
-        range = [numb, end];
+        for (let i = numb; i <= end; i++) {
+          range.push(i);
+        }
       }
       unavailable.push(range);
     });
@@ -121,6 +128,7 @@ const seedDb = async () => {
     };
     return walk(randomStartDate);
   };
+
   isoMaker = function(month, inDate) {
     //"2011-12-19T15:28:46.493Z"
     const hour = function(min, max) {
@@ -137,7 +145,7 @@ const seedDb = async () => {
     let s = sec(0, 60);
     let str =`2021-${month}-${inDate}T${h}:${m}.${s}Z`;
     return str;
-  }
+  };
 
   for (let i = 0; i <= 99; i++) {
 
@@ -148,7 +156,7 @@ const seedDb = async () => {
       newBooking = {
         campId: 0,
         price_per_night: 165,
-        booked: [[3, 4], [10, 14], [24, 26], [30, 2]],
+        booked: [[1, 2, 3], [15, 16, 17], [25, 26, 27], [28, 29]],
         max_guests: 6,
         guests: 2,
         min_nights: 3,
@@ -166,8 +174,8 @@ const seedDb = async () => {
     let g = (max - 1);
     let price = avgPrice(75, 325);
     let numb = randomNumberMaker();
-    let month = monthMaker();
-    let days = monthDays(month);
+    let current_month = monthMaker();
+    let days = monthDays(current_month);
     let unavailable = unavailableDays(days);
     let inDay = startDay(unavailable, days);
     let outDay = (inDay + randomNumberMaker());
@@ -181,8 +189,8 @@ const seedDb = async () => {
       guests: g,
       min_nights: randomNumberMaker(),
       how_far_out: farOut,
-      check_in_date: isoMaker(month, inDay),
-      check_out_date: isoMaker(month, outDay),
+      check_in_date: isoMaker(current_month, inDay),
+      check_out_date: isoMaker(current_month, outDay),
       number_nights: (outDay - inDay),
       cleaning_fee: (price / 10),
       weeknight_discount: discountMaker(),
