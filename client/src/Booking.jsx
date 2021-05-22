@@ -11,6 +11,8 @@ import axios from 'axios';
 //default behavior = my service campId = 0
 //special cases send to proxy
 
+//use react router
+//grab url off product itself
 class Booking extends React.Component {
   constructor(props) {
     super(props);
