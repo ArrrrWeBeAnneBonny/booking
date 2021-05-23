@@ -1,14 +1,59 @@
-<!DOCTYPE html>
-
-  <html>
-    <head>
-      <title>Booking</title>
-      <meta charset="utf-8" />
-      <link rel="stylesheet" type="text/css" href="styles.css"/>
-      <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    </head>
-    <body>
-      <div id="booking"></div>
-    </body>
-    <script type="text/javascript" src="booking.js"></script>
-  </html>
+<head><script defer src="booking.js?06507e937faa3a54ffaf"></script></head>Html Webpack Plugin:
+<pre>
+  Error: Child compilation failed:
+  Module not found: Error: Can't resolve '/Users/hannahmanfredi/Desktop/FEC/booking/client/templates/index.html' in '/Users/  hannahmanfredi/Desktop/FEC/booking'
+  ModuleNotFoundError: Module not found: Error: Can't resolve '/Users/hannahmanfredi/Desktop/FEC/booking/client/templates/in  dex.html' in '/Users/hannahmanfredi/Desktop/FEC/booking'
+  
+  - Compilation.js:1765 factory.create
+    [booking]/[webpack]/lib/Compilation.js:1765:28
+  
+  - NormalModuleFactory.js:730 hooks.factorize.callAsync
+    [booking]/[webpack]/lib/NormalModuleFactory.js:730:13
+  
+  
+  - NormalModuleFactory.js:273 hooks.resolve.callAsync
+    [booking]/[webpack]/lib/NormalModuleFactory.js:273:22
+  
+  
+  - NormalModuleFactory.js:402 err
+    [booking]/[webpack]/lib/NormalModuleFactory.js:402:22
+  
+  - NormalModuleFactory.js:121 err
+    [booking]/[webpack]/lib/NormalModuleFactory.js:121:11
+  
+  - NormalModuleFactory.js:646 resolveResource
+    [booking]/[webpack]/lib/NormalModuleFactory.js:646:24
+  
+  - NormalModuleFactory.js:800 _resolveResourceErrorHints
+    [booking]/[webpack]/lib/NormalModuleFactory.js:800:8
+  
+  - NormalModuleFactory.js:920 asyncLib.parallel
+    [booking]/[webpack]/lib/NormalModuleFactory.js:920:5
+  
+  - child-compiler.js:169 childCompiler.runAsChild
+    [booking]/[html-webpack-plugin]/lib/child-compiler.js:169:18
+  
+  - Compiler.js:536 compile
+    [booking]/[webpack]/lib/Compiler.js:536:11
+  
+  - Compiler.js:1103 hooks.afterCompile.callAsync.err
+    [booking]/[webpack]/lib/Compiler.js:1103:17
+  
+  
+  - Hook.js:18 Hook.CALL_ASYNC_DELEGATE [as _callAsync]
+    [booking]/[tapable]/lib/Hook.js:18:14
+  
+  - Compiler.js:1099 compilation.seal.err
+    [booking]/[webpack]/lib/Compiler.js:1099:33
+  
+  - Compilation.js:2526 hooks.afterSeal.callAsync.err
+    [booking]/[webpack]/lib/Compilation.js:2526:11
+  
+  
+  - Hook.js:18 Hook.CALL_ASYNC_DELEGATE [as _callAsync]
+    [booking]/[tapable]/lib/Hook.js:18:14
+  
+  - Compilation.js:2519 hooks.processAssets.callAsync.err
+    [booking]/[webpack]/lib/Compilation.js:2519:38
+  
+</pre>

@@ -47,7 +47,7 @@ const seedDb = async () => {
     return days;
   };
 
-  unavailableDays = function(array) { //arr of days based on month
+  unavailableDays = function(month, array) { //arr of days based on month
     let indexes = [];
     let unavailable = [];
     let ranges = [1, 2, 3, 4, 5];
@@ -77,6 +77,7 @@ const seedDb = async () => {
       }
       unavailable.push(range);
     });
+    unavailable.unshift(month)
     return unavailable;
   };
 
@@ -156,7 +157,7 @@ const seedDb = async () => {
       newBooking = {
         campId: 0,
         price_per_night: 165,
-        booked: [[1, 2, 3], [15, 16, 17], [25, 26, 27], [28, 29]],
+        booked: [[6], [1, 2, 3], [15, 16, 17], [25, 26, 27], [28, 29]],
         max_guests: 6,
         guests: 2,
         min_nights: 3,
@@ -176,7 +177,7 @@ const seedDb = async () => {
     let numb = randomNumberMaker();
     let current_month = monthMaker();
     let days = monthDays(current_month);
-    let unavailable = unavailableDays(days);
+    let unavailable = unavailableDays(current_month, days);
     let inDay = startDay(unavailable, days);
     let outDay = (inDay + randomNumberMaker());
     let farOut = far();

@@ -59,6 +59,7 @@ app.get('/booking', async (req, res) => {
   //on click switch view to checkOut
     //user clicks available date
 app.get('/booking/book', async (req, res) => {
+  //val at index 0 = month
   console.log('inside /booking/book')
   let campId = parseInt(req.query.campId);
   await db.Booking.find({campId: campId})
@@ -75,7 +76,9 @@ app.get('/booking/book', async (req, res) => {
         let numb_day = Number(current_day);
         flattened_inventory.push(numb_day);
       }
-      let inv = [ 1, 2, 3, 15, 16, 17, 25, 26, 27, 28, 29, 21 ]
+      let inv = [ 1, 2, 3, 15, 16, 17, 25, 26, 27, 28, 29, 21 ];
+      let booking = {};
+      booking.month = current_month;
       let inventories = [];
       let index = 0;
       for (let i = 0; i < 6; i++) {
