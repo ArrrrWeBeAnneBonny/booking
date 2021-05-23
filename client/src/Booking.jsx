@@ -5,17 +5,6 @@ import CheckInAndOut from './components/CheckInAndOut.jsx';
 import Guests from './components/Guests.jsx';
 import axios from 'axios';
 import moment from 'moment';
-
-//I need a way to replace calling my service directly
-//i need a url variable
-//depending on...call either proxy or service
-//env variables
-//default behavior = my service campId = 0
-//special cases send to proxy
-//use react router
-//grab url off product itself
-
-//get current month/day in call to init
 class Booking extends React.Component {
 
   constructor(props) {
@@ -36,48 +25,61 @@ class Booking extends React.Component {
       check_out: '',
       average_price_X_nights: 0,
       subTotal: 0,
-      Total: 0
+      Total: 0,
+      mounted: false
     };
 
     this.init= this.init.bind(this);
+    this.init();
+    this.handleClick = this.handleClick.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.book = this.book.bind(this);
     this.bookingTotal = this.bookingTotal.bind(this);
   }
 
   componentDidMount() {
-    this.init();
-    this.bookingTotal(); //just right now for testing endpt 3
+    console.log('go for it')
+    this.setState({
+      mounted: !this.state.mounted
+    });
   }
 
   init() {
-    axios.get('http://localhost:3002/booking')
-    .then((res) => {
-      let site = res.data;
-      let instant = false;
-      if (site.instant_book) {
-        instant = true;
-      }
-      this.setState({
-        name: site.name,
-        campId: site.campId,
-        price_per_night: site.price_per_night,
-        how_far_out: site.how_far_out,
-        weeknight_discount: site.weeknight_discount,
-        instant_book: instant,
-        cleaning_fee: site.cleaning_fee,
-        max_guests: site.max_guests,
+    if (this.state.mounted) {
+      (console.log('inside this.init'))
+      axios.get('http://localhost:3002/booking')
+      .then((res) => {
+        let site = res.data;
+        let instant = false;
+        if (site.instant_book) {
+          instant = true;
+        }
+        this.setState({
+          name: site.name,
+          campId: site.campId,
+          price_per_night: site.price_per_night,
+          how_far_out: site.how_far_out,
+          weeknight_discount: site.weeknight_discount,
+          instant_book: instant,
+          cleaning_fee: site.cleaning_fee,
+          max_guests: site.max_guests,
+        });
+      })
+      .catch((err) => {
+        throw err;
       });
-    })
-    .catch((err) => {
-      throw err;
-    });
+    }
+  }
+
+  handleClick(e) {
+    console.log('e: ', e);
+    e.preventDefault();
   }
 
   handleSubmit(e) {
     console.log('e: ', e);
     e.preventDefault();
-    this.bookingTotal(e);
+    this.book(e);
   }
 
   //invoked when user clicks checkin button
@@ -99,7 +101,6 @@ class Booking extends React.Component {
 
   //invoked when user clicks eligible checkout date
   bookingTotal() {
-    console.log('inside bookingTotal');
     // return axios.get('http://localhost:3002/booking/bookingTotal', { params: {
     //   campId: 0,
     //   check_in_date: this.state.check_in_date,
@@ -118,8 +119,6 @@ class Booking extends React.Component {
     })
       .then((res) => {
         console.log('res: ', res);
-        // this.setState({
-        // });
       })
       .catch((err) => {
         throw err;
@@ -129,7 +128,7 @@ class Booking extends React.Component {
   render() {
     return (
       <div >
-        <aside className="main-container">
+        <aside className="booking-widget-container">
           <div className="overlay" className="overlay-gray">
             <div className="booking-widget">
               <div className="loading-overlay">
@@ -139,7 +138,7 @@ class Booking extends React.Component {
             </div>
           </div>
         </aside>
-          <CheckInAndOut submit={this.handleSubmit}/>
+          <CheckInAndOut campId={this.state.campId} click={this.handleClick} submit={this.handleSubmit}/>
           <Guests />
           <BookingButton bookingType={this.state.instant_book}/>
       </div>
@@ -152,9 +151,4 @@ ReactDOM.render(
   document.getElementById('booking')
 );
 
-
-// const styleLink = document.createElement("link");
-// styleLink.rel = "stylesheet";
-// styleLink.href = "https://cdn.jsdelivr.net/npm/semantic-ui/dist/semantic.min.css";
-// document.head.appendChild(styleLink);
 

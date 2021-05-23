@@ -1,35 +1,43 @@
 import React from 'react';
 import Guests from './Guests.jsx';
 import CheckInCal from './CheckInCal.jsx';
+import CheckOutCal from './CheckOutCal.jsx';
+
 class CheckInAndOut extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
       checkIn_clicked: false,
-      checkIn_picked: false
+      checkIn_picked: false,
+      check_in_date: '',
+      check_out_date: ''
     };
 
-    this.handleClick = this.handleClick.bind(this);
+    this.click = this.click.bind(this);
   }
 
-  handleClick(e) {
+  click(e) {
     e.preventDefault();
-    // let check_in_date =
-    // this.props.submit(check_in_date)
+    console.log('checkin button clicked: ', e);
+    this.setState({
+      checkIn_clicked: !this.state.checkIn_clicked
+    });
   }
+
+  // submit
 
   render() {
     if (this.state.checkIn_picked) {
       return (
         <div >
-           {/* checkout calendar view
+          <CheckOutCal onClick={this.props.click}/>
         </div>
       );
-    } else if (!this.state.checkIn_clicked) {
+    } else if (this.state.checkIn_clicked) {
       return (
         <div>
-          {/* checkin calendar view */}
+          <CheckInCal />
         </div>
       );
     } else {
@@ -38,11 +46,10 @@ class CheckInAndOut extends React.Component {
           <div className="btn.block">
             <div className="btn btn-primary">
               <div className="check-in-btn">
-                <button onClick={this.handleClick}>Check in</button>
-                {/* <CheckInCal onSubmit={this.props.submit}/> */}
+                <input type="button" name="checkInButton" value="Check in" onClick={this.click}/>
               </div>
               <div className="check-out-btn">
-                <button>Check out</button>
+                {/* <input type="button" name="checkOutButton" value="Check out" onSubmit={this.submit}/> */}
               </div>
             </div>
           </div>

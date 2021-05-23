@@ -6,7 +6,7 @@ class BookingButton extends React.Component {
   }
 
   render() {
-    if (this.props.instantBook) {
+    if (this.props.bookingType) {
       return (
         <div>
           <button>Instant book</button>

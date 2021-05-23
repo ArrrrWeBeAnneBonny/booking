@@ -1,3 +1,4 @@
+/* fonts */
 @font-face {
   font-family:"Calibre";
   src:url("./asset/CalibreWeb-Regular.eot");
@@ -42,6 +43,12 @@
   font-weight:normal;
   font-style:normal;
 }
+/* basic styles */
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
 body {
   font-family: "Calibre", Helvetica, Arial, sans-serif;
   font-size: 16px;
@@ -56,10 +63,12 @@ body {
 h5 {
   font-size: 16px;
 }
+
+/* booking-widget styles */
 aside {
   display: block;
 }
-.main-container {
+.booking-widget-container {
   position: absolute;
   width: 100%;
   top: -61px;
@@ -88,6 +97,7 @@ aside {
   left: 0;
   right: 0;
 }
+/* pricing styles */
 .price-container {
   min-height: 74px;
   background-color: #fff;
@@ -114,6 +124,7 @@ aside {
   margin: 2px 0 0;
   min-height: 2.6rem;
 }
+/* button styles */
 .check-in-btn.check-out-btn {
   width: 50%;
   cursor: pointer;
@@ -124,7 +135,13 @@ aside {
   transition: background-color 0.3s ease 0s;
 }
 .check-out-btn {
-  
+  width: 50%;
+  cursor: pointer;
+  border-right: 1px solid #ebebeb;
+  border-bottom: 1px solid #ebebeb;
+  -webkit-transition: background-color 0.3s ease 0s;
+  -o-transition: background-color 0.3s ease 0s;
+  transition: background-color 0.3s ease 0s;
 }
 .btn-block {
   display: block;
@@ -159,4 +176,64 @@ aside {
   color: #fff;
   background-color: #40d9ac;
   border-color: transparent;
+}
+/* calendar styles */
+table {
+  margin: 0;
+  width: 100%;
+  background-color: #f3f3f3;
+  user-select: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  display: table;
+  border-collapse: separate;
+  box-sizing: border-box;
+  text-indent: initial;
+  border-spacing: 2px;
+  border-color: grey;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  -moz-border-radius: 0;
+  -webkit-border-radius: 0;
+  border-radius: 0;
+  height: auto;
+}
+thead {
+  display: table-header-group;
+  vertical-align: middle;
+  border-color: inherit;
+  cursor: pointer;
+}
+tr {
+  display: table-row;
+  vertical-align: inherit;
+  border-color: inherit;
+  text-align: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 4px;
+  border: none;
+}
+th {
+  display: table-cell;
+  vertical-align: inherit;
+  font-weight: bold;
+  text-align: -internal-center;
+}
+.disabledDay {
+  content: "";
+  border-bottom: 1px solid #333333;
+  position: absolute;
+  left: 15px;
+  top: 6px;
+  width: 25px;
+  height: 16px;
+  -moz-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  -webkit-transform: rotate(
+    45deg
+  );
+  transform: rotate(
+  45deg
+  );
 }
