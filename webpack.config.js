@@ -33,13 +33,13 @@ module.exports = {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,
         type: 'asset/resource',
       },
-    ]
+    ],
   },
+  resolve: {
+    extensions: [
+      '.js',
+      '.jsx',
+      '.css'
+    ]
+  }
 };
-
-//read about env variables webpack
-//NODE_ENV special cuz express and happy say its important
-//use lighthouse to measure my performance
-  //differences in production vs. non-production????
-
-  // RUN_PROXY_OR_NOT

@@ -1,10 +1,13 @@
+import '../styles.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import axios from 'axios';
+import moment from 'moment';
+
 import BookingButton from './components/BookingButton.jsx'
 import CheckInAndOut from './components/CheckInAndOut.jsx';
 import Guests from './components/Guests.jsx';
-import axios from 'axios';
-import moment from 'moment';
+
 class Booking extends React.Component {
 
   constructor(props) {
@@ -26,11 +29,11 @@ class Booking extends React.Component {
       average_price_X_nights: 0,
       subTotal: 0,
       Total: 0,
-      mounted: false
+      mounted: false,
+      initialized: false
     };
 
     this.init= this.init.bind(this);
-    this.init();
     this.handleClick = this.handleClick.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.book = this.book.bind(this);
@@ -38,10 +41,10 @@ class Booking extends React.Component {
   }
 
   componentDidMount() {
-    console.log('go for it')
     this.setState({
       mounted: !this.state.mounted
     });
+    this.init();
   }
 
   init() {
@@ -63,6 +66,7 @@ class Booking extends React.Component {
           instant_book: instant,
           cleaning_fee: site.cleaning_fee,
           max_guests: site.max_guests,
+          initialized: !this.state.initialized
         });
       })
       .catch((err) => {
@@ -126,23 +130,34 @@ class Booking extends React.Component {
   }
 
   render() {
-    return (
-      <div >
-        <aside className="booking-widget-container">
-          <div className="overlay" className="overlay-gray">
-            <div className="booking-widget">
-              <div className="loading-overlay">
-                <h5 className="price-container">${this.state.price_per_night}</h5>
-                <span>per night (2 guests)</span>
+    if (this.state.mounted) {
+      return (
+        <div >
+          <aside className="booking-widget-container">
+            <div className="overlay" className="overlay-gray">
+              <div className="booking-widget">
+                <div className="loading-overlay">
+                  <h5 className="price-container">${this.state.price_per_night}</h5>
+                  <span>per night (2 guests)</span>
+                </div>
               </div>
             </div>
-          </div>
-        </aside>
-          <CheckInAndOut campId={this.state.campId} click={this.handleClick} submit={this.handleSubmit}/>
-          <Guests />
-          <BookingButton bookingType={this.state.instant_book}/>
-      </div>
-    );
+          </aside>
+            <CheckInAndOut campId={this.state.campId} click={this.handleClick} submit={this.handleSubmit}/>
+            <Guests />
+        </div>
+      );
+    } else if (this.state.mounted && this.sate.initialized) {
+      return (
+        <BookingButton bookingType={this.state.instant_book}/>
+      );
+    } else {
+      return (
+        <div>
+          <h1>hang tight!</h1>
+        </div>
+      );
+    }
   }
 }
 
