@@ -4,6 +4,7 @@ import BookingButton from './components/BookingButton.jsx'
 import CheckInAndOut from './components/CheckInAndOut.jsx';
 import Guests from './components/Guests.jsx';
 import axios from 'axios';
+import moment from 'moment';
 
 //I need a way to replace calling my service directly
 //i need a url variable
@@ -30,7 +31,12 @@ class Booking extends React.Component {
       cleaning_fee: 0,
       max_guests: 0,
       current_month: 0,
-      inventory: []
+      inventory: [],
+      check_in: '',
+      check_out: '',
+      average_price_X_nights: 0,
+      subTotal: 0,
+      Total: 0
     };
 
     this.init= this.init.bind(this);
@@ -69,8 +75,9 @@ class Booking extends React.Component {
   }
 
   handleSubmit(e) {
+    console.log('e: ', e);
     e.preventDefault();
-    this.postData(event);
+    this.bookingTotal(e);
   }
 
   //invoked when user clicks checkin button
@@ -92,6 +99,7 @@ class Booking extends React.Component {
 
   //invoked when user clicks eligible checkout date
   bookingTotal() {
+    console.log('inside bookingTotal');
     // return axios.get('http://localhost:3002/booking/bookingTotal', { params: {
     //   campId: 0,
     //   check_in_date: this.state.check_in_date,
@@ -99,10 +107,13 @@ class Booking extends React.Component {
     //   }
     // })
     //testing version:
+    //make sure timestamps r coming in as dates I can parse
+    let inTime = moment().format();
+    let outTime = moment().format();
     return axios.get('http://localhost:3002/booking/bookingTotal', { params: {
       campId: 0,
-      check_in_date: '5/23/21',
-      check_out_date: '5/27/21'
+      check_in_date: inTime,
+      check_out_date: outTime
       }
     })
       .then((res) => {
@@ -117,15 +128,20 @@ class Booking extends React.Component {
 
   render() {
     return (
-      <div className="widget-container">
-        <h5 className="booking-widget__price">${this.state.price_per_night}</h5>
-        <span>per night (2 guests)</span>
-        <CheckInAndOut  submit={this.handleSubmit}/>
-        <div className="btn.block">
-        <div className="btn btn-primary">
-          <BookingButton bookingType={this.state.instant_book}/>
-        </div>
+      <div >
+        <aside className="main-container">
+          <div className="overlay" className="overlay-gray">
+            <div className="booking-widget">
+              <div className="loading-overlay">
+                <h5 className="price-container">${this.state.price_per_night}</h5>
+                <span>per night (2 guests)</span>
+              </div>
+            </div>
           </div>
+        </aside>
+          <CheckInAndOut submit={this.handleSubmit}/>
+          <Guests />
+          <BookingButton bookingType={this.state.instant_book}/>
       </div>
     );
   }

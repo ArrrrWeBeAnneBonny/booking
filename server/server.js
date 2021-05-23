@@ -20,7 +20,6 @@ app.get('/booking', async (req, res) => {
   let campId = parseInt(req.query.campId);
   let name = '';
   let init = {};
-  //these calls to overview API are erroring
   await axios.get('http://localhost:3003/overview', { params: { campId: campId } })
     .then((response) => {
       console.log('inside localhost:3003/overview')
@@ -64,10 +63,6 @@ app.get('/booking', async (req, res) => {
     });
 });
 
-//user clicks checkIn button
-  //user clicks available date
-  //on click switch view to checkOut
-    //user clicks available date
 app.get('/booking/book', async (req, res) => {
   console.log('inside /booking/book')
   let campId = parseInt(req.query.campId);
@@ -127,28 +122,19 @@ app.get('/booking/book', async (req, res) => {
   });
 });
 
-//this endpt is triggered after user clicks eligible checkOut date, both checkin/checkout stored in state
-//renders new view with all the booking totals
+//this is a smoke & mirros endpt that should give the illusion of creating a booking event
+  //endpt is triggered after user clicks eligible checkOut date, but necessary data actually stored in cliente state
 app.get('/booking/bookingTotal', async (req, res) => {
+  console.log('inside bookingTotal');
   let campId = req.query.campId;
-  let check_in_date = '5/23/21'; //should b // Timestamp (ISO 8601)
-  let check_out_date = '5/27/21'; //should b // Timestamp (ISO 8601)
-  //book this range in my db if  get to advanced content
-  //Average price × X nights
-  //subtotal
-
+  let check_in_date =  req.query.check_in_date;
+  let check_out_date =  req.query.check_out_date;
+  //book this range in my db if I get to advanced content
+  let mssg = `new booking created for campId ${campId}`;
+  res.status(200).send(mssg);
 });
 
 module.exports = app;
 
-
-
-
-
-// *in html element for type date, can’t do 2 selections
-// *need to have two cals (2 forms, encapsulate in another form?)
-// *user click book needs access to both dates
-// *as part of click event, move over to checkOut
-// *smoke and mirrors
-
 //write unit test for error route
+//add booking id to schema?
