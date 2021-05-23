@@ -20,7 +20,6 @@ app.get('/booking', async (req, res) => {
   let campId = parseInt(req.query.campId);
   let name = '';
   let init = {};
-  //these calls to overview API are erroring
   await axios.get('http://localhost:3003/overview', { params: { campId: campId } })
     .then((response) => {
       console.log('inside localhost:3003/overview')
@@ -64,10 +63,6 @@ app.get('/booking', async (req, res) => {
     });
 });
 
-//user clicks checkIn button
-  //user clicks available date
-  //on click switch view to checkOut
-    //user clicks available date
 app.get('/booking/book', async (req, res) => {
   console.log('inside /booking/book')
   let campId = parseInt(req.query.campId);
@@ -127,41 +122,19 @@ app.get('/booking/book', async (req, res) => {
   });
 });
 
-//this endpt is triggered when user clicks eligible checkOut date
-app.get('/booking/?campId=&check_in_date=&check_out_date=/bookingTotal', async (req, res) => {
-  // camp_id
-  // Number
-  // check_in_date
-  // Timestamp (ISO 8601)
-  // check_out_date
-  // Timestamp (ISO 8601)
-  // number_nights
-  // Number
-  // total
-  // Number
-  // subTotal
-  // Number
-  // cleaning_fee
-  // Number
-  // weeknight_discount
-  // Number
+//this is a smoke & mirros endpt that should give the illusion of creating a booking event
+  //endpt is triggered after user clicks eligible checkOut date, but necessary data actually stored in cliente state
+app.get('/booking/bookingTotal', async (req, res) => {
+  console.log('inside bookingTotal');
+  let campId = req.query.campId;
+  let check_in_date =  req.query.check_in_date;
+  let check_out_date =  req.query.check_out_date;
+  //book this range in my db if I get to advanced content
+  let mssg = `new booking created for campId ${campId}`;
+  res.status(200).send(mssg);
 });
 
 module.exports = app;
 
-// *back-end can grab date (current month)
-//*define what value campId is
-// *1 endpt for both checkin/checkout
-// *need 2 dates (checkin and checkout)
-// *the problem with year/month/date is timezones
-// *use date std 8601, date.now
-// *should be thinking about how am I going to parse this?
-// *each block = type date
-// *use input type Date
-// *in html element for type date, can’t do 2 selections
-// *need to have two cals (2 forms, encapsulate in another form?)
-// *user click book needs access to both dates
-// *as part of click event, move over to checkOut
-// *smoke and mirrors
-
 //write unit test for error route
+//add booking id to schema?

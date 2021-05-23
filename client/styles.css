@@ -42,25 +42,45 @@
   font-weight:normal;
   font-style:normal;
 }
-
-.widget-container {
+body {
+  font-family: "Calibre", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.42;
+  color: #333333;
+  background-color: white;
+}
+.row {
+  margin-left: -10px;
+  margin-right: -10px;
+}
+h5 {
+  font-size: 16px;
+}
+aside {
+  display: block;
+}
+.main-container {
   position: absolute;
   width: 100%;
   top: -61px;
   z-index: 19;
 }
-
-#booking-widget {
+.booking-widget {
   position: relative;
   width: 319px;
   z-index: 99;
 }
-
-.hc-overlay.hc-overlay-gray {
-  background-color: rgba(0,0,0,0.6);
-  z-index: 98;
+.booking-widget .loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.15);
+  z-index: 100;
+  display: none;
 }
-.hc-overlay {
+.overlay {
   display: none;
   position: fixed;
   top: 0;
@@ -68,40 +88,7 @@
   left: 0;
   right: 0;
 }
-.modal {
-  z-index: 1200;
-}
-.modal {
-  display: none;
-  overflow: hidden;
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 1050;
-  -webkit-overflow-scrolling: touch;
-  outline: 0;
-}
-.fade {
-  opacity: 0;
-  -webkit-transition: opacity 0.15s linear;
-  -o-transition: opacity 0.15s linear;
-  transition: opacity 0.15s linear;
-}
-
-.booking-widget__price {
-  -webkit-align-items: center;
-  align-items: center;
-  display: -webkit-flex;
-  display: flex;
-  color: #333333;
-  font-size: 2.6rem;
-  line-height: 0.9;
-  margin: 2px 0 0;
-  min-height: 2.6rem;
-}
-.booking-widget__banner {
+.price-container {
   min-height: 74px;
   background-color: #fff;
   color: #757575;
@@ -115,6 +102,29 @@
   justify-content: space-between;
   -webkit-align-items: center;
   align-items: center;
+}
+.booking-widget-price {
+  -webkit-align-items: center;
+  align-items: center;
+  display: -webkit-flex;
+  display: flex;
+  color: #333333;
+  font-size: 2.6rem;
+  line-height: 0.9;
+  margin: 2px 0 0;
+  min-height: 2.6rem;
+}
+.check-in-btn.check-out-btn {
+  width: 50%;
+  cursor: pointer;
+  border-right: 1px solid #ebebeb;
+  border-bottom: 1px solid #ebebeb;
+  -webkit-transition: background-color 0.3s ease 0s;
+  -o-transition: background-color 0.3s ease 0s;
+  transition: background-color 0.3s ease 0s;
+}
+.check-out-btn {
+  
 }
 .btn-block {
   display: block;
