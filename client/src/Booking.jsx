@@ -47,6 +47,7 @@ class Booking extends React.Component {
 
   componentDidMount() {
     this.init();
+    this.book();
     this.bookingTotal(); //just right now for testing endpt 3
   }
 
