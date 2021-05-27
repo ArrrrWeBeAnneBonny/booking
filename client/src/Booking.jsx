@@ -28,8 +28,7 @@ class Booking extends React.Component {
       check_out: '',
       average_price_X_nights: 0,
       subTotal: 0,
-      Total: 0,
-      mounted: false
+      Total: 0
     };
 
     this.init= this.init.bind(this);
@@ -37,41 +36,43 @@ class Booking extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.book = this.book.bind(this);
     this.bookingTotal = this.bookingTotal.bind(this);
+
   }
 
   componentDidMount() {
-    this.setState({
-      mounted: !this.state.mounted
-    });
     this.init();
+    this.book();//testing
+    this.bookingTotal(); //testing
   }
 
   init() {
-    // if (this.state.mounted) {
-      (console.log('inside this.init'))
-      axios.get('http://localhost:3002/booking')
-      .then((res) => {
-        let site = res.data;
-        let instant = false;
-        if (site.instant_book) {
-          instant = true;
-        }
-        this.setState({
-          name: site.name,
-          campId: site.campId,
-          price_per_night: site.price_per_night,
-          how_far_out: site.how_far_out,
-          weeknight_discount: site.weeknight_discount,
-          instant_book: instant,
-          cleaning_fee: site.cleaning_fee,
-          max_guests: site.max_guests,
-          initialized: !this.state.initialized
-        });
-      })
-      .catch((err) => {
-        throw err;
+    axios.get('http://localhost:3002/booking')
+    .then(({data}) => {
+      console.log(data)
+      const {
+        name,
+        campId,
+        price_per_night,
+        how_far_out,
+        weeknight_discount,
+        instant_book,
+        cleaning_fee,
+        max_guests,
+      } = data;
+      this.setState({
+        name,
+        campId,
+        price_per_night,
+        how_far_out,
+        weeknight_discount,
+        instant_book,
+        cleaning_fee,
+        max_guests,
       });
-    // }
+    })
+    .catch((err) => {
+      throw err;
+    });
   }
 
   handleClick(e) {
@@ -88,13 +89,14 @@ class Booking extends React.Component {
   //invoked when user clicks checkin button
   book() {
     axios.get('http://localhost:3002/booking/book', { params: { campId: 0 } })
-    .then((res) => {
-      let site = res.data;
-      let month = site.month;
-      let inventory = site.inventory;
+    .then(({data}) => {
+      const {
+        current_month,
+        inventory
+      } = data;
       this.setState({
-        current_month: site.month,
-        inventory: site.inventory
+        current_month,
+        inventory
       });
     })
     .catch((err) => {
@@ -112,16 +114,16 @@ class Booking extends React.Component {
     // })
     //testing version:
     //make sure timestamps r coming in as dates I can parse
-    let inTime = moment().format();
-    let outTime = moment().format();
+    const inTime = moment().format();
+    const outTime = moment().format();
     return axios.get('http://localhost:3002/booking/bookingTotal', { params: {
       campId: 0,
       check_in_date: inTime,
       check_out_date: outTime
       }
     })
-      .then((res) => {
-        console.log('res: ', res);
+      .then(({data}) => {
+        console.log('booking tot. data: ', data);
       })
       .catch((err) => {
         throw err;
@@ -129,24 +131,24 @@ class Booking extends React.Component {
   }
 
   render() {
-    // if (this.state.mounted) {
-      return (
-        <div >
-          <aside className="booking-widget-container">
-            <div className="overlay" className="overlay-gray">
-              <div className="booking-widget">
-                <div className="loading-overlay">
-                  <h5 className="price-container">${this.state.price_per_night}</h5>
-                  <span>per night (2 guests)</span>
-                </div>
+    console.log(this.state)
+    return (
+      <div >
+        <aside className="booking-widget-container">
+          <div className="overlay" className="overlay-gray">
+            <div className="booking-widget">
+              <div className="loading-overlay">
+                <h5 className="price-container">${this.state.price_per_night}</h5>
+                <span>per night (2 guests)</span>
               </div>
             </div>
-          </aside>
-            <CheckInAndOut campId={this.state.campId} click={this.handleClick} submit={this.handleSubmit}/>
-            <Guests />
-            <BookingButton bookingType={this.state.instant_book}/>
-        </div>
-      );
+          </div>
+        </aside>
+          <CheckInAndOut campId={this.state.campId} click={this.handleClick} submit={this.handleSubmit}/>
+          <Guests />
+          <BookingButton bookingType={this.state.instant_book}/>
+      </div>
+    );
   }
 }
 

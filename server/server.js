@@ -74,16 +74,17 @@ app.get('/booking/book', async (req, res) => {
   }
   await db.Booking.find({campId: campId})
     .then((site) => {
-      let siteObj = site[0];
-      let months_out = siteObj.how_far_out;
-      let now = moment().format();
-      let current_month = now.slice(5, 7);
-      let current_day = now.slice(8, 10);
-      let current_month_inventory = siteObj.booked;
-      let flattened_inventory = _.flatten(current_month_inventory);
-      //add current day to unavailable inventory
+      const siteObj = site[0];
+      console.log('siteObj: ', siteObj);
+      const months_out = siteObj.how_far_out;
+      const now = moment().format();
+      const current_month = now.slice(5, 7);
+      const current_day = now.slice(8, 10);
+      const current_month_inventory = siteObj.booked;
+      const flattened_inventory = _.flatten(current_month_inventory);
+      console.log('flattened_inventory: ', flattened_inventory);
       if (flattened_inventory.indexOf(current_day) === -1) {
-        let numb_day = Number(current_day);
+        const numb_day = Number(current_day);
         flattened_inventory.push(numb_day);
       }
       let inv = [ 1, 2, 3, 15, 16, 17, 25, 26, 27, 28, 29, 21 ]
