@@ -133,7 +133,6 @@ app.get('/booking/book', async (req, res) => {
 //this is a smoke & mirros endpt that should give the illusion of creating a booking event
   //endpt is triggered after user clicks eligible checkOut date, but necessary data actually stored in cliente state
 app.get('/booking/bookingTotal', async (req, res) => {
-  console.log('inside bookingTotal');
   let campId = req.query.campId;
   let check_in_date =  req.query.check_in_date;
   let check_out_date =  req.query.check_out_date;
