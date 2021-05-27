@@ -48,7 +48,7 @@ class Booking extends React.Component {
   }
 
   init() {
-    if (this.state.mounted) {
+    // if (this.state.mounted) {
       (console.log('inside this.init'))
       axios.get('http://localhost:3002/booking')
       .then((res) => {
@@ -72,7 +72,7 @@ class Booking extends React.Component {
       .catch((err) => {
         throw err;
       });
-    }
+    // }
   }
 
   handleClick(e) {
@@ -130,7 +130,7 @@ class Booking extends React.Component {
   }
 
   render() {
-    if (this.state.mounted) {
+    // if (this.state.mounted) {
       return (
         <div >
           <aside className="booking-widget-container">
@@ -147,17 +147,17 @@ class Booking extends React.Component {
             <Guests />
         </div>
       );
-    } else if (this.state.mounted && this.sate.initialized) {
-      return (
-        <BookingButton bookingType={this.state.instant_book}/>
-      );
-    } else {
-      return (
-        <div>
-          <h1>hang tight!</h1>
-        </div>
-      );
-    }
+    // } else if (this.state.mounted && this.sate.initialized) {
+    //   return (
+    //     <BookingButton bookingType={this.state.instant_book}/>
+    //   );
+    // } else {
+    //   return (
+    //     <div>
+    //       <h1>hang tight!</h1>
+    //     </div>
+    //   );
+    // }
   }
 }
 

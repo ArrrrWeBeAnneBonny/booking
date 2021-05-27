@@ -6,7 +6,6 @@ module.exports = {
   watch: true,
   mode: "development",
   plugins: [new HtmlWebpackPlugin({
-    hash: true,
     template: './client/templates/index.html'
   })],
   output: {
