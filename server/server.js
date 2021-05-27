@@ -73,24 +73,20 @@ app.get('/booking/book', async (req, res) => {
   let campId = parseInt(req.query.campId);
   await db.Booking.find({campId: campId})
     .then((site) => {
-      let siteObj = site[0];
-      let months_out = siteObj.how_far_out;
-      let now = moment().format();
-      let current_month = now.slice(5, 7);
-      let current_day = now.slice(8, 10);
-      let current_month_inventory = siteObj.booked;
-      let flattened_inventory = _.flatten(current_month_inventory);
-      //add current day to unavailable inventory
+      const months_out = site[0].how_far_out;
+      const i = site[0].booked;
+      const now = moment().format();
+      const current_month = now.slice(5, 7);
+      const current_day = now.slice(8, 10);
+      const flattened_inventory = _.flatten(i);
       if (flattened_inventory.indexOf(current_day) === -1) {
-        let numb_day = Number(current_day);
-        flattened_inventory.push(numb_day);
+        flattened_inventory.push(Number(current_day));
       }
-      let inv = [ 1, 2, 3, 15, 16, 17, 25, 26, 27, 28, 29, 21 ]
       let inventories = [];
       let index = 0;
-      for (let i = 0; i < 6; i++) {
+      for (let i = 0; i < months_out; i++) {
         if (!inventories.length) {
-          let next_month_inventory = inv.map(item => {
+          let next_month_inventory = flattened_inventory.map(item => {
             let newItem = (item + 1);
             if (newItem > 31) {
               newItem = 1;
@@ -118,8 +114,15 @@ app.get('/booking/book', async (req, res) => {
         }
       }
       let inventory_data = {};
-      inventory_data.inventory = inventories;
-      inventory_data.month = current_month;
+      let inventory = {};
+      let month = 0;
+      inventories.forEach(i => {
+        inventory[month] = i;
+        month ++;
+      });
+      inventory_data.inventory = inventory;
+      inventory_data.current_month = current_month;
+      console.log('inventory_data: ', inventory_data)
       res.status(200).send(JSON.stringify(inventory_data));
   })
   .catch((err) => {
