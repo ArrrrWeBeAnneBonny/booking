@@ -29,8 +29,7 @@ class Booking extends React.Component {
       average_price_X_nights: 0,
       subTotal: 0,
       Total: 0,
-      mounted: false,
-      initialized: false
+      mounted: false
     };
 
     this.init= this.init.bind(this);
@@ -145,19 +144,9 @@ class Booking extends React.Component {
           </aside>
             <CheckInAndOut campId={this.state.campId} click={this.handleClick} submit={this.handleSubmit}/>
             <Guests />
+            <BookingButton bookingType={this.state.instant_book}/>
         </div>
       );
-    // } else if (this.state.mounted && this.sate.initialized) {
-    //   return (
-    //     <BookingButton bookingType={this.state.instant_book}/>
-    //   );
-    // } else {
-    //   return (
-    //     <div>
-    //       <h1>hang tight!</h1>
-    //     </div>
-    //   );
-    // }
   }
 }
 
