@@ -18,9 +18,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.get('/booking', async (req, res) => {
   console.log('inside /booking');
   let campId = parseInt(req.query.campId);
-  if (!campId) {
-    campId = 0;
-  }
   let name = '';
   let init = {};
   await axios.get('http://localhost:3003/overview', { params: { campId: campId } })
@@ -46,6 +43,7 @@ app.get('/booking', async (req, res) => {
           res.status(201).send(err);
         });
     })
+    //if call to Overview fails, initialize Booking Service with campId: 0
     .catch((err) => {
       db.Booking.find({campId: 0})
         .then((response) => {
@@ -66,33 +64,29 @@ app.get('/booking', async (req, res) => {
     });
 });
 
+//this is still hard-coded for testing with campId: 0
+  //should return an obj with:
+    //current month to render first on client booking cal
+    //array of nested inventories for each month based on how many months out a booking can be made
 app.get('/booking/book', async (req, res) => {
   console.log('inside /booking/book')
   let campId = parseInt(req.query.campId);
-  if (!campId) {
-    campId = 0;
-  }
   await db.Booking.find({campId: campId})
     .then((site) => {
-      const siteObj = site[0];
-      console.log('siteObj: ', siteObj);
-      const months_out = siteObj.how_far_out;
+      const months_out = site[0].how_far_out;
+      const i = site[0].booked;
       const now = moment().format();
       const current_month = now.slice(5, 7);
       const current_day = now.slice(8, 10);
-      const current_month_inventory = siteObj.booked;
-      const flattened_inventory = _.flatten(current_month_inventory);
-      console.log('flattened_inventory: ', flattened_inventory);
+      const flattened_inventory = _.flatten(i);
       if (flattened_inventory.indexOf(current_day) === -1) {
-        const numb_day = Number(current_day);
-        flattened_inventory.push(numb_day);
+        flattened_inventory.push(Number(current_day));
       }
-      let inv = [ 1, 2, 3, 15, 16, 17, 25, 26, 27, 28, 29, 21 ]
       let inventories = [];
       let index = 0;
-      for (let i = 0; i < 6; i++) {
+      for (let i = 0; i < months_out; i++) {
         if (!inventories.length) {
-          let next_month_inventory = inv.map(item => {
+          let next_month_inventory = flattened_inventory.map(item => {
             let newItem = (item + 1);
             if (newItem > 31) {
               newItem = 1;
@@ -120,8 +114,15 @@ app.get('/booking/book', async (req, res) => {
         }
       }
       let inventory_data = {};
-      inventory_data.inventory = inventories;
-      inventory_data.month = current_month;
+      let inventory = {};
+      let month = 0;
+      inventories.forEach(i => {
+        inventory[month] = i;
+        month ++;
+      });
+      inventory_data.inventory = inventory;
+      inventory_data.current_month = current_month;
+      console.log('inventory_data: ', inventory_data)
       res.status(200).send(JSON.stringify(inventory_data));
   })
   .catch((err) => {
@@ -132,11 +133,7 @@ app.get('/booking/book', async (req, res) => {
 //this is a smoke & mirros endpt that should give the illusion of creating a booking event
   //endpt is triggered after user clicks eligible checkOut date, but necessary data actually stored in cliente state
 app.get('/booking/bookingTotal', async (req, res) => {
-  console.log('inside bookingTotal');
   let campId = req.query.campId;
-  if (!campId) {
-    campId = 0;
-  }
   let check_in_date =  req.query.check_in_date;
   let check_out_date =  req.query.check_out_date;
   //book this range in my db if I get to advanced content
