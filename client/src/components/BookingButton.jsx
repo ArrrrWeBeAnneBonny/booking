@@ -9,13 +9,17 @@ class BookingButton extends React.Component {
     if (this.props.bookingType) {
       return (
         <div>
-          <button>Instant book</button>
+          <div className="booking-btn">Instant book
+            {/* <input type="button" name="instant_book" value="Instant book" onClick={this.click}/> */}
+          </div>
         </div>
       );
     } else {
       return (
         <div>
-          <button>Request to book</button>
+          <div className="booking-btn">Request to book
+            {/* <input type="button" name="request_to_book" value="Request to book" onClick={this.click}/> */}
+          </div>
         </div>
       );
     }

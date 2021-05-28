@@ -4,14 +4,16 @@ import ReactDOM from 'react-dom';
 import axios from 'axios';
 import moment from 'moment';
 
-import BookingButton from './components/BookingButton.jsx'
-import CheckInAndOut from './components/CheckInAndOut.jsx';
+import CheckIn from './components/CheckIn.jsx';
+import CheckOut from './components/CheckOut.jsx';
 import Guests from './components/Guests.jsx';
-
+import BookingButton from './components/BookingButton.jsx'
 class Booking extends React.Component {
 
   constructor(props) {
     super(props);
+
+    //add min-guests
 
     this.state = {
       name: '',
@@ -131,22 +133,31 @@ class Booking extends React.Component {
   }
 
   render() {
-    console.log(this.state)
     return (
-      <div >
-        <aside className="booking-widget-container">
-          <div className="overlay" className="overlay-gray">
-            <div className="booking-widget">
-              <div className="loading-overlay">
-                <h5 className="price-container">${this.state.price_per_night}</h5>
-                <span>per night (2 guests)</span>
-              </div>
+      <div className="booking">
+        <aside>
+          <div className="nightly-pricing-container">
+            <div className="content">
+              <h5 className="nightly-price">${this.state.price_per_night}
+              <br></br><span className="per">per night (2 guests)</span>
+              </h5>
             </div>
           </div>
+          <div className="dates-and-guests">
+            <div className="check-in-out-row">
+              <div className="col-xs-6 col check-in-btn">
+                <CheckIn campId={this.state.campId} click={this.handleClick} submit={this.handleSubmit} />
+              </div>
+              <div className="col-xs-6 col check-out-btn">
+                <CheckOut campId={this.state.campId} click={this.handleClick} submit={this.handleSubmit} />
+              </div>
+            </div>
+            <div className="guests">
+              <Guests guests={this.state.max_guests} />
+            </div>
+          </div>
+          <BookingButton bookingType={this.state.instant_book} />
         </aside>
-          <CheckInAndOut campId={this.state.campId} click={this.handleClick} submit={this.handleSubmit}/>
-          <Guests />
-          <BookingButton bookingType={this.state.instant_book}/>
       </div>
     );
   }
@@ -156,5 +167,4 @@ ReactDOM.render(
   <Booking />,
   document.getElementById('booking')
 );
-
 

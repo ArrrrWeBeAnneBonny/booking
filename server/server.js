@@ -64,10 +64,6 @@ app.get('/booking', async (req, res) => {
     });
 });
 
-//this is still hard-coded for testing with campId: 0
-  //should return an obj with:
-    //current month to render first on client booking cal
-    //array of nested inventories for each month based on how many months out a booking can be made
 app.get('/booking/book', async (req, res) => {
   console.log('inside /booking/book')
   let campId = parseInt(req.query.campId);
@@ -142,6 +138,3 @@ app.get('/booking/bookingTotal', async (req, res) => {
 });
 
 module.exports = app;
-
-//write unit test for error route
-//add booking id to schema?

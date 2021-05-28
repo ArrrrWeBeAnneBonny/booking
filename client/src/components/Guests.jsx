@@ -7,11 +7,20 @@ class Guests extends React.Component {
 
   render() {
     return (
-      <div>
-        <h1>Guests</h1>
+      <div className="row">
+        <form onSubmit={this.handleSubmit}>
+        <label>
+          Guests
+          <select>
+            <option> </option>
+          </select>
+        </label>
+        <input type="submit" value="Submit" />
+        </form>
       </div>
     );
   }
 }
 
 export default Guests;
+//select
