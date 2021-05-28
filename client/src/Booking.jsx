@@ -13,8 +13,6 @@ class Booking extends React.Component {
   constructor(props) {
     super(props);
 
-    //add min-guests
-
     this.state = {
       name: '',
       campId: 0,
@@ -43,7 +41,7 @@ class Booking extends React.Component {
 
   componentDidMount() {
     this.init();
-    this.book();//testing
+    this.book();
     this.bookingTotal(); //testing
   }
 
@@ -146,7 +144,7 @@ class Booking extends React.Component {
           <div className="dates-and-guests">
             <div className="row">
               <div className="col-xs-6 check-in-btn">
-                <CheckIn campId={this.state.campId} click={this.handleClick} submit={this.handleSubmit} />
+                <CheckIn month={this.state.current_month} campId={this.state.campId} click={this.handleClick} submit={this.handleSubmit} />
               </div>
               <div className="col-xs-6 check-out-btn">
                 <CheckOut campId={this.state.campId} click={this.handleClick} submit={this.handleSubmit} />
@@ -156,7 +154,7 @@ class Booking extends React.Component {
               <Guests guests={this.state.max_guests} />
             </div>
           </div>
-          <div className="booking-btn">
+          <div id="booking-btn">
             <BookingButton bookingType={this.state.instant_book} />
           </div>
         </div>

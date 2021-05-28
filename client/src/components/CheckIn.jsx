@@ -29,22 +29,23 @@ class CheckIn extends React.Component {
     if (this.state.checkIn_clicked) {
       return (
         <div>
-          <CheckInCal />
+          <div style={{backgroundColor: "#757575"}} className="label" onClick={this.click}>Check in</div>
+          <span className="value" onClick={this.click}>Select date</span>
+          <CheckInCal month={this.props.month} click={this.props.handleClick} />
         </div>
       );
     } else {
       return (
         <div>
-          <div className="label">Check in
-            <span className="value">Select date</span>
-            <input></input>
-          </div>
+          <div className="label" onClick={this.click}>Check in</div>
+          <span className="value" onClick={this.click}>Select date</span>
         </div>
       );
     }
   }
 }
-//on click updte check in date in top-level app state and switch to checkout (checkin date highlighted in green)
+//on click updte check in date in top-level app state and switch to
+//checkout (checkin date highlighted in green)
 
 export default CheckIn;
 

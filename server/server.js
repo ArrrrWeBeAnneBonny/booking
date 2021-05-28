@@ -72,7 +72,7 @@ app.get('/booking/book', async (req, res) => {
       const months_out = site[0].how_far_out;
       const i = site[0].booked;
       const now = moment().format();
-      const current_month = now.slice(5, 7);
+      const current_month = now.slice(5, 7).split('')[1];
       const current_day = now.slice(8, 10);
       const flattened_inventory = _.flatten(i);
       if (flattened_inventory.indexOf(current_day) === -1) {
@@ -117,7 +117,7 @@ app.get('/booking/book', async (req, res) => {
         month ++;
       });
       inventory_data.inventory = inventory;
-      inventory_data.current_month = current_month;
+      inventory_data.current_month = Number(current_month);
       console.log('inventory_data: ', inventory_data)
       res.status(200).send(JSON.stringify(inventory_data));
   })

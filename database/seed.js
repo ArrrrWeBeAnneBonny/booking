@@ -29,7 +29,7 @@ const seedDb = async () => {
   monthMaker = function() {
     let now = moment().add(10, 'days').calendar();
     let month = now.slice(0, 2);
-    return month; //number
+    return month; 
   };
 
   monthDays = function(month) {

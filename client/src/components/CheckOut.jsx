@@ -28,10 +28,8 @@ class CheckOut extends React.Component {
   render() {
     return (
       <div>
-        <div className="label">Check out
-          <span className="value">Select date</span>
-          <input></input>
-        </div>
+        <div className="label">Check out</div>
+        <span className="value">Select date</span>
       </div>
     );
 
