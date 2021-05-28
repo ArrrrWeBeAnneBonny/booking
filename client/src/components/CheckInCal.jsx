@@ -38,28 +38,23 @@ class CheckInCal extends React.Component {
     return days;
   };
 
-  createMonth(t) {
+  createMonth(t, n) {
     console.log('t: ', t)
     //populate 42 calendr cells
     //get total days in current month
-    //get 42 - total
-      //render table that fits extr days before and after current month of days
-  }
-
-  render() {
-    //42 cells
-    let s = 0;
-    const hoy = moment().format('dddd');
-    console.log('hoy: ', hoy);
-    if (hoy === 'Sunday') {
-      s = moment().format().slice(8, 10);
+    let days = [];
+    if (month === 2) {
+      days = Array.from({length: 28}, (_, i) => i + 1);
     }
-    const month_numb = this.props.month;
-    console.log('month_numb: ', month_numb)
-    const month = this.convertMonthToString(this.props.month);
-    console.log('month: ', month)
-    let today = moment().format().slice(8, 10);
-    console.log('today: ', today)
+    let thirty = [4, 6, 9, 11];
+    let thirtyOne = [1, 3, 5, 7, 8, 10, 12];
+    if (thirty.indexOf(month) === -1) {
+      days = Array.from({length: 31}, (_, i) => i + 1);
+    } else {
+      days = Array.from({length: 30}, (_, i) => i + 1);
+    }
+    const extra_days = 42 - (days.lenth - t);
+    //get 42 - total - today
     const sundays = this.getSundays(2021);
     sundays.forEach(m => {
       console.log('m : ', m)
@@ -80,7 +75,25 @@ class CheckInCal extends React.Component {
       }
     })
     console.log('s: ', s)
-    const inv = this.createMonth(today);
+      //render table that fits extr days before and after current month of days
+  }
+
+  render() {
+    //42 cells
+    let s = 0;
+    const hoy = moment().format('dddd');
+    console.log('hoy: ', hoy);
+    if (hoy === 'Sunday') {
+      s = moment().format().slice(8, 10);
+    }
+    const month_numb = this.props.month;
+    console.log('month_numb: ', month_numb)
+    const month = this.convertMonthToString(this.props.month);
+    console.log('month: ', month)
+    let today = moment().format().slice(8, 10);
+    console.log('today: ', today)
+    const inv = this.createMonth(today, month_numb);
+    //map inventory into td cells
     return (
       <div id="date-picker">
         <table id="check-in-cal">
