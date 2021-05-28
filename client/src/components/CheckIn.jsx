@@ -21,6 +21,7 @@ class CheckIn extends React.Component {
   click(e) {
     e.preventDefault();
     console.log('checkin button clicked: ', e);
+    this.props.book();
     this.setState({
       checkIn_clicked: !this.state.checkIn_clicked
     });
@@ -34,16 +35,19 @@ class CheckIn extends React.Component {
       const min = date.getMinutes();
       const sec = date.getSeconds();
       const ISO_string =`2021-${month}-${day}T${hour}:${min}.${sec}93Z`;
+      //don't set state here just pass checkindate back up to main?
     this.setState({
+      checkIn_picked: !this.state.checkIn_picked,
       check_in_date: ISO_string
     });
     console.log('this.state: ', this.state)
   }
 
   render() {
-    if (this.check_in_date !== '') {
+    if (this.state.checkIn_picked) {
+      console.log('show check out cal')
       return (
-        <CheckInCal />
+        <CheckOutCal />
       );
     } else if (this.state.checkIn_clicked) {
       return (

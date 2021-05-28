@@ -130,8 +130,8 @@ class CheckInCal extends React.Component {
     const booked = this.props.inventory;
     console.log('booked: ', booked); //month at index 0 is the current month
     //subsequent indexes = how many months out a booking can be made
-    const current_month_booked = booked[0];
-    console.log('current_month_booked : ', current_month_booked )
+    // const current_month_booked = booked[0];
+    // console.log('current_month_booked : ', current_month_booked )
     const hoy = moment().format('dddd');
     if (hoy === 'Sunday') {
       s = moment().format().slice(8, 10);
