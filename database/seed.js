@@ -3,9 +3,6 @@ const mongoUri = 'mongodb://localhost/booking';
 const db = require('./index.js');
 const moment = require('moment');
 
-//should booked be an array of numbers i then shuffle X number of months times
-//or an array of arrays of numbers that are booked
-//SCHEMA
 const booking_schema = new mongoose.Schema({
   campId: Number,
   price_per_night: Number,
@@ -27,9 +24,9 @@ const Booking = mongoose.model('Booking', booking_schema);
 const seedDb = async () => {
 
   monthMaker = function() {
-    let now = moment().add(10, 'days').calendar();
-    let month = now.slice(0, 2);
-    return month; //number
+    const now = moment().add(10, 'days').calendar();
+    const month = now.slice(0, 2);
+    return month;
   };
 
   monthDays = function(month) {
@@ -37,8 +34,8 @@ const seedDb = async () => {
     if (month === 2) {
       days = Array.from({length: 28}, (_, i) => i + 1);
     }
-    let thirty = [4, 6, 9, 11];
-    let thirtyOne = [1, 3, 5, 7, 8, 10, 12];
+    const thirty = [4, 6, 9, 11];
+    const thirtyOne = [1, 3, 5, 7, 8, 10, 12];
     if (thirty.indexOf(month) === -1) {
       days = Array.from({length: 31}, (_, i) => i + 1);
     } else {
@@ -50,7 +47,7 @@ const seedDb = async () => {
   unavailableDays = function(array) { //arr of days based on month
     let indexes = [];
     let unavailable = [];
-    let ranges = [1, 2, 3, 4, 5];
+    const ranges = [1, 2, 3, 4, 5];
     let randomNumb = ranges[Math.floor(Math.random() * ranges.length)];
     while (indexes.length < randomNumb) {
       let index = array[Math.floor(Math.random() * array.length)];
@@ -85,25 +82,25 @@ const seedDb = async () => {
   };
 
   discountMaker = function() {
-    let discounts = [5, 10, 15, 20];
+    const discounts = [5, 10, 15, 20];
     let discount = discounts[Math.floor(Math.random() * discounts.length)];
     return discount;
   };
 
   booleanMaker = function() {
-    let bools = [true, false];
+    const bools = [true, false];
     let bool = bools[Math.floor(Math.random() * bools.length)];
     return bool;
   };
 
   far = function() {
-    let farOutOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18];
+    const farOutOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18];
     let farOut = farOutOptions[Math.floor(Math.random() * farOutOptions.length)];
     return farOut;
   };
 
   randomNumberMaker = function() {
-    let daysRange = [1, 2, 3, 4, 5, 6, 7];
+    const daysRange = [1, 2, 3, 4, 5, 6, 7];
     let numbDays = daysRange[Math.floor(Math.random() * daysRange.length)];
     return numbDays;
   };
@@ -140,10 +137,10 @@ const seedDb = async () => {
     const sec = function(min, max) {
       return Math.floor(Math.random() * (max - min) + min);
     }
-    let h = hour(0, 23);
-    let m = min(0, 59);
-    let s = sec(0, 60);
-    let str =`2021-${month}-${inDate}T${h}:${m}.${s}Z`;
+    const h = hour(0, 23);
+    const m = min(0, 59);
+    const s = sec(0, 60);
+    const str =`2021-${month}-${inDate}T${h}:${m}.${s}Z`;
     return str;
   };
 
