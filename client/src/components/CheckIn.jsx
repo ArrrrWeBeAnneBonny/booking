@@ -31,7 +31,11 @@ class CheckIn extends React.Component {
         <div>
           <div style={{backgroundColor: "#757575"}} className="label" onClick={this.click}>Check in</div>
           <span className="value" onClick={this.click}>Select date</span>
-          <CheckInCal month={this.props.month} onClick={this.props.handleClick} />
+          <CheckInCal
+          month={this.props.month}
+          inventory={this.props.inventory}
+          onClick={this.props.handleClick}
+          />
         </div>
       );
     } else {

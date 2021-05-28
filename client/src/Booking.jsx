@@ -151,10 +151,10 @@ class Booking extends React.Component {
           <div className="dates-and-guests">
             <div className="row">
               <div className="col-xs-6 check-in-btn">
-                <CheckIn month={this.state.current_month} campId={this.state.campId} click={this.handleClick} submit={this.handleSubmit} />
                 <CheckIn
                   month={this.state.current_month}
                   campId={this.state.campId}
+                  inventory={this.state.inventory}
                   onClick={this.handleClick}
                   submit={this.handleSubmit}
                 />
@@ -181,3 +181,4 @@ ReactDOM.render(
   document.getElementById('booking')
 );
 
+//pass booked as prop to checkin cal

@@ -5,14 +5,19 @@ class CheckInCal extends React.Component {
   constructor(props) {
     super(props);
 
-    this.localClick = this.localClick.bind(this);
+    this.click = this.click.bind(this);
     this.convertMonthToString = this.convertMonthToString.bind(this);
     this.getSundays= this.getSundays.bind(this);
     this.createMonth = this.createMonth.bind(this);
+    this.renderTableRows = this.renderTableRows.bind(this);
   }
 
-  localClick(e) {
+  click(e) {
     e.preventDefault();
+    console.log('cell clicked')
+    // const cell = e.target.getAttribute('data-item');
+    console.log(e.target)
+    // console.log('cell: ', cell);
   }
 
   convertMonthToString(month) {
@@ -99,9 +104,36 @@ class CheckInCal extends React.Component {
       date.setDate(date.getDate() + 7);
     }
     return days;
-  };
+  }
+
+  renderTableRows(i) {
+    console.log('inside renderTableRows')
+    const week_one = i.slice(0, 7);
+    const week_two = i.slice(7, 14);
+    const week_three = i.slice(14, 21);
+    const week_four = i.slice(21, 28);
+    const week_five = i.slice(28, 35);
+    const week_six = i.slice(35, 42);
+    let weeks = [week_one, week_two, week_three, week_four, week_five, week_six];
+    return weeks.map((week, index) =>
+      {week.map((day_numb, i) => (
+        <tr key={i} data-item={day_numb} onClick={this.onClickHandler}>
+            <td data-title="day_numb">{day_numb}</td>
+            <td data-title="day_numb">{day_numb}</td>
+            <td data-title="day_numb">{day_numb}</td>
+            <td data-title="day_numb">{day_numb}</td>
+            <td data-title="day_numb">{day_numb}</td>
+            <td data-title="day_numb">{day_numb}</td>
+        </tr>
+      ))}
+    )
+  }
 
   render() {
+    const booked = this.props.inventory;
+    console.log('booked: ', booked); //month at index 0 is the current month
+    //subsequent indexes = how many months out a booking can be made
+    const current_month_booked = booked[0];
     const hoy = moment().format('dddd');
     if (hoy === 'Sunday') {
       s = moment().format().slice(8, 10);
@@ -135,12 +167,19 @@ class CheckInCal extends React.Component {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              {week_one.map((numb, index) =>
-              <td key={index} className="day">{numb}</td>
+            {/* {this.renderTableRows(inventory)} */}
+            <tr onClick={this.click}>
+              {week_one.map((numb, index) => {
+                // {console.log(current_month_booked.indexOf(numb))}
+                if (numb < today) {
+                  <td key={index} className="past day" data-item={numb}>{numb}</td>
+                } else {
+                  <td key={index} className="day" data-item={numb}>{numb}</td>
+                }
+                }
               )}
             </tr>
-            <tr>
+            <tr onClick={this.click}>
               {week_two.map((numb, index) =>
               <td key={index} className="day">{numb}</td>
               )}
@@ -174,7 +213,4 @@ class CheckInCal extends React.Component {
 
 export default CheckInCal;
 
-//monthly calendar fills
-//7 columns across
-//6 rows down
 //current day is automatically crossed off
