@@ -51,13 +51,21 @@ class CheckInCal extends React.Component {
     } else {
       days = Array.from({length: 30}, (_, i) => i + 1);
     }
+    const prev = n - 1;
+    const next = n + 1;
+    let pre = [];
+    let post = [];
+    const walk = function() {
+
+    };
+    walk();
+    let m = 42 - days.length;
     const extra_days = 42 - (days.lenth - t);
     const sundays = getSundays(2021);
-    let first;
-    let inv = [];
+    let first_sunday;
     sundays.forEach(m => {
-      if (!first) {
-        first = m[1];
+      if (!first_sunday) {
+        first_sunday = m[1];
         for (let i = 0; i < m.length; i++) {
           console.log('m: ', m)
           const min = t -= 7;
@@ -73,18 +81,7 @@ class CheckInCal extends React.Component {
         }
       }
     })
-    //must begin on sun end on sat
-    if (first === 1) {
-      inv = days;
-    }
-    inv.push(first);
-    let pre = [];
-    let post = [];
-    let i = first;
-    let m = 42 - days.length;
-    while (inv.length <= m) {
-      inv.push(i ++);
-    }
+    //cross off every day prior to today
       //render table that fits extr days before and after current month of days
   }
 
