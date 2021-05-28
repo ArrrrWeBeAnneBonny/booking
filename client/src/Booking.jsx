@@ -43,7 +43,7 @@ class Booking extends React.Component {
   componentDidMount() {
     this.init();
     this.book();
-    this.bookingTotal(); //testing
+    this.bookingTotal();
   }
 
   init() {
