@@ -3,9 +3,6 @@ const mongoUri = 'mongodb://localhost/booking';
 const db = require('./index.js');
 const moment = require('moment');
 
-//should booked be an array of numbers i then shuffle X number of months times
-//or an array of arrays of numbers that are booked
-//SCHEMA
 const booking_schema = new mongoose.Schema({
   campId: Number,
   price_per_night: Number,
