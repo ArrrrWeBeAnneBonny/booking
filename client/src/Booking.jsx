@@ -26,6 +26,7 @@ class Booking extends React.Component {
       inventory: [],
       check_in: '',
       check_out: '',
+      total_days: 0,
       average_price_X_nights: 0,
       subTotal: 0,
       Total: 0
@@ -89,11 +90,7 @@ class Booking extends React.Component {
   //invoked when user clicks checkin button
   book() {
     axios.get('http://localhost:3002/booking/book', { params: { campId: 0 } })
-    .then(({data}) => {
-      const {
-        current_month,
-        inventory
-      } = data;
+    .then(({data: {current_month, inventory} }) => {
       this.setState({
         current_month,
         inventory
@@ -122,8 +119,18 @@ class Booking extends React.Component {
       check_out_date: outTime
       }
     })
-      .then(({data}) => {
-        console.log('booking tot. data: ', data);
+      .then(() => {
+        // avg price per night (weenight discount applied)?
+        // checkin
+        // checkout
+        // guests (can still modify)
+        // Average price × 2 nights
+        // Cleaning fee
+        // Subtotal
+        // Book button
+
+//         I need to write code that updates each of these values in my Booking state obj and then use them on the '/booking/bookingTotal' view.
+// Properties: total_days, average_price_X_nights, subTotal
       })
       .catch((err) => {
         throw err;
@@ -145,6 +152,12 @@ class Booking extends React.Component {
             <div className="row">
               <div className="col-xs-6 check-in-btn">
                 <CheckIn month={this.state.current_month} campId={this.state.campId} click={this.handleClick} submit={this.handleSubmit} />
+                <CheckIn
+                  month={this.state.current_month}
+                  campId={this.state.campId}
+                  onClick={this.handleClick}
+                  submit={this.handleSubmit}
+                />
               </div>
               <div className="col-xs-6 check-out-btn">
                 <CheckOut campId={this.state.campId} click={this.handleClick} submit={this.handleSubmit} />

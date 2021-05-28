@@ -1,6 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 class CheckInCal extends React.Component {
+
   constructor(props) {
     super(props);
 
@@ -16,7 +17,7 @@ class CheckInCal extends React.Component {
 
   convertMonthToString(month) {
     const months = ['January', "February", "March", "April", "May", "June",  "July", "August", "September", "October", "November", "December"]
-    let current = months[(month - 1)];
+    const current = months[(month - 1)];
     return current;
   }
 
@@ -61,7 +62,7 @@ class CheckInCal extends React.Component {
     walk();
     let m = 42 - days.length;
     const extra_days = 42 - (days.lenth - t);
-    const sundays = getSundays(2021);
+    const sundays = this.getSundays(2021);
     let first_sunday;
     sundays.forEach(m => {
       if (!first_sunday) {
