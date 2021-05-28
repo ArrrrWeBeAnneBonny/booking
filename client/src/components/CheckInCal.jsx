@@ -99,7 +99,6 @@ class CheckInCal extends React.Component {
     const today = moment().format().slice(8, 10);
     console.log('today: ', today)
     const inv = this.createMonth(today, month_numb);
-    //map inventory into td cells
     return (
       <div id="date-picker">
         <table id="check-in-cal">
@@ -120,7 +119,9 @@ class CheckInCal extends React.Component {
           </thead>
           <tbody>
             <tr>
-              <td className="past day"></td>
+              {inv.map((numb, index) =>
+              <td line={numb} key={index} className="day">{numb}</td>
+              )}
             </tr>
           </tbody>
         </table>
@@ -131,5 +132,7 @@ class CheckInCal extends React.Component {
 
 export default CheckInCal;
 
-
-
+//monthly calendar fills
+//7 columns across
+//6 rows down
+//current day is automatically crossed off
