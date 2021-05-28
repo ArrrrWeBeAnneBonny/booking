@@ -20,7 +20,7 @@ class CheckInCal extends React.Component {
     return current;
   }
 
-  getSundays(y) {
+  getSundays(y, n) {
     const date = new Date(y, 0, 1);
     while (date.getDay() != 0) {
       date.setDate(date.getDate() + 1);
@@ -39,48 +39,56 @@ class CheckInCal extends React.Component {
   };
 
   createMonth(t, n) {
-    console.log('t: ', t)
-    //populate 42 calendr cells
-    //get total days in current month
+    let s = 0;
     let days = [];
-    if (month === 2) {
+    if (n === 2) {
       days = Array.from({length: 28}, (_, i) => i + 1);
     }
     let thirty = [4, 6, 9, 11];
     let thirtyOne = [1, 3, 5, 7, 8, 10, 12];
-    if (thirty.indexOf(month) === -1) {
+    if (thirty.indexOf(n) === -1) {
       days = Array.from({length: 31}, (_, i) => i + 1);
     } else {
       days = Array.from({length: 30}, (_, i) => i + 1);
     }
     const extra_days = 42 - (days.lenth - t);
-    //get 42 - total - today
-    const sundays = this.getSundays(2021);
+    const sundays = getSundays(2021);
+    let first;
+    let inv = [];
     sundays.forEach(m => {
-      console.log('m : ', m)
-      if (m[0] === month_numb - 1) {
-        console.log('in here')
+      if (!first) {
+        first = m[1];
         for (let i = 0; i < m.length; i++) {
-          const min = today -= 7;
+          console.log('m: ', m)
+          const min = t -= 7;
           console.log('min: ', min)
-          const max = today += 7;
+          const max = t += 7;
           console.log('max: ', max)
           if (m[i] > min && m[i] < max) {
             s = m[i];
-            if (s > today) {
+            if (s > t) {
               s = m[i -1]
             }
           }
         }
       }
     })
-    console.log('s: ', s)
+    //must begin on sun end on sat
+    if (first === 1) {
+      inv = days;
+    }
+    inv.push(first);
+    let pre = [];
+    let post = [];
+    let i = first;
+    let m = 42 - days.length;
+    while (inv.length <= m) {
+      inv.push(i ++);
+    }
       //render table that fits extr days before and after current month of days
   }
 
   render() {
-    //42 cells
-    let s = 0;
     const hoy = moment().format('dddd');
     console.log('hoy: ', hoy);
     if (hoy === 'Sunday') {
@@ -90,7 +98,7 @@ class CheckInCal extends React.Component {
     console.log('month_numb: ', month_numb)
     const month = this.convertMonthToString(this.props.month);
     console.log('month: ', month)
-    let today = moment().format().slice(8, 10);
+    const today = moment().format().slice(8, 10);
     console.log('today: ', today)
     const inv = this.createMonth(today, month_numb);
     //map inventory into td cells
@@ -124,3 +132,6 @@ class CheckInCal extends React.Component {
 }
 
 export default CheckInCal;
+
+
+
