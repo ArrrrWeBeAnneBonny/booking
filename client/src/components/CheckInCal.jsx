@@ -21,7 +21,69 @@ class CheckInCal extends React.Component {
     return current;
   }
 
-  getSundays(y, n) {
+  createMonth(today, input_month) {
+    let days = [];
+    if (input_month === 2) {
+      days = Array.from({length: 28}, (_, i) => i + 1);
+    }
+    let thirty = [4, 6, 9, 11];
+    if (thirty.indexOf(input_month) === -1) {
+      days = Array.from({length: 31}, (_, i) => i + 1);
+    } else {
+      days = Array.from({length: 30}, (_, i) => i + 1);
+    }
+    const length = days.length;
+    const sundays = this.getSundays(2021);
+    let prev_sundays_inventory = [];
+    let next_sundays_inventory = [];
+    sundays.forEach(month => {
+      if (month[0] === (input_month - 1)) {
+        for (let i = 0; i < month.length; i++) {
+          if (i === 0) {
+            if (month[i] === days[0]) {
+              console.log('current month begins on a Sunday');
+              if (length === 31) {
+                days = days.concat([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])
+              } else if (length === 31) {
+                days = days.concat([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])
+              } else {
+                days = days.concat([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14])
+              }
+              break;
+            }
+          }
+        }
+      }
+      else if (month[0] === (input_month - 2)) {
+        prev_sundays_inventory.push(month[1]);
+      } else if (month[0] === (input_month)) {
+        next_sundays_inventory.push(month[1]);
+      }
+    });
+    let last_previous_sunday = prev_sundays_inventory.pop();
+    let previous_month_length = 0;
+    if (length === 31) {
+      previous_month_length = 30;
+    } else if (length === 30 || length === 28) {
+      previous_month_length = 31;
+    }
+    let preLoad = [last_previous_sunday];
+    let diff = (previous_month_length - last_previous_sunday);
+    while (diff > 0) {
+      let numb = last_previous_sunday += 1;
+      preLoad.push(numb);
+      diff --;
+    }
+    preLoad = preLoad.concat(days);
+    const days_needed = (42 - preLoad.length);
+    let next_days = [];
+    next_days = Array.from({length: days_needed}, (_, i) => i + 1);
+    preLoad = preLoad.concat(next_days);
+    console.log(preLoad);
+    return preLoad;
+  }
+
+  getSundays(y) {
     const date = new Date(y, 0, 1);
     while (date.getDay() != 0) {
       date.setDate(date.getDate() + 1);
@@ -39,66 +101,21 @@ class CheckInCal extends React.Component {
     return days;
   };
 
-  createMonth(t, n) {
-    let s = 0;
-    let days = [];
-    if (n === 2) {
-      days = Array.from({length: 28}, (_, i) => i + 1);
-    }
-    let thirty = [4, 6, 9, 11];
-    let thirtyOne = [1, 3, 5, 7, 8, 10, 12];
-    if (thirty.indexOf(n) === -1) {
-      days = Array.from({length: 31}, (_, i) => i + 1);
-    } else {
-      days = Array.from({length: 30}, (_, i) => i + 1);
-    }
-    const prev = n - 1;
-    const next = n + 1;
-    let pre = [];
-    let post = [];
-    const walk = function() {
-
-    };
-    walk();
-    let m = 42 - days.length;
-    const extra_days = 42 - (days.lenth - t);
-    const sundays = this.getSundays(2021);
-    let first_sunday;
-    sundays.forEach(m => {
-      if (!first_sunday) {
-        first_sunday = m[1];
-        for (let i = 0; i < m.length; i++) {
-          console.log('m: ', m)
-          const min = t -= 7;
-          console.log('min: ', min)
-          const max = t += 7;
-          console.log('max: ', max)
-          if (m[i] > min && m[i] < max) {
-            s = m[i];
-            if (s > t) {
-              s = m[i -1]
-            }
-          }
-        }
-      }
-    })
-    //cross off every day prior to today
-      //render table that fits extr days before and after current month of days
-  }
-
   render() {
     const hoy = moment().format('dddd');
-    console.log('hoy: ', hoy);
     if (hoy === 'Sunday') {
       s = moment().format().slice(8, 10);
     }
     const month_numb = this.props.month;
-    console.log('month_numb: ', month_numb)
     const month = this.convertMonthToString(this.props.month);
-    console.log('month: ', month)
     const today = moment().format().slice(8, 10);
-    console.log('today: ', today)
-    const inv = this.createMonth(today, month_numb);
+    const inventory = this.createMonth(today, month_numb);
+    const week_one = inventory.slice(0, 7);
+    const week_two = inventory.slice(7, 14);
+    const week_three = inventory.slice(14, 21);
+    const week_four = inventory.slice(21, 28);
+    const week_five = inventory.slice(28, 35);
+    const week_six = inventory.slice(35, 42);
     return (
       <div id="date-picker">
         <table id="check-in-cal">
@@ -119,8 +136,33 @@ class CheckInCal extends React.Component {
           </thead>
           <tbody>
             <tr>
-              {inv.map((numb, index) =>
-              <td line={numb} key={index} className="day">{numb}</td>
+              {week_one.map((numb, index) =>
+              <td key={index} className="day">{numb}</td>
+              )}
+            </tr>
+            <tr>
+              {week_two.map((numb, index) =>
+              <td key={index} className="day">{numb}</td>
+              )}
+            </tr>
+            <tr>
+              {week_three.map((numb, index) =>
+              <td key={index} className="day">{numb}</td>
+              )}
+            </tr>
+            <tr>
+              {week_four.map((numb, index) =>
+              <td key={index} className="day">{numb}</td>
+              )}
+            </tr>
+            <tr>
+              {week_five.map((numb, index) =>
+              <td key={index} className="day">{numb}</td>
+              )}
+            </tr>
+            <tr>
+              {week_six.map((numb, index) =>
+              <td key={index} className="day">{numb}</td>
               )}
             </tr>
           </tbody>
