@@ -135,7 +135,7 @@ class Booking extends React.Component {
   render() {
     return (
       <div className="booking">
-        <aside>
+        <div className="container">
           <div className="nightly-pricing-container">
             <div className="content">
               <h5 className="nightly-price">${this.state.price_per_night}
@@ -144,11 +144,11 @@ class Booking extends React.Component {
             </div>
           </div>
           <div className="dates-and-guests">
-            <div className="check-in-out-row">
-              <div className="col-xs-6 col check-in-btn">
+            <div className="row">
+              <div className="col-xs-6 check-in-btn">
                 <CheckIn campId={this.state.campId} click={this.handleClick} submit={this.handleSubmit} />
               </div>
-              <div className="col-xs-6 col check-out-btn">
+              <div className="col-xs-6 check-out-btn">
                 <CheckOut campId={this.state.campId} click={this.handleClick} submit={this.handleSubmit} />
               </div>
             </div>
@@ -156,8 +156,10 @@ class Booking extends React.Component {
               <Guests guests={this.state.max_guests} />
             </div>
           </div>
-          <BookingButton bookingType={this.state.instant_book} />
-        </aside>
+          <div className="booking-btn">
+            <BookingButton bookingType={this.state.instant_book} />
+          </div>
+        </div>
       </div>
     );
   }

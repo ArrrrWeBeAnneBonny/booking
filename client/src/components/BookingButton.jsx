@@ -9,8 +9,8 @@ class BookingButton extends React.Component {
     if (this.props.bookingType) {
       return (
         <div>
-          <div className="booking-btn">Instant book
-            {/* <input type="button" name="instant_book" value="Instant book" onClick={this.click}/> */}
+          <div className="booking-btn">
+            <input type="button" name="instant_book" value="Instant book" onClick={this.click}/>
           </div>
         </div>
       );
@@ -18,7 +18,7 @@ class BookingButton extends React.Component {
       return (
         <div>
           <div className="booking-btn">Request to book
-            {/* <input type="button" name="request_to_book" value="Request to book" onClick={this.click}/> */}
+            <input type="button" name="request_to_book" value="Request to book" onClick={this.click}/>
           </div>
         </div>
       );

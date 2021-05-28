@@ -36,7 +36,8 @@ class CheckIn extends React.Component {
       return (
         <div>
           <div className="label">Check in
-          <span className="value">Select date</span>
+            <span className="value">Select date</span>
+            <input></input>
           </div>
         </div>
       );
