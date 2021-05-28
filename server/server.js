@@ -18,6 +18,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.get('/booking', async (req, res) => {
   console.log('inside /booking');
   let campId = parseInt(req.query.campId);
+  if (!campId) {
+    campId = 0;
+  }
   let name = '';
   let init = {};
   await axios.get('http://localhost:3003/overview', { params: { campId: campId } })
@@ -67,6 +70,9 @@ app.get('/booking', async (req, res) => {
 app.get('/booking/book', async (req, res) => {
   console.log('inside /booking/book')
   let campId = parseInt(req.query.campId);
+  if (!campId) {
+    campId = 0;
+  }
   await db.Booking.find({campId: campId})
     .then((site) => {
       const months_out = site[0].how_far_out;
@@ -130,6 +136,9 @@ app.get('/booking/book', async (req, res) => {
   //endpt is triggered after user clicks eligible checkOut date, but necessary data actually stored in cliente state
 app.get('/booking/bookingTotal', async (req, res) => {
   let campId = req.query.campId;
+  if (!campId) {
+    campId = 0;
+  }
   let check_in_date =  req.query.check_in_date;
   let check_out_date =  req.query.check_out_date;
   //book this range in my db if I get to advanced content
