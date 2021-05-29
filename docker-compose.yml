@@ -1,17 +1,15 @@
 version: '3.7'
 services:
-  mongodb_container:
-    image: mongo:latest
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: root
+  web:
+    image: node:10.15.3
     ports:
-      - 27017:27017
-    volumes:
-      - mongodb_data_container:/database/container
+      - 3000:3000
+    depends_on:
+      - mongo
+  mongo:
+    image: mongo:4.4.3
 
-volumes:
-  mongodb_data_container:
+
 
 # docker-compose up
 # docker-compose stop
