@@ -42,14 +42,13 @@ class Booking extends React.Component {
 
   componentDidMount() {
     this.init();
-    this.book();
-    this.bookingTotal(); //testing
+    this.bookingTotal();
   }
 
   init() {
     axios.get('http://localhost:3002/booking')
     .then(({data}) => {
-      console.log(data)
+      console.log('data: ', data)
       const {
         name,
         campId,
@@ -89,6 +88,7 @@ class Booking extends React.Component {
 
   //invoked when user clicks checkin button
   book() {
+    console.log('book invoked')
     axios.get('http://localhost:3002/booking/book', { params: { campId: 0 } })
     .then(({data: {current_month, inventory} }) => {
       this.setState({
@@ -151,12 +151,13 @@ class Booking extends React.Component {
           <div className="dates-and-guests">
             <div className="row">
               <div className="col-xs-6 check-in-btn">
-                <CheckIn month={this.state.current_month} campId={this.state.campId} click={this.handleClick} submit={this.handleSubmit} />
                 <CheckIn
                   month={this.state.current_month}
                   campId={this.state.campId}
+                  inventory={this.state.inventory}
                   onClick={this.handleClick}
                   submit={this.handleSubmit}
+                  book={this.book}
                 />
               </div>
               <div className="col-xs-6 check-out-btn">
@@ -181,3 +182,4 @@ ReactDOM.render(
   document.getElementById('booking')
 );
 
+//pass booked as prop to checkin cal
