@@ -5,7 +5,7 @@ const { seedDb } = require('./seed.js');
 
 const url = 'mongodb://127.0.0.1:27017';
 
-mongoose.connect(url, {
+mongoose.connect(mongoUri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true,

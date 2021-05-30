@@ -1,16 +1,35 @@
 version: '3.7'
 services:
-  web:
-    image: node:10.15.3
+  booking-service:
+    image: booking
+    stdin_open: true
+    build: .
+    environment:
+      NODE_ENV: production
     ports:
-      - 3000:3000
+      - 3002: 3002
+    volumes:
+      - .:/app
     depends_on:
       - mongo
-  mongo:
-    image: mongo:4.4.3
+  mongodb:
+    image: mongo:latest
+    ports:
+      - 27017: 27017
+    volumes:
+      - data:/data/db
+  volumes:
+    mongo-data:
+      driver: local
+
+
+  # docker-compose up
+  # docker-compose stop
+  # docker-compose down
+
+  # docker ps
+  #docker stop (container id)
+ 
 
 
 
-# docker-compose up
-# docker-compose stop
-# docker-compose down
