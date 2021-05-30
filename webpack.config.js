@@ -4,7 +4,8 @@ const path = require('path');
 module.exports = {
   entry: './client/src/Booking.jsx',
   watch: true,
-  mode: "production",
+  // mode: "production",
+  mode: "development",
   plugins: [new HtmlWebpackPlugin({
     template: './client/templates/index.html'
   })],

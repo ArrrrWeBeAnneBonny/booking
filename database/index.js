@@ -3,13 +3,17 @@ const mongoUri = 'mongodb://localhost/booking';
 mongoose.Promise = global.Promise;
 const { seedDb } = require('./seed.js');
 
-const url = 'mongodb://0.0.0.0:27017';
+//this should change depending on env vars
+const url = 'mongodb://mongodb:27017/booking';
 
 mongoose.connect(mongoUri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true,
 });
+
+//docker
+// mongoose.connect(url, {useNewUrlParser: true});
 
 const db = mongoose.connection;
 

@@ -1,16 +1,8 @@
 version: '3.8'
 services:
-  mongo:
-    image: mongo:latest
-    restart: always
-    ports:
-      - 27017:27017
-    volumes:
-      - db-data:/data/db
-      - mongo-config:/data/configdb
-
-  booking-service:
-    image: booking
+  web:
+    image: node:10.15.3
+    build: .
     stdin_open: true
     tty: true
     environment:
@@ -19,8 +11,17 @@ services:
       - 3002:3002
     volumes:
       - .:/app
-    depends_on:
-      - mongo
+    links:
+      - mongodb
+
+  mongodb:
+    image: mongo:latest
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - db-data:/data/db
+      - mongo-config:/data/configdb
 
 volumes:
   db-data:
