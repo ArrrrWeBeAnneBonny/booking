@@ -2,28 +2,45 @@ import React from 'react';
 import Guests from './Guests.jsx';
 import CheckInCal from './CheckInCal.jsx';
 import CheckOutCal from './CheckOutCal.jsx';
+import axios from 'axios';
 
 class CheckIn extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      checkIn_clicked: false,
-      checkIn_picked: false,
-      check_in_date: '',
-      check_out_date: ''
+
     };
 
     this.click = this.click.bind(this);
+    this.book = this.book.bind(this);
     this.updateCheckInDate = this.updateCheckInDate.bind(this);
   }
 
   click(e) {
     e.preventDefault();
     console.log('checkin button clicked: ', e);
-    this.props.book();
     this.setState({
       checkIn_clicked: !this.state.checkIn_clicked
+    });
+    this.book();
+  }
+
+  //invoked when user clicks checkin button
+  book() {
+    console.log('book invoked')
+    axios.get('http://localhost:3002/booking/book', { params: { campId: 0 } })
+    .then(({data}) => {
+      const m = data.current_month
+      const i = data.inventory;
+
+      this.setState({
+        current_month: m,
+        inventory: i
+      });
+    })
+    .catch((err) => {
+      throw err;
     });
   }
 
@@ -50,13 +67,14 @@ class CheckIn extends React.Component {
         <CheckOutCal />
       );
     } else if (this.state.checkIn_clicked) {
+      {console.log(this.state)}
       return (
         <div>
           <div style={{backgroundColor: "#757575"}} className="label" onClick={this.click}>Check in</div>
           <span className="value" onClick={this.click}>Select date</span>
           <CheckInCal
-          month={this.props.month}
-          inventory={this.props.inventory}
+          month={this.state.current_month}
+          inventory={this.state.inventory}
           update={this.updateCheckInDate}
           onClick={this.props.handleClick}
           />

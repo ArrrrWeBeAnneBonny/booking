@@ -19,7 +19,7 @@ class Guests extends React.Component {
           </label>
         </div>
         <span className="value"></span>
-        <select name="group_size" id="group_size" class="invisible-input" data-filter-select="">
+        <select name="group_size" id="group_size" className="invisible-input" data-filter-select="">
           <option value="1">1 guest</option>
           <option value="2">2 guests</option>
           <option value="3">3 guests</option>
