@@ -1,4 +1,4 @@
-FROM node:10.15.3
+FROM node:14.17.0
 ENV NODE_ENV production
 RUN mkdir /app
 ADD . /app
