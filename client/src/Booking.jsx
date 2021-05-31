@@ -4,10 +4,8 @@ import ReactDOM from 'react-dom';
 import axios from 'axios';
 import moment from 'moment';
 
-import CheckIn from './components/CheckIn.jsx';
 import CheckInCal from './components/CheckInCal.jsx';
 import CheckOutCal from './components/CheckOutCal.jsx';
-import CheckOut from './components/CheckOut.jsx';
 import Guests from './components/Guests.jsx';
 import BookingButton from './components/BookingButton.jsx'
 class Booking extends React.Component {
@@ -40,6 +38,7 @@ class Booking extends React.Component {
 
     this.init= this.init.bind(this);
     this.click = this.click.bind(this);
+    this.makeISODate= this.makeISODate.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.bookingTotal = this.bookingTotal.bind(this);
   }
@@ -92,44 +91,38 @@ class Booking extends React.Component {
   handleSubmit(e) {
     console.log('e: ', e);
     e.preventDefault();
-
+    this.makeISODate();
+    this.bookingTotal();
   }
 
-  updateCheckInDate(day, month) {
-    //"2011-12-19T15:28:46.493Z"
-    console.log('inside updateCheckInDate')
+  makeISODate(day, month) {
     const date = new Date();
     const hour = date.getHours();
     const min = date.getMinutes();
     const sec = date.getSeconds();
     const ISO_string =`2021-${month}-${day}T${hour}:${min}.${sec}93Z`;
-    //don't set state here just pass checkindate back up to main?
-    this.setState({
-      checkIn_picked: !this.state.checkIn_picked,
-      check_in_date: ISO_string
-    });
-    console.log('this.state: ', this.state)
+    if (this.state.check_in_date === '') {
+      this.setState({
+        checkIn_picked: !this.state.checkIn_picked,
+        check_in_date: ISO_string
+      });
+    } else {
+      this.setState({
+        check_out_date: ISO_string
+      });
+    }
   }
 
   //invoked when user clicks eligible checkout date
   bookingTotal() {
-    // return axios.get('http://localhost:3002/booking/bookingTotal', { params: {
-    //   campId: 0,
-    //   check_in_date: this.state.check_in_date,
-    //   check_out_date: this.state.check_in_date
-    //   }
-    // })
-    //testing version:
-    //make sure timestamps r coming in as dates I can parse
-    const inTime = moment().format();
-    const outTime = moment().format();
     return axios.get('http://localhost:3002/booking/bookingTotal', { params: {
-      campId: 0,
-      check_in_date: inTime,
-      check_out_date: outTime
+      campId: this.state.campId,
+      check_in_date: this.state.check_in_date,
+      check_out_date: this.state.check_in_date
       }
     })
-      .then(() => {
+    .then(({data}) => {
+      console.log(data)
         // avg price per night (weenight discount applied)?
         // checkin
         // checkout
@@ -138,9 +131,6 @@ class Booking extends React.Component {
         // Cleaning fee
         // Subtotal
         // Book button
-
-//         I need to write code that updates each of these values in my Booking state obj and then use them on the '/booking/bookingTotal' view.
-// Properties: total_days, average_price_X_nights, subTotal
       })
       .catch((err) => {
         throw err;
@@ -162,17 +152,17 @@ class Booking extends React.Component {
             <div className="dates-and-guests">
               <div className="row">
                 <div className="col-xs-6 check-in-btn">
-                <div className="col-xs-6 check-out-btn">
-                  <CheckOut campId={this.state.campId} submit={this.handleSubmit} />
+                <div>
+                    <div className="label" onClick={this.click}>Check out</div>
+                    <span className="value" onClick={this.click}>Select date</span>
                 </div>
                   <CheckOutCal
                     month={this.state.current_month}
                     campId={this.state.campId}
                     inventory={this.state.inventory}
-                    submit={this.handleSubmit}
+                    onSubmit={this.handleSubmit}
                   />
                 </div>
-
               </div>
               <div className="guests">
                 <Guests guests={this.state.max_guests} />
@@ -200,10 +190,12 @@ class Booking extends React.Component {
                       campId={this.state.campId}
                       inventory={this.state.inventory}
                       submit={this.handleSubmit}
+                      update={this.makeISODate}
                     />
                   </div>
-                  <div className="col-xs-6 check-out-btn">
-                    <CheckOut campId={this.state.campId} submit={this.handleSubmit} />
+                  <div>
+                    <div className="label" onClick={this.click}>Check out</div>
+                    <span className="value" onClick={this.click}>Select date</span>
                   </div>
                 </div>
                 <div className="guests">
@@ -233,7 +225,10 @@ class Booking extends React.Component {
                   </div>
                 </div>
                 <div className="col-xs-6 check-out-btn">
-                  <CheckOut campId={this.state.campId} submit={this.handleSubmit} />
+                <div>
+                    <div className="label" onClick={this.click}>Check out</div>
+                    <span className="value" onClick={this.click}>Select date</span>
+                  </div>
                 </div>
               </div>
               <div className="guests">
@@ -254,5 +249,3 @@ ReactDOM.render(
   <Booking />,
   document.getElementById('booking')
 );
-
-//pass booked as prop to checkin cal
