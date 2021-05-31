@@ -140,12 +140,12 @@ class Booking extends React.Component {
   render() {
     if (this.state.checkIn_picked) {
       return (
-<div className="booking">
+        <div className="booking">
           <div className="container">
             <div className="nightly-pricing-container">
               <div className="content">
                 <h5 className="nightly-price">${this.state.price_per_night}
-                <br></br><span className="per">per night (2 guests)</span>
+                <br></br><span className="per">average per night (2 guests)</span>
                 </h5>
               </div>
             </div>
@@ -178,7 +178,7 @@ class Booking extends React.Component {
               <div className="nightly-pricing-container">
                 <div className="content">
                   <h5 className="nightly-price">${this.state.price_per_night}
-                  <br></br><span className="per">per night (2 guests)</span>
+                  <br></br><span className="per">average per night (2 guests)</span>
                   </h5>
                 </div>
               </div>
@@ -210,10 +210,9 @@ class Booking extends React.Component {
         <div className="booking">
           <div className="container">
             <div className="nightly-pricing-container">
-              <div className="content">
-                <h5 className="nightly-price">${this.state.price_per_night}
-                <br></br><span className="per">per night (2 guests)</span>
-                </h5>
+              <div>
+                <h5 className="nightly-price">${this.state.price_per_night}</h5>
+                <span className="per">average per night (2 guests)</span>
               </div>
             </div>
             <div className="dates-and-guests">
