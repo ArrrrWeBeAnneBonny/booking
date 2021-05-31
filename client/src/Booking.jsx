@@ -141,17 +141,17 @@ class Booking extends React.Component {
     if (this.state.checkIn_picked) {
       return (
         <div className="booking">
-          <div className="container">
-            <div className="nightly-pricing-container">
-              <div className="content">
-                <h5 className="nightly-price">${this.state.price_per_night}
-                <br></br><span className="per">average per night (2 guests)</span>
-                </h5>
-              </div>
+        <div className="container">
+          <div className="nightly-pricing-container">
+            <div className="content">
+              <h5 className="nightly-price">${this.state.price_per_night}
+              <br></br><span className="per">average per night (2 guests)</span>
+              </h5>
             </div>
-            <div className="dates-and-guests">
-              <div className="row">
-                <div className="col-xs-6 check-in-btn">
+          </div>
+          <div className="dates-and-guests">
+            <div className="row">
+              <div className="col-xs-6 check-in-btn">
                 <div>
                     <div className="label" onClick={this.click}>Check out</div>
                     <span className="value" onClick={this.click}>Select date</span>
