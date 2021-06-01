@@ -9,7 +9,7 @@ services:
     ports:
       - "3002:3002"
     volumes:
-      - .:/app
+      - .:/app-booking
     links:
       - mongo
     depends_on:
