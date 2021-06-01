@@ -1,41 +1,27 @@
-version: '3.8'
+version: "3"
 services:
-  web:
-    image: node:14.17.0
+  app:
+    container_name: booking
+    restart: always
     build: .
     stdin_open: true
     tty: true
-    environment:
-      NODE_ENV: production
     ports:
-      - 3002:3002
+      - "3002:3002"
     volumes:
       - .:/app
     links:
-      - mongodb
+      - mongo
+    depends_on:
+      - mongo
 
-  mongodb:
-    image: mongo:latest
-    restart: always
+  mongo:
+    image: mongo
+    container_name: mongo
     ports:
-      - 27017:27017
+      - "27017:27017"
     volumes:
-      - db-data:/data/db
-      - mongo-config:/data/configdb
-
-volumes:
-  db-data:
-  mongo-config:
-
-  # docker-compose up
-  # docker-compose stop
-  # docker-compose down
-
-  # docker ps
-  #docker stop (container id)
-  #docker rm (container id)
-
-  #docker run --name mongo -d mongo:latest
+      - ./data/db
 
 
 

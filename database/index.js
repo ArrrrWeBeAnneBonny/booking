@@ -4,7 +4,7 @@ mongoose.Promise = global.Promise;
 const { seedDb } = require('./seed.js');
 
 //this should change depending on env vars
-const url = 'mongodb://mongodb:27017/booking';
+const url = 'mongodb://mongo:27017/booking';
 
 mongoose.connect(mongoUri, {
   useNewUrlParser: true,
