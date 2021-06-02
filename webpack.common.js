@@ -3,7 +3,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
   entry: './client/src/Booking.jsx',
   watch: true,
-  mode: "development",
   plugins: [new HtmlWebpackPlugin({
     template: './client/templates/index.html'
   })],
