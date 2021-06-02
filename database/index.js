@@ -1,13 +1,9 @@
 const mongoose = require('mongoose');
-const mongoUri = 'mongodb://localhost/booking';
 mongoose.Promise = global.Promise;
 const { seedDb } = require('./seed.js');
 
-mongoose.connect(mongoUri, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useCreateIndex: true,
-});
+const path = 'mongodb://mongo:27017/booking';
+mongoose.connect(path, {useNewUrlParser: true});
 
 const db = mongoose.connection;
 
