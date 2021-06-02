@@ -110,32 +110,9 @@ class CheckInCal extends React.Component {
     return days;
   }
 
-  // renderTableData(i) {
-  //   return i.map((day, index) => {
-  //     return (
-  //        <tr key={index} onClick={this.click}>
-  //           <td>{day}</td>
-  //           <td>{day}</td>
-  //           <td>{day}</td>
-  //           <td>{day}</td>
-  //           <td>{day}</td>
-  //           <td>{day}</td>
-  //           <td>{day}</td>
-  //        </tr>
-  //     )
-  //  })
-  // }
-
   render() {
     const booked = this.props.inventory;
-    console.log('booked: ', booked); //month at index 0 is the current month
-    //subsequent indexes = how many months out a booking can be made
-    // const current_month_booked = booked[0];
-    // console.log('current_month_booked : ', current_month_booked )
     const hoy = moment().format('dddd');
-    if (hoy === 'Sunday') {
-      s = moment().format().slice(8, 10);
-    }
     const month_numb = this.props.month;
     const month = this.convertMonthToString(this.props.month);
     const today = moment().format().slice(8, 10);
@@ -166,40 +143,33 @@ class CheckInCal extends React.Component {
           </thead>
           <tbody>
             <tr onClick={this.click}>
-              {week_one.map((numb, index) => {
-                if (numb < today) {
-                  {console.log('in past')}
-                  <td key={index} className="past" data-item={numb}>{numb}</td>
-                } else {
-                  {console.log('in day')}
-                  <td key={index} className="day" data-item={numb}>{numb}</td>
-                }
-                }
+              {week_one.map((numb, index) =>
+                <td key={index} className="day" data-item={numb}>{numb}</td>
               )}
             </tr>
             <tr onClick={this.click}>
               {week_two.map((numb, index) =>
-              <td key={index} className="day">{numb}</td>
+                <td key={index} className="day" data-item={numb}>{numb}</td>
               )}
             </tr>
-            <tr>
+            <tr onClick={this.click}>
               {week_three.map((numb, index) =>
-              <td key={index} className="day">{numb}</td>
+                <td key={index} className="day" data-item={numb}>{numb}</td>
               )}
             </tr>
-            <tr>
+            <tr onClick={this.click}>
               {week_four.map((numb, index) =>
-              <td key={index} className="day">{numb}</td>
+                <td key={index} className="day" data-item={numb}>{numb}</td>
               )}
             </tr>
-            <tr>
+            <tr onClick={this.click}>
               {week_five.map((numb, index) =>
-              <td key={index} className="day">{numb}</td>
+                <td key={index} className="day" data-item={numb}>{numb}</td>
               )}
             </tr>
-            <tr>
+            <tr onClick={this.click}>
               {week_six.map((numb, index) =>
-              <td key={index} className="day">{numb}</td>
+                <td key={index} className="day" data-item={numb}>{numb}</td>
               )}
             </tr>
           </tbody>

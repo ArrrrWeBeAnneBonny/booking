@@ -4,8 +4,8 @@ import ReactDOM from 'react-dom';
 import axios from 'axios';
 import moment from 'moment';
 
-import CheckIn from './components/CheckIn.jsx';
-import CheckOut from './components/CheckOut.jsx';
+import CheckInCal from './components/CheckInCal.jsx';
+import CheckOutCal from './components/CheckOutCal.jsx';
 import Guests from './components/Guests.jsx';
 import BookingButton from './components/BookingButton.jsx'
 class Booking extends React.Component {
@@ -24,31 +24,32 @@ class Booking extends React.Component {
       max_guests: 0,
       current_month: 0,
       inventory: [],
-      check_in: '',
-      check_out: '',
+      check_in_clicked: false,
+      checkIn_picked: false,
+      check_out_click: false,
+      check_in_date: '',
+      check_out_date: '',
       total_days: 0,
       average_price_X_nights: 0,
       subTotal: 0,
-      Total: 0
+      Total: 0,
+      initialized: false
     };
 
     this.init= this.init.bind(this);
-    this.handleClick = this.handleClick.bind(this);
+    this.click = this.click.bind(this);
+    this.makeISODate= this.makeISODate.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.book = this.book.bind(this);
     this.bookingTotal = this.bookingTotal.bind(this);
-
   }
 
   componentDidMount() {
     this.init();
-    this.bookingTotal();
   }
 
   init() {
     axios.get('http://localhost:3002/booking')
     .then(({data}) => {
-      console.log('data: ', data)
       const {
         name,
         campId,
@@ -58,6 +59,8 @@ class Booking extends React.Component {
         instant_book,
         cleaning_fee,
         max_guests,
+        current_month,
+        inventory
       } = data;
       this.setState({
         name,
@@ -68,6 +71,9 @@ class Booking extends React.Component {
         instant_book,
         cleaning_fee,
         max_guests,
+        current_month,
+        inventory,
+        initialized: !this.state.initialized
       });
     })
     .catch((err) => {
@@ -75,51 +81,48 @@ class Booking extends React.Component {
     });
   }
 
-  handleClick(e) {
-    console.log('e: ', e);
+  click(e) {
     e.preventDefault();
+    this.setState({
+      check_in_clicked: !this.state.check_in_clicked
+    })
   }
 
   handleSubmit(e) {
     console.log('e: ', e);
     e.preventDefault();
-    this.book(e);
+    this.makeISODate();
+    this.bookingTotal();
   }
 
-  //invoked when user clicks checkin button
-  book() {
-    console.log('book invoked')
-    axios.get('http://localhost:3002/booking/book', { params: { campId: 0 } })
-    .then(({data: {current_month, inventory} }) => {
+  makeISODate(day, month) {
+    const date = new Date();
+    const hour = date.getHours();
+    const min = date.getMinutes();
+    const sec = date.getSeconds();
+    const ISO_string =`2021-${month}-${day}T${hour}:${min}.${sec}93Z`;
+    if (this.state.check_in_date === '') {
       this.setState({
-        current_month,
-        inventory
+        checkIn_picked: !this.state.checkIn_picked,
+        check_in_date: ISO_string
       });
-    })
-    .catch((err) => {
-      throw err;
-    });
+    } else {
+      this.setState({
+        check_out_date: ISO_string
+      });
+    }
   }
 
   //invoked when user clicks eligible checkout date
   bookingTotal() {
-    // return axios.get('http://localhost:3002/booking/bookingTotal', { params: {
-    //   campId: 0,
-    //   check_in_date: this.state.check_in_date,
-    //   check_out_date: this.state.check_in_date
-    //   }
-    // })
-    //testing version:
-    //make sure timestamps r coming in as dates I can parse
-    const inTime = moment().format();
-    const outTime = moment().format();
     return axios.get('http://localhost:3002/booking/bookingTotal', { params: {
-      campId: 0,
-      check_in_date: inTime,
-      check_out_date: outTime
+      campId: this.state.campId,
+      check_in_date: this.state.check_in_date,
+      check_out_date: this.state.check_in_date
       }
     })
-      .then(() => {
+    .then(({data}) => {
+      console.log(data)
         // avg price per night (weenight discount applied)?
         // checkin
         // checkout
@@ -128,9 +131,6 @@ class Booking extends React.Component {
         // Cleaning fee
         // Subtotal
         // Book button
-
-//         I need to write code that updates each of these values in my Booking state obj and then use them on the '/booking/bookingTotal' view.
-// Properties: total_days, average_price_X_nights, subTotal
       })
       .catch((err) => {
         throw err;
@@ -138,42 +138,109 @@ class Booking extends React.Component {
   }
 
   render() {
-    return (
-      <div className="booking">
+    if (this.state.checkIn_picked) {
+      return (
+        <div className="booking">
         <div className="container">
           <div className="nightly-pricing-container">
             <div className="content">
               <h5 className="nightly-price">${this.state.price_per_night}
-              <br></br><span className="per">per night (2 guests)</span>
+              <br></br><span className="per">average per night (2 guests)</span>
               </h5>
             </div>
           </div>
           <div className="dates-and-guests">
             <div className="row">
               <div className="col-xs-6 check-in-btn">
-                <CheckIn
-                  month={this.state.current_month}
-                  campId={this.state.campId}
-                  inventory={this.state.inventory}
-                  onClick={this.handleClick}
-                  submit={this.handleSubmit}
-                  book={this.book}
-                />
+                <div>
+                    <div className="label" onClick={this.click}>Check out</div>
+                    <span className="value" onClick={this.click}>Select date</span>
+                </div>
+                  <CheckOutCal
+                    month={this.state.current_month}
+                    campId={this.state.campId}
+                    inventory={this.state.inventory}
+                    onSubmit={this.handleSubmit}
+                  />
+                </div>
               </div>
-              <div className="col-xs-6 check-out-btn">
-                <CheckOut campId={this.state.campId} click={this.handleClick} submit={this.handleSubmit} />
+              <div className="guests">
+                <Guests guests={this.state.max_guests} />
               </div>
             </div>
-            <div className="guests">
-              <Guests guests={this.state.max_guests} />
-            </div>
-          </div>
-          <div id="booking-btn">
-            <BookingButton bookingType={this.state.instant_book} />
           </div>
         </div>
-      </div>
-    );
+      );
+    } else if (this.state.check_in_clicked) {
+        return (
+          <div className="booking">
+            <div className="container">
+              <div className="nightly-pricing-container">
+                <div className="content">
+                  <h5 className="nightly-price">${this.state.price_per_night}
+                  <br></br><span className="per">average per night (2 guests)</span>
+                  </h5>
+                </div>
+              </div>
+              <div className="dates-and-guests">
+                <div className="row">
+                  <div className="col-xs-6 check-in-btn">
+                    <CheckInCal
+                      month={this.state.current_month}
+                      campId={this.state.campId}
+                      inventory={this.state.inventory}
+                      submit={this.handleSubmit}
+                      update={this.makeISODate}
+                    />
+                  </div>
+                  <div>
+                    <div className="label" onClick={this.click}>Check out</div>
+                    <span className="value" onClick={this.click}>Select date</span>
+                  </div>
+                </div>
+                <div className="guests">
+                  <Guests guests={this.state.max_guests} />
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+    } else {
+      return (
+        <div className="booking">
+          <div className="container">
+            <div className="nightly-pricing-container">
+              <div>
+                <h5 className="nightly-price">${this.state.price_per_night}</h5>
+                <span className="per">average per night (2 guests)</span>
+              </div>
+            </div>
+            <div className="dates-and-guests">
+              <div className="row">
+                <div className="col-xs-6 check-in-btn">
+                  <div>
+                    <div className="label" onClick={this.click}>Check in</div>
+                    <span className="value" onClick={this.click}>Select date</span>
+                  </div>
+                </div>
+                <div className="col-xs-6 check-out-btn">
+                <div>
+                    <div className="label" onClick={this.click}>Check out</div>
+                    <span className="value" onClick={this.click}>Select date</span>
+                  </div>
+                </div>
+              </div>
+              <div className="guests">
+                <Guests guests={this.state.max_guests} />
+              </div>
+            </div>
+            <div id="booking-btn">
+              <BookingButton bookingType={this.state.instant_book} />
+            </div>
+          </div>
+        </div>
+      );
+    }
   }
 }
 
@@ -181,5 +248,3 @@ ReactDOM.render(
   <Booking />,
   document.getElementById('booking')
 );
-
-//pass booked as prop to checkin cal

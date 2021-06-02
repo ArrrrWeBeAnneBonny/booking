@@ -1,7 +1,7 @@
 .booking {
   display: flex;
   position: relative;
-  width: 319px;
+  width: 42%;
   height: 736.78px;
   z-index: 99;
   color: #333333;
@@ -10,9 +10,12 @@
   font-size: 16px;
   line-height: 1.42;
   background-color: white;
-  margin-top: 10px;
+  margin-top: 300px;
   margin-bottom: 10px;
   flex-direction: column;
+  padding-top: 1000px;
+  padding-left: 1000px;
+  padding-right: 0;
 }
 .container {
   display: block;
@@ -21,7 +24,6 @@
   margin-top: 20px;
   top: -61px;
   z-index: 19;
-  font-family: "Calibre", Helvetica, Arial, sans-serif;
 }
 .nightly-pricing-container {
   height: 78px;
@@ -29,7 +31,6 @@
   background-color: #fff;
   border: 1px solid #ebebeb;
   display: flex;
-  font-family: "Calibre", Helvetica, Arial, sans-serif;
   padding: 13px 10px;
 }
 .content {
@@ -38,16 +39,22 @@
   width: 100%;
 }
 .nightly-price {
-  font-size: 18px;
-  margin-block-start: 1.67em;
-  margin-block-end: 1.67em;
-  margin-inline-start: 0px;
-  margin-inline-end: 0px;
+  -webkit-align-items: center;
+  align-items: center;
+  display: -webkit-flex;
+  display: flex;
+  color: #333333;
+  font-size: 2.6rem;
+  line-height: 0.9;
+  margin: 2px 0 0;
+  min-height: 2.6rem;
 }
-.per {
+span .per {
   font-family: "Calibre", Helvetica, Arial, sans-serif;
   color: #757575;
   font-size: 12px;
+  margin-top: 20px;
+  margin-left: 5px;
 }
 .dates-and-guests {
   width: 319px;
