@@ -21,8 +21,8 @@
   display: block;
   position: absolute;
   width: 100%;
-  margin-top: 20px;
-  top: -61px;
+  /* margin-top: 20px; */
+  top: -41px;
   z-index: 19;
 }
 .nightly-pricing-container {

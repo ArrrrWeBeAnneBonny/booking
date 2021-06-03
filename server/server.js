@@ -8,6 +8,9 @@ const db = require('../database/index.js');
 
 const app = express();
 
+const mode = process.env.NODE_ENV;
+console.log(`hi you are in ${mode}`);
+
 app.use(cors());
 
 app.use(express.static(__dirname + '/../client/dist'));
@@ -17,6 +20,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.get('/booking', async (req, res) => {
   let init = {};
   let name = '';
+  const now = moment().format();
+  const current_month = now.slice(5, 7).split('')[1];
+  const current_day = now.slice(8, 10);
   let campId = parseInt(req.query.campId);
   if (!campId) {
     campId = 0;
@@ -25,9 +31,6 @@ app.get('/booking', async (req, res) => {
     .then((site) => {
       const months_out = site[0].how_far_out;
       const i = site[0].booked;
-      const now = moment().format();
-      const current_month = now.slice(5, 7).split('')[1];
-      const current_day = now.slice(8, 10);
       const flattened_inventory = _.flatten(i);
       if (flattened_inventory.indexOf(current_day) === -1) {
         flattened_inventory.push(Number(current_day));
@@ -95,8 +98,51 @@ app.get('/booking', async (req, res) => {
       db.Booking.find({campId: 0})
         .then((response) => {
           let site = response[0];
+          const i = site.booked;
+          const flattened_inventory = _.flatten(i);
+          if (flattened_inventory.indexOf(current_day) === -1) {
+            flattened_inventory.push(Number(current_day));
+          }
+          let inventories = [];
+          let index = 0;
+          for (let i = 0; i < months_out; i++) {
+            if (!inventories.length) {
+              let next_month_inventory = flattened_inventory.map(item => {
+                let newItem = (item + 1);
+                if (newItem > 31) {
+                  newItem = 1;
+                  return newItem;
+                } else {
+                  return newItem;
+                }
+              });
+              index ++;
+              next_month_inventory.pop();
+              inventories.push(next_month_inventory);
+            } else {
+              let last_month = inventories[index - 1];
+              let next_month_inventory = last_month.map(item => {
+                let newItem = (item + 1);
+                if (newItem > 31) {
+                  newItem = 1;
+                  return newItem;
+                } else {
+                  return newItem;
+                }
+              });
+              index ++;
+              inventories.push(next_month_inventory);
+            }
+          }
+          let inventory = {};
+          let month = 0;
+          inventories.forEach(i => {
+            inventory[month] = i;
+            month ++;
+          });
           init.name = 'Twisselman\’s Glamping by the Pond';
           init.campId = 0;
+          init.inventory = inventory;
           init.price_per_night = site.price_per_night;
           init.how_far_out = site.how_far_out;
           init.weeknight_discount = site.weeknight_discount;
@@ -124,3 +170,4 @@ app.get('/booking/bookingTotal', async (req, res) => {
 });
 
 module.exports = app;
+

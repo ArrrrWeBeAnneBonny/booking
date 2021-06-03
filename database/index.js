@@ -2,14 +2,21 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 const { seedDb } = require('./seed.js');
 
-const path = 'mongodb://mongo:27017/booking';
-mongoose.connect(path, {useNewUrlParser: true});
+const mode = process.env.NODE_ENV;
+const path = mode === "development" ? 'mongodb://localhost:27017/booking' : 'mongodb://mongo:27017/booking';
+console.log('path: ', path);
+
+mongoose.connect(path, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useCreateIndex: true,
+});
 
 const db = mongoose.connection;
 
-db.on('error', console.error.bind(console, 'connection error:'));
+db.on('error', console.error.bind(console, `connection error`));
 db.once('connected', function() {
-  console.log('success connecting to mongo faulkner luvs you');
+  console.log(`success connecting to mongo faulkner luvs you`);
 });
 
 const Booking = mongoose.model('Booking');
