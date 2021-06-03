@@ -111,7 +111,6 @@ class Booking extends React.Component {
     }
   }
 
-  //invoked when user clicks eligible checkout date
   bookingTotal() {
     return axios.get('http://localhost:3002/booking/bookingTotal', { params: {
       campId: this.state.campId,
