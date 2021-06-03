@@ -14,7 +14,6 @@ class Booking extends React.Component {
     super(props);
 
     this.state = {
-      name: '',
       campId: 0,
       price_per_night: 0,
       how_far_out: 0,
@@ -50,8 +49,8 @@ class Booking extends React.Component {
   init() {
     axios.get('http://localhost:3002/booking')
     .then(({data}) => {
+      console.log('data: ', data);
       const {
-        name,
         campId,
         price_per_night,
         how_far_out,
@@ -63,7 +62,6 @@ class Booking extends React.Component {
         inventory
       } = data;
       this.setState({
-        name,
         campId,
         price_per_night,
         how_far_out,

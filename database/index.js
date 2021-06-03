@@ -4,7 +4,6 @@ const { seedDb } = require('./seed.js');
 
 const mode = process.env.NODE_ENV;
 const path = mode === "development" ? 'mongodb://localhost:27017/booking' : 'mongodb://mongo:27017/booking';
-console.log('path: ', path);
 
 mongoose.connect(path, {
   useNewUrlParser: true,
