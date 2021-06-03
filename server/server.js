@@ -29,12 +29,14 @@ app.get('/booking', async (req, res) => {
   await axios.get('http://localhost:3003/overview/pricing', { params: { campId: campId } })
     .then(async (response) => {
       const site = response.data;
+      console.log('site line 33: ', site);
       init.average_price_per_night = site.averagePricePerNight;
       init.how_far_out = site.monthsOutForBooking;
       init.weeknight_discount = site.weeknightDiscount;
       init.instant_book = site.instantBook;
       init.cleaning_fee = site.cleaningFee;
-      init.max_guests = site.max_guests;
+      init.max_guests = site.maxGuests;
+      console.log('init 40: ', init)
       const data = await db_helper.findAndFormatInventory({campId: campId}, init.how_far_out, init.booked)
       console.log('data 39: ', data);
       console.log('init 40: ', init);

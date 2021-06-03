@@ -15,7 +15,7 @@ class Booking extends React.Component {
 
     this.state = {
       campId: 0,
-      price_per_night: 0,
+      average_price_per_night: 0,
       how_far_out: 0,
       weeknight_discount: 0,
       instant_book: false,
@@ -52,7 +52,7 @@ class Booking extends React.Component {
       console.log('data: ', data);
       const {
         campId,
-        price_per_night,
+        average_price_per_night,
         how_far_out,
         weeknight_discount,
         instant_book,
@@ -63,7 +63,7 @@ class Booking extends React.Component {
       } = data;
       this.setState({
         campId,
-        price_per_night,
+        average_price_per_night,
         how_far_out,
         weeknight_discount,
         instant_book,
@@ -142,7 +142,7 @@ class Booking extends React.Component {
         <div className="container">
           <div className="nightly-pricing-container">
             <div className="content">
-              <h5 className="nightly-price">${this.state.price_per_night}
+              <h5 className="nightly-price">${this.state.average_price_per_night}
               <br></br><span className="per">average per night (2 guests)</span>
               </h5>
             </div>
@@ -175,7 +175,7 @@ class Booking extends React.Component {
             <div className="container">
               <div className="nightly-pricing-container">
                 <div className="content">
-                  <h5 className="nightly-price">${this.state.price_per_night}
+                  <h5 className="nightly-price">${this.state.average_price_per_night}
                   <br></br><span className="per">average per night (2 guests)</span>
                   </h5>
                 </div>
@@ -209,7 +209,7 @@ class Booking extends React.Component {
           <div className="container">
             <div className="nightly-pricing-container">
               <div>
-                <h5 className="nightly-price">${this.state.price_per_night}</h5>
+                <h5 className="nightly-price">${this.state.average_price_per_night}</h5>
                 <span className="per">average per night (2 guests)</span>
               </div>
             </div>
