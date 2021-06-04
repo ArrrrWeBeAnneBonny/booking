@@ -10,9 +10,9 @@ const helper = require('./helper.js');
 const app = express();
 
 const mode = process.env.NODE_ENV;
-console.log(`hi you are in ${mode}`);
+console.log(`hi bebe you are in ${mode}`);
 
-const ec2 = 'https://ec2-3-142-79-153.us-east-2.compute.amazonaws.com';
+// const ec2 = 'https://ec2-3-142-79-153.us-east-2.compute.amazonaws.com';
 
 app.use(cors());
 app.use(cors({ origin: ec2 }));
@@ -39,21 +39,16 @@ app.get('/booking', async (req, res) => {
       init.instant_book = site.instantBook;
       init.cleaning_fee = site.cleaningFee;
       init.max_guests = site.maxGuests;
-      console.log('init 40: ', init)
       const data = await db_helper.findAndFormatInventory({campId: campId}, init.how_far_out, init.booked)
-      console.log('data 39: ', data);
-      console.log('init 40: ', init);
       res.status(200).send(JSON.stringify(init));
     })
     .catch(async (err) => {
-      console.log('err: ', err);
       let init = await db_helper.find({campId: 0});
       init.average_price_per_night = init.price_per_night;
       delete init.price_per_night;
       const data = await db_helper.findAndFormatInventory({campId: campId});
       init.inventory = data.inventory;
       init.current_month = data.current_month;
-      console.log('init line 51: ', init);
       res.status(200).send(JSON.stringify(init));
       });
 });
@@ -63,10 +58,12 @@ app.get('/booking/bookingTotal', async (req, res) => {
   if (!campId) {
     campId = 0;
   }
+  console.log('query: ', req.query);
   let check_in_date =  req.query.check_in_date;
   let check_out_date =  req.query.check_out_date;
+  let booking_info = {};
   let mssg = `new booking created for campId ${campId}`;
-  res.status(200).send(mssg);
+  res.status(200).send(JSON.stringify({mssg: mssg, booking_info: booking_info}));
 });
 
 module.exports = app;

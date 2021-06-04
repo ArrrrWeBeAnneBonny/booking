@@ -7,7 +7,7 @@ class BookingButton extends React.Component {
       book: false
     };
   }
-//add third option to press 'book'
+
   render() {
     if (this.props.bookingType) {
       return (
@@ -31,6 +31,3 @@ class BookingButton extends React.Component {
 }
 
 export default BookingButton;
-//<input type="button" name="instant_book" value="Instant book" onClick={this.click}/>
-//<input type="button" name="request_to_book" value="Request to book" onClick={this.click}/>
-//

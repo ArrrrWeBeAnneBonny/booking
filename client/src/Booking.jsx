@@ -7,7 +7,8 @@ import moment from 'moment';
 import CheckInCal from './components/CheckInCal.jsx';
 import CheckOutCal from './components/CheckOutCal.jsx';
 import Guests from './components/Guests.jsx';
-import BookingButton from './components/BookingButton.jsx'
+import BookingButton from './components/BookingButton.jsx';
+import BookingTotal from './components/BookingTotal.jsx';
 class Booking extends React.Component {
 
   constructor(props) {
@@ -16,6 +17,7 @@ class Booking extends React.Component {
     this.state = {
       campId: 0,
       average_price_per_night: 0,
+      calculated_average_price_per_night: 0,
       how_far_out: 0,
       weeknight_discount: 0,
       instant_book: false,
@@ -25,9 +27,10 @@ class Booking extends React.Component {
       inventory: [],
       check_in_clicked: false,
       checkIn_picked: false,
-      check_out_click: false,
+      checkOut_picked: false,
       check_in_date: '',
       check_out_date: '',
+      book_button: false,
       total_days: 0,
       average_price_X_nights: 0,
       subTotal: 0,
@@ -105,6 +108,7 @@ class Booking extends React.Component {
     const min = date.getMinutes();
     const sec = date.getSeconds();
     const ISO_string =`2021-${month}-${day}T${hour}:${min}.${sec}93Z`;
+    console.log('ISO_string: ', ISO_string)
     if (this.state.check_in_date === '') {
       this.setState({
         checkIn_picked: !this.state.checkIn_picked,
@@ -112,6 +116,7 @@ class Booking extends React.Component {
       });
     } else {
       this.setState({
+        checkOut_picked: !this.state.checkOut_picked,
         check_out_date: ISO_string
       });
     }
@@ -121,12 +126,17 @@ class Booking extends React.Component {
     return axios.get('http://localhost:3002/booking/bookingTotal', { params: {
       campId: this.state.campId,
       check_in_date: this.state.check_in_date,
-      check_out_date: this.state.check_in_date
+      check_out_date: this.state.check_in_date,
+      discount: this.state.weeknight_discount,
+      fee: this.state.cleaning_fee
       }
     })
     .then(({data}) => {
       console.log(data)
+      let bookingTotal = {};
+      //apply weeknight discount?
         // avg price per night (weenight discount applied)?
+        //total_days
         // checkin
         // checkout
         // guests (can still modify)
@@ -141,46 +151,110 @@ class Booking extends React.Component {
   }
 
   render() {
+    console.log('picked: ', this.state.checkIn_picked)
+    console.log('in d: ', this.state.check_in_date)
+    console.log('picked: ', this.state.checkOut_picked)
+    console.log('out d: ', this.state.check_out_date)
+    if (this.state.checkOut_picked) {
+      return (
+        <div>
+          <aside className="booking-container">
+            <div className="booking">
+                <div className="banner-container">
+                  <div className="nightly-pricing-container">
+                    <div className="price-banner">
+                      <div>
+                        <h5 className="nightly-price">${this.state.calculated_average_price_per_night}</h5>
+                        <span>per night (2 guests)</span>
+                      </div>
+                      <div className="hidden">
+                        <button className="btn btn-primary btn-flashy book-cta"></button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="well">
+                  <div className="well-content dates-and-guests">
+                    <div className="row">
+                      <div className="col-xs-6 check-in-btn">
+                        <div className="label" onClick={this.click}>Check in</div>
+                        <span className="value" onClick={this.click}>{this.state.check_in_date}</span>
+                      </div>
+                      <div className="col-xs-6 check-out-btn">
+                        <div className="label" onClick={this.click}>Check out</div>
+                        <span className="value" onClick={this.click}>{this.state.check_out_date}</span>
+                      </div>
+                    </div>
+                    <div>
+                      <Guests guests={this.state.max_guests} />
+                    </div>
+                    <div>
+                      <BookingTotal
+                      number_nights={this.state.total_days}
+                      average_price_X_nights={this.state.average_price_X_nights}
+                      cleaning_fee={this.state.cleaning_fee}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+          </aside>
+        </div>
+      );
+    }
     if (this.state.checkIn_picked) {
       return (
-        <div className="booking">
-        <div className="container">
-          <div className="nightly-pricing-container">
-            <div className="content">
-              <h5 className="nightly-price">${this.state.average_price_per_night}
-              <br></br><span id="per">per night (2 guests)</span>
-              </h5>
-            </div>
-          </div>
-          <div className="dates-and-guests">
-            <div className="row">
-              <div className="col-xs-6 check-in-btn">
+        <div>
+          <aside className="booking-container">
+            <div className="booking">
+                <div className="banner-container">
+                  <div className="nightly-pricing-container">
+                    <div className="price-banner">
+                      <div>
+                        <h5 className="nightly-price">${this.state.average_price_per_night}</h5>
+                        <span>per night (2 guests)</span>
+                      </div>
+                      <div className="hidden">
+                        <button className="btn btn-primary btn-flashy book-cta"></button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
                 <div className="well">
-                    <div className="label" onClick={this.click}>Check out</div>
-                    <span className="value" onClick={this.click}>Select date</span>
-                </div>
-                  <CheckOutCal
-                    month={this.state.current_month}
-                    campId={this.state.campId}
-                    inventory={this.state.inventory}
-                    onSubmit={this.handleSubmit}
-                  />
+                  <div className="well-content dates-and-guests">
+                    <div className="row">
+                      <div className="col-xs-6 check-in-btn">
+                        <div className="label" onClick={this.click}>Check in</div>
+                        <span className="value" onClick={this.click}>Select date</span>
+                      </div>
+                      <div className="col-xs-6 check-out-btn">
+                        <div className="label" onClick={this.click}>Check out</div>
+                        <span className="value" onClick={this.click}>Select date</span>
+                      </div>
+                    </div>
+                    <div>
+                      <CheckOutCal
+                      month={this.state.current_month}
+                      campId={this.state.campId}
+                      inventory={this.state.inventory}
+                      onSubmit={this.handleSubmit}
+                      update={this.makeISODate}
+                      />
+                    </div>
+                    <div>
+                      <Guests guests={this.state.max_guests} />
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div className="guests">
-                <Guests guests={this.state.max_guests} />
-              </div>
-            </div>
-          </div>
+          </aside>
         </div>
       );
     } else if (this.state.check_in_clicked) {
       return (
         <div>
           <aside className="booking-container">
-            {/* <div className="overlay overlay-gray"></div> */}
             <div className="booking">
-              {/* <div className="loading-overlay"></div> */}
                 <div className="banner-container">
                   <div className="nightly-pricing-container">
                     <div className="price-banner">
@@ -228,9 +302,7 @@ class Booking extends React.Component {
       return (
         <div>
           <aside className="booking-container">
-            {/* <div className="overlay overlay-gray"></div> */}
             <div className="booking">
-              {/* <div className="loading-overlay"></div> */}
                 <div className="banner-container">
                   <div className="nightly-pricing-container">
                     <div className="price-banner">

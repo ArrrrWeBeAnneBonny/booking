@@ -4,6 +4,11 @@ class CheckOutCal extends React.Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      month_numb : this.props.month,
+      today: 0
+    };
+
     this.click = this.click.bind(this);
     this.convertMonthToString = this.convertMonthToString.bind(this);
     this.getSundays= this.getSundays.bind(this);
@@ -12,7 +17,11 @@ class CheckOutCal extends React.Component {
 
   click(e) {
     e.preventDefault();
-    this.props.onSubmit(e);
+    const cell = e.target.innerText;
+    console.log('cell: ', cell);
+    const month = this.state.month_numb;
+    console.log('month: ', month);
+    this.props.update(cell, month);
   }
 
   convertMonthToString(month) {
@@ -79,7 +88,6 @@ class CheckOutCal extends React.Component {
     let next_days = [];
     next_days = Array.from({length: days_needed}, (_, i) => i + 1);
     preLoad = preLoad.concat(next_days);
-    console.log(preLoad);
     return preLoad;
   }
 
@@ -102,6 +110,12 @@ class CheckOutCal extends React.Component {
   }
 
   render() {
+    const style = {
+      display: 'block'
+    };
+    const prev = {
+      visibility: 'hidden'
+    };
     const booked = this.props.inventory;
     const hoy = moment().format('dddd');
     const month_numb = this.props.month;
@@ -115,59 +129,70 @@ class CheckOutCal extends React.Component {
     const week_five = inventory.slice(28, 35);
     const week_six = inventory.slice(35, 42);
     return (
-      <div id="date-picker">
-        <table id="check-in-cal">
-          <thead>
-            <tr>
-              <th>{month} 2021</th>
-              <th className="next-month"></th>
-            </tr>
-            <tr >
-              <th className="dow">S</th>
-              <th className="dow">M</th>
-              <th className="dow">T</th>
-              <th className="dow">W</th>
-              <th className="dow">TH</th>
-              <th className="dow">F</th>
-              <th className="dow">S</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr onClick={this.click}>
-              {week_one.map((numb, index) =>
-                <td key={index} className="day" data-item={numb}>{numb}</td>
-              )}
-            </tr>
-            <tr onClick={this.click}>
-              {week_two.map((numb, index) =>
-                <td key={index} className="day" data-item={numb}>{numb}</td>
-              )}
-            </tr>
-            <tr onClick={this.click}>
-              {week_three.map((numb, index) =>
-                <td key={index} className="day" data-item={numb}>{numb}</td>
-              )}
-            </tr>
-            <tr onClick={this.click}>
-              {week_four.map((numb, index) =>
-                <td key={index} className="day" data-item={numb}>{numb}</td>
-              )}
-            </tr>
-            <tr onClick={this.click}>
-              {week_five.map((numb, index) =>
-                <td key={index} className="day" data-item={numb}>{numb}</td>
-              )}
-            </tr>
-            <tr onClick={this.click}>
-              {week_six.map((numb, index) =>
-                <td key={index} className="day" data-item={numb}>{numb}</td>
-              )}
-            </tr>
-          </tbody>
-        </table>
+      <div className="row datepickers open">
+        <div className="loading"></div>
+        <div className="inner">
+          <div className="datepicker-container" id="datepicker-container-check-in" style={style}>
+            <div className="datepicker datepicker-inline">
+              <div className="datepicker-days" style={style}>
+                <table className="table-condensed">
+                  <thead>
+                    <tr>
+                      <th className="prev" style={prev}></th>
+                      <th>{month} 2021</th>
+                      <th className="next">></th>
+                    </tr>
+                    <tr >
+                      <th className="dow">S</th>
+                      <th className="dow">M</th>
+                      <th className="dow">T</th>
+                      <th className="dow">W</th>
+                      <th className="dow">TH</th>
+                      <th className="dow">F</th>
+                      <th className="dow">S</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr onClick={this.click}>
+                      {week_one.map((numb, index) =>
+                        <td key={index} className="day" data-item={numb}>{numb}</td>
+                      )}
+                    </tr>
+                    <tr onClick={this.click}>
+                      {week_two.map((numb, index) =>
+                        <td key={index} className="day" data-item={numb}>{numb}</td>
+                      )}
+                    </tr>
+                    <tr onClick={this.click}>
+                      {week_three.map((numb, index) =>
+                        <td key={index} className="day" data-item={numb}>{numb}</td>
+                      )}
+                    </tr>
+                    <tr onClick={this.click}>
+                      {week_four.map((numb, index) =>
+                        <td key={index} className="day" data-item={numb}>{numb}</td>
+                      )}
+                    </tr>
+                    <tr onClick={this.click}>
+                      {week_five.map((numb, index) =>
+                        <td key={index} className="day" data-item={numb}>{numb}</td>
+                      )}
+                    </tr>
+                    <tr onClick={this.click}>
+                      {week_six.map((numb, index) =>
+                        <td key={index} className="day" data-item={numb}>{numb}</td>
+                      )}
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
+
 }
 
 export default CheckOutCal;

@@ -29,18 +29,6 @@ aside.booking-container {
   z-index: 19;
   margin-top: 360px;
 }
-/* .overlay.overlay-gray {
-  background-color: rgba(0,0,0,0.6);
-  z-index: 98;
-}
-.overlay {
-  display: none;
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-} */
 .booking {
   position: relative;
   width: 319px;
@@ -93,6 +81,8 @@ aside.booking-container {
   min-width: 150px;
   font-size: 1.8rem;
 }
+
+/* pricing */
 .banner-container, .nightly-pricing-container {
   padding: 13px 10px;
   display: flex;
@@ -119,6 +109,46 @@ aside.booking-container {
   line-height: 0.9;
   margin: 2px 0 0;
   min-height: 2.6rem;
+}
+.well-content.pricing {
+  border-top: 0;
+  box-shadow: 0 1px 5px rgb(0 0 0 / 5%);
+}
+.pricing {
+  border-top: 0;
+}
+ul.summary {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 1.8rem;
+}
+ul {
+  display: block;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  padding-inline-start: 40px;
+}
+.subtotal-list-item {
+  margin-bottom: 10px !important;
+}
+.s-fw--medium {
+  font-weight: 500 !important;
+}
+.notes {
+  margin-top: 0px;
+  margin-left: -10px;
+  position: absolute;
+  width: 318px;
+}
+.reminder-text {
+  width: 100%;
+  margin: 20px 0;
+  color: #fff;
+  text-align: center;
+  left: 0;
 }
 
 /* minor sections */
@@ -341,6 +371,10 @@ button, html input[type="button"], input[type="reset"], input[type="submit"] {
 }
 
 /* calendar */
+.datepickers.open {
+  height: 300px;
+  position: initial;
+}
 .datepickers {
   background-color: #fff;
   position: relative;
@@ -378,13 +412,6 @@ button, html input[type="button"], input[type="reset"], input[type="submit"] {
   background-color: #fff;
   position: initial;
 }
-#check-in-cal {
-  width: 100;
-}
-.datepickers.open {
-  height: 300px;
-  position: initial;
-}
 .datepicker.datepicker-inline {
   width: 100%;
   background-color: #f3f3f3;
@@ -399,9 +426,6 @@ button, html input[type="button"], input[type="reset"], input[type="submit"] {
   width: auto;
   height: 36px;
 }
-/* .prev {
-
-} */
 table {
   display: table;
   text-indent: initial;
@@ -419,6 +443,9 @@ table {
   border: 1px solid #ebebeb;
   width: auto;
   height: 36px;
+}
+.table-condensed {
+  padding: 5px;
 }
 thead {
   display: table-header-group;
@@ -452,9 +479,6 @@ th {
   font-weight: bold;
   text-align: center;
   text-align: center;
-}
-.table-condensed {
-  padding: 5px;
 }
 .next{
   content: "";

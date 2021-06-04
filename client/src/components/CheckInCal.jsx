@@ -6,7 +6,7 @@ class CheckInCal extends React.Component {
     super(props);
 
     this.state = {
-      month_numb : 0,
+      month_numb : this.props.month,
       today: 0
     };
 
@@ -14,13 +14,14 @@ class CheckInCal extends React.Component {
     this.convertMonthToString = this.convertMonthToString.bind(this);
     this.getSundays= this.getSundays.bind(this);
     this.createMonth = this.createMonth.bind(this);
-    // this.renderTableData = this.renderTableData.bind(this)
   }
 
   click(e) {
     e.preventDefault();
     const cell = e.target.innerText;
+    console.log('cell: ', cell);
     const month = this.state.month_numb;
+    console.log('month: ', month);
     this.props.update(cell, month);
   }
 
@@ -88,7 +89,6 @@ class CheckInCal extends React.Component {
     let next_days = [];
     next_days = Array.from({length: days_needed}, (_, i) => i + 1);
     preLoad = preLoad.concat(next_days);
-    console.log(preLoad);
     return preLoad;
   }
 
