@@ -14,9 +14,8 @@ class Booking extends React.Component {
     super(props);
 
     this.state = {
-      name: '',
       campId: 0,
-      price_per_night: 0,
+      average_price_per_night: 0,
       how_far_out: 0,
       weeknight_discount: 0,
       instant_book: false,
@@ -50,10 +49,10 @@ class Booking extends React.Component {
   init() {
     axios.get('http://localhost:3002/booking')
     .then(({data}) => {
+      console.log('data: ', data);
       const {
-        name,
         campId,
-        price_per_night,
+        average_price_per_night,
         how_far_out,
         weeknight_discount,
         instant_book,
@@ -63,9 +62,8 @@ class Booking extends React.Component {
         inventory
       } = data;
       this.setState({
-        name,
         campId,
-        price_per_night,
+        average_price_per_night,
         how_far_out,
         weeknight_discount,
         instant_book,
@@ -113,7 +111,6 @@ class Booking extends React.Component {
     }
   }
 
-  //invoked when user clicks eligible checkout date
   bookingTotal() {
     return axios.get('http://localhost:3002/booking/bookingTotal', { params: {
       campId: this.state.campId,
@@ -144,15 +141,15 @@ class Booking extends React.Component {
         <div className="container">
           <div className="nightly-pricing-container">
             <div className="content">
-              <h5 className="nightly-price">${this.state.price_per_night}
-              <br></br><span className="per">average per night (2 guests)</span>
+              <h5 className="nightly-price">${this.state.average_price_per_night}
+              <br></br><span id="per">per night (2 guests)</span>
               </h5>
             </div>
           </div>
           <div className="dates-and-guests">
             <div className="row">
               <div className="col-xs-6 check-in-btn">
-                <div>
+                <div className="well">
                     <div className="label" onClick={this.click}>Check out</div>
                     <span className="value" onClick={this.click}>Select date</span>
                 </div>
@@ -177,8 +174,8 @@ class Booking extends React.Component {
             <div className="container">
               <div className="nightly-pricing-container">
                 <div className="content">
-                  <h5 className="nightly-price">${this.state.price_per_night}
-                  <br></br><span className="per">average per night (2 guests)</span>
+                  <h5 className="nightly-price">${this.state.average_price_per_night}
+                  <br></br><span id="per">per night (2 guests)</span>
                   </h5>
                 </div>
               </div>
@@ -193,7 +190,7 @@ class Booking extends React.Component {
                       update={this.makeISODate}
                     />
                   </div>
-                  <div>
+                  <div className="well">
                     <div className="label" onClick={this.click}>Check out</div>
                     <span className="value" onClick={this.click}>Select date</span>
                   </div>
@@ -206,25 +203,25 @@ class Booking extends React.Component {
           </div>
         );
     } else {
-      return (
+      return ( //base state
         <div className="booking">
           <div className="container">
             <div className="nightly-pricing-container">
               <div>
-                <h5 className="nightly-price">${this.state.price_per_night}</h5>
-                <span className="per">average per night (2 guests)</span>
+                <h5 className="nightly-price">${this.state.average_price_per_night}</h5>
+                <span id="per">per night (2 guests)</span>
               </div>
             </div>
             <div className="dates-and-guests">
               <div className="row">
                 <div className="col-xs-6 check-in-btn">
-                  <div>
+                  <div className="well">
                     <div className="label" onClick={this.click}>Check in</div>
                     <span className="value" onClick={this.click}>Select date</span>
                   </div>
                 </div>
                 <div className="col-xs-6 check-out-btn">
-                <div>
+                <div className="well">
                     <div className="label" onClick={this.click}>Check out</div>
                     <span className="value" onClick={this.click}>Select date</span>
                   </div>

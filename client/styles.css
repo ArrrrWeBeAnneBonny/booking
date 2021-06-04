@@ -1,7 +1,7 @@
 .booking {
   display: flex;
   position: relative;
-  width: 42%;
+  width: 60%;
   height: 736.78px;
   z-index: 99;
   color: #333333;
@@ -21,8 +21,7 @@
   display: block;
   position: absolute;
   width: 100%;
-  margin-top: 20px;
-  top: -61px;
+  top: -20px;
   z-index: 19;
 }
 .nightly-pricing-container {
@@ -49,10 +48,10 @@
   margin: 2px 0 0;
   min-height: 2.6rem;
 }
-span .per {
+#per {
   font-family: "Calibre", Helvetica, Arial, sans-serif;
-  color: #757575;
-  font-size: 12px;
+  color: #A0A0A0;
+  font-size: 14px;
   margin-top: 20px;
   margin-left: 5px;
 }
@@ -68,11 +67,33 @@ span .per {
   border: 1px solid #ebebeb;
   padding: 10px;
   color: #333333;
+  box-shadow: 0 1px 5px rgb(0 0 0 / 5%);
 }
 .row {
   margin-left: -10px;
   margin-right: -10px;
 }
+.well {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  color: #333333;
+  border-bottom: 0;
+  border-top: 0;
+  background-color: white;
+  padding: 10px;
+  z-index: 1;
+  padding: 0;
+  margin-bottom: 0;
+  background-color: transparent;
+  border: 0;
+  -webkit-transition: top 0.3s ease 0s;
+  -o-transition: top 0.3s ease 0s;
+  transition: top 0.3s ease 0s;
+}
+/* .row:before, .row:after {
+  content: " ";
+  display: table;
+} */
 .col {
   padding-top: 10px;
   padding-bottom: 10px;
@@ -90,6 +111,7 @@ span .per {
   box-sizing: border-box;
   font-size: 1.8rem;
   width: 50%;
+  text-align: left;
   cursor: pointer;
   border-right: 1px solid #ebebeb;
   border-bottom: 1px solid #ebebeb;
@@ -99,6 +121,7 @@ span .per {
   box-sizing: border-box;
   font-size: 1.8rem;
   width: 50%;
+  text-align: left;
   cursor: pointer;
   border-right: 1px solid #ebebeb;
   border-bottom: 1px solid #ebebeb;
@@ -109,18 +132,21 @@ span .per {
   padding-top: 0;
   padding-right: 0;
   padding-left: 0;
-  font-size: 1.8rem;
+  font-size: 1.5rem;
   color: #333333;
   font-weight: 500;
   text-align: left;
   border-radius: 0;
   padding: .2em .6em .3em;
   font-weight: bold;
+  float: left;
 }
 .value {
   white-space: nowrap;
   color: #333333;
-  font-size: 1.4rem;
+  font-size: 1.5rem;
+  color: #A0A0A0;
+  float: left;
 }
 .guests {
   cursor: pointer;
