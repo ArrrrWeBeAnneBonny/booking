@@ -12,7 +12,10 @@ const app = express();
 const mode = process.env.NODE_ENV;
 console.log(`hi you are in ${mode}`);
 
+const ec2 = 'https://ec2-3-142-79-153.us-east-2.compute.amazonaws.com';
+
 app.use(cors());
+app.use(cors({ origin: ec2 }));
 
 app.use(express.static(__dirname + '/../client/dist'));
 app.use(bodyParser.json());
@@ -45,9 +48,12 @@ app.get('/booking', async (req, res) => {
     .catch(async (err) => {
       console.log('err: ', err);
       let init = await db_helper.find({campId: 0});
+      init.average_price_per_night = init.price_per_night;
+      delete init.price_per_night;
       const data = await db_helper.findAndFormatInventory({campId: campId});
       init.inventory = data.inventory;
       init.current_month = data.current_month;
+      console.log('init line 51: ', init);
       res.status(200).send(JSON.stringify(init));
       });
 });
