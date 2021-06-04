@@ -175,46 +175,62 @@ class Booking extends React.Component {
         </div>
       );
     } else if (this.state.check_in_clicked) {
-        return (
-          <div className="booking">
-            <div className="container">
-              <div className="nightly-pricing-container">
-                <div className="content">
-                  <h5 className="nightly-price">${this.state.average_price_per_night}
-                  <br></br><span id="per">per night (2 guests)</span>
-                  </h5>
-                </div>
-              </div>
-              <div className="dates-and-guests">
-                <div className="row">
-                  <div className="col-xs-6 check-in-btn">
-                    <CheckInCal
-                      month={this.state.current_month}
-                      campId={this.state.campId}
-                      inventory={this.state.inventory}
-                      submit={this.handleSubmit}
-                      update={this.makeISODate}
-                    />
-                  </div>
-                  <div className="well">
-                    <div className="label" onClick={this.click}>Check out</div>
-                    <span className="value" onClick={this.click}>Select date</span>
-                  </div>
-                </div>
-                <div className="guests">
-                  <Guests guests={this.state.max_guests} />
-                </div>
-              </div>
-            </div>
-          </div>
-        );
-    } else {
-      return ( //base state
+      return (
         <div>
           <aside className="booking-container">
-            <div className="overlay overlay-gray"></div>
+            {/* <div className="overlay overlay-gray"></div> */}
             <div className="booking">
-              <div className="loading-overlay"></div>
+              {/* <div className="loading-overlay"></div> */}
+                <div className="banner-container">
+                  <div className="nightly-pricing-container">
+                    <div className="price-banner">
+                      <div>
+                        <h5 className="nightly-price">${this.state.average_price_per_night}</h5>
+                        <span>per night (2 guests)</span>
+                      </div>
+                      <div className="hidden">
+                        <button className="btn btn-primary btn-flashy book-cta"></button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="well">
+                  <div className="well-content dates-and-guests">
+                    <div className="row">
+                      <div className="col-xs-6 check-in-btn">
+                        <div className="label" onClick={this.click}>Check in</div>
+                        <span className="value" onClick={this.click}>Select date</span>
+                      </div>
+                      <div className="col-xs-6 check-out-btn">
+                        <div className="label" onClick={this.click}>Check out</div>
+                        <span className="value" onClick={this.click}>Select date</span>
+                      </div>
+                    </div>
+                    <div>
+                      <CheckInCal
+                        month={this.state.current_month}
+                        campId={this.state.campId}
+                        inventory={this.state.inventory}
+                        submit={this.handleSubmit}
+                        update={this.makeISODate}
+                      />
+                    </div>
+                    <div>
+                      <Guests guests={this.state.max_guests} />
+                    </div>
+                  </div>
+                </div>
+              </div>
+          </aside>
+        </div>
+    );
+  } else {
+      return (
+        <div>
+          <aside className="booking-container">
+            {/* <div className="overlay overlay-gray"></div> */}
+            <div className="booking">
+              {/* <div className="loading-overlay"></div> */}
                 <div className="banner-container">
                   <div className="nightly-pricing-container">
                     <div className="price-banner">
@@ -261,16 +277,3 @@ ReactDOM.render(
   document.getElementById('booking')
 );
 
-//notes:
-//line: 218 = boooking widget banner
-//line 219 = wrapper
-//line 213 dates-and-guests = well
-
-
-{/* <div className="guests">
-
-                  </div>
-                </div>
-                <div id="booking-btn">
-
-                </div> */}
