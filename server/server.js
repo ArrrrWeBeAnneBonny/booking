@@ -12,8 +12,6 @@ const app = express();
 const mode = process.env.NODE_ENV;
 console.log(`hi you are in ${mode}`);
 
-const ec2 = 'https://ec2-3-142-79-153.us-east-2.compute.amazonaws.com';
-
 app.use(cors());
 app.use(cors({ origin: ec2 }));
 

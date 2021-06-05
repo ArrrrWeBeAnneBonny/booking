@@ -4,11 +4,9 @@ const { seedDb } = require('./seed.js');
 
 const mode = process.env.NODE_ENV;
 
-console.log('mode: ', mode);
-
 let uri = '';
 
-if (mode === "development") {
+if (mode === "development" || mode === undefined) {
   uri = "mongodb://localhost:27017/booking";
 } else if (mode === "production") {
   uri = "mongodb://mongo:27017/booking";
