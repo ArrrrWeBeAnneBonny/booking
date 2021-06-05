@@ -4,6 +4,8 @@ const { seedDb } = require('./seed.js');
 
 const mode = process.env.NODE_ENV;
 
+console.log('mode: ', mode);
+
 let uri = '';
 
 if (mode === "development" || mode === undefined) {
@@ -11,6 +13,7 @@ if (mode === "development" || mode === undefined) {
 } else if (mode === "production") {
   uri = "mongodb://mongo:27017/booking";
 }
+console.log('connection uri: ', uri);
 
 mongoose.connect(uri, {
   useNewUrlParser: true,
