@@ -1,10 +1,9 @@
 version: "3"
 services:
   booking:
-    container_name: booking
+    container_name: booking-service
     image: hannahmanfredi/booking-service
     restart: always
-    build: .
     ports:
       - "80:3002"
     links:
@@ -17,7 +16,7 @@ services:
     ports:
       - "27017:27017"
     volumes:
-      - /app-booking/data/db
+      - ./data/db
 
 
 
