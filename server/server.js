@@ -6,16 +6,14 @@ const cors = require('cors');
 const db = require('../database/index.js');
 const db_helper = require('../database/helper.js');
 const helper = require('./helper.js');
+const config = require('./config.js');
 
 const app = express();
 
 const mode = process.env.NODE_ENV;
 console.log(`hi you are in ${mode}`);
 
-const ec2 = 'https://ec2-3-142-79-153.us-east-2.compute.amazonaws.com';
-
 app.use(cors());
-app.use(cors({ origin: ec2 }));
 
 app.use(express.static(__dirname + '/../client/dist'));
 app.use(bodyParser.json());
@@ -29,24 +27,26 @@ app.get('/booking', async (req, res) => {
   let init = {};
   const booked = await db_helper.findBookedArray({ campId: campId });
   init.booked = booked.booked;
-  await axios.get('http://localhost:3003/overview/pricing', { params: { campId: campId } })
+  let overview_url = '';
+  if (mode === 'production') {
+    overview_url += config.prod.overview;
+  } else if (mode === 'development' || mode === undefined) {
+    overview_url += config.dev.overview;
+  }
+  console.log('overview_url: ', overview_url);
+  await axios.get(overview_url, { params: { campId: campId } })
     .then(async (response) => {
       const site = response.data;
-      console.log('site line 33: ', site);
       init.average_price_per_night = site.averagePricePerNight;
       init.how_far_out = site.monthsOutForBooking;
       init.weeknight_discount = site.weeknightDiscount;
       init.instant_book = site.instantBook;
       init.cleaning_fee = site.cleaningFee;
       init.max_guests = site.maxGuests;
-      console.log('init 40: ', init)
       const data = await db_helper.findAndFormatInventory({campId: campId}, init.how_far_out, init.booked)
-      console.log('data 39: ', data);
-      console.log('init 40: ', init);
       res.status(200).send(JSON.stringify(init));
     })
     .catch(async (err) => {
-      console.log('err: ', err);
       let init = await db_helper.find({campId: 0});
       init.average_price_per_night = init.price_per_night;
       delete init.price_per_night;
