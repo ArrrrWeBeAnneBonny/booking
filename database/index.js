@@ -3,9 +3,18 @@ mongoose.Promise = global.Promise;
 const { seedDb } = require('./seed.js');
 
 const mode = process.env.NODE_ENV;
-const path = mode === "development" ? 'mongodb://localhost:27017/booking' : 'mongodb://mongo:27017/booking';
 
-mongoose.connect(path, {
+console.log('mode: ', mode);
+
+let uri = '';
+
+if (mode === "development") {
+  uri = "mongodb://localhost:27017/booking";
+} else if (mode === "production") {
+  uri = "mongodb://mongo:27017/booking";
+}
+
+mongoose.connect(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true,

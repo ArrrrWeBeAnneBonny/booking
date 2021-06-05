@@ -47,7 +47,13 @@ class Booking extends React.Component {
   }
 
   init() {
-    axios.get('http://localhost:3002/booking')
+    let url = '';
+    if (process.env.NODE_ENV === 'production') {
+      url += 'http://67.160.218.95/32/booking';
+    } else if (process.env.NODE_ENV === 'development') {
+      url += 'http://localhost:3002/booking'
+    }
+    axios.get(url)
     .then(({data}) => {
       console.log('data: ', data);
       const {
