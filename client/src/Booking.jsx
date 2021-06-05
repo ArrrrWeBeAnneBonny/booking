@@ -9,6 +9,7 @@ import CheckOutCal from './components/CheckOutCal.jsx';
 import Guests from './components/Guests.jsx';
 import BookingButton from './components/BookingButton.jsx';
 import BookingTotal from './components/BookingTotal.jsx';
+
 class Booking extends React.Component {
 
   constructor(props) {
@@ -53,13 +54,12 @@ class Booking extends React.Component {
   init() {
     let url = '';
     if (process.env.NODE_ENV === 'production') {
-      url += 'http://67.160.218.95/32/booking';
+      url += 'http://ec2-3-142-79-153.us-east-2.compute.amazonaws.com';
     } else if (process.env.NODE_ENV === 'development') {
       url += 'http://localhost:3002/booking'
     }
     axios.get(url)
     .then(({data}) => {
-      console.log('data: ', data);
       const {
         campId,
         average_price_per_night,

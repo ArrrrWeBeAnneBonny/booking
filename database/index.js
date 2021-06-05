@@ -8,11 +8,12 @@ console.log('mode: ', mode);
 
 let uri = '';
 
-if (mode === "development") {
+if (mode === "development" || mode === undefined) {
   uri = "mongodb://localhost:27017/booking";
 } else if (mode === "production") {
   uri = "mongodb://mongo:27017/booking";
 }
+console.log('connection uri: ', uri);
 
 mongoose.connect(uri, {
   useNewUrlParser: true,
