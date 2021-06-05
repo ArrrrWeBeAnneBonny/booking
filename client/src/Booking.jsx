@@ -43,6 +43,7 @@ class Booking extends React.Component {
     this.makeISODate= this.makeISODate.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.bookingTotal = this.bookingTotal.bind(this);
+    this.checkOut = this.checkOut.bind(this);
   }
 
   componentDidMount() {
@@ -102,6 +103,22 @@ class Booking extends React.Component {
     this.bookingTotal();
   }
 
+  checkOut(e) {
+    e.preventDefault();
+    let bookingTotal = {};
+    //update state with:
+      //apply weeknight discount?
+        // avg price per night (weenight discount applied)?
+        //total_days
+        // checkin
+        // checkout
+        // guests (can still modify)
+        // Average price × 2 nights
+        // Cleaning fee
+        // Subtotal
+        // Book button
+  }
+
   makeISODate(day, month) {
     const date = new Date();
     const hour = date.getHours();
@@ -123,27 +140,9 @@ class Booking extends React.Component {
   }
 
   bookingTotal() {
-    return axios.get('http://localhost:3002/booking/bookingTotal', { params: {
-      campId: this.state.campId,
-      check_in_date: this.state.check_in_date,
-      check_out_date: this.state.check_in_date,
-      discount: this.state.weeknight_discount,
-      fee: this.state.cleaning_fee
-      }
-    })
+    return axios.get('http://localhost:3002/booking/bookingTotal', { params: { campId: this.state.campId } })
     .then(({data}) => {
       console.log(data)
-      let bookingTotal = {};
-      //apply weeknight discount?
-        // avg price per night (weenight discount applied)?
-        //total_days
-        // checkin
-        // checkout
-        // guests (can still modify)
-        // Average price × 2 nights
-        // Cleaning fee
-        // Subtotal
-        // Book button
       })
       .catch((err) => {
         throw err;
@@ -151,10 +150,10 @@ class Booking extends React.Component {
   }
 
   render() {
-    console.log('picked: ', this.state.checkIn_picked)
-    console.log('in d: ', this.state.check_in_date)
-    console.log('picked: ', this.state.checkOut_picked)
-    console.log('out d: ', this.state.check_out_date)
+    // console.log('picked: ', this.state.checkIn_picked)
+    // console.log('in d: ', this.state.check_in_date)
+    // console.log('picked: ', this.state.checkOut_picked)
+    // console.log('out d: ', this.state.check_out_date)
     if (this.state.checkOut_picked) {
       return (
         <div>

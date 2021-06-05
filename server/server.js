@@ -58,12 +58,8 @@ app.get('/booking/bookingTotal', async (req, res) => {
   if (!campId) {
     campId = 0;
   }
-  console.log('query: ', req.query);
-  let check_in_date =  req.query.check_in_date;
-  let check_out_date =  req.query.check_out_date;
-  let booking_info = {};
   let mssg = `new booking created for campId ${campId}`;
-  res.status(200).send(JSON.stringify({mssg: mssg, booking_info: booking_info}));
+  res.status(200).send(mssg);
 });
 
 module.exports = app;
