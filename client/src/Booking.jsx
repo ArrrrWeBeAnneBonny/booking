@@ -53,13 +53,6 @@ class Booking extends React.Component {
   }
 
   init() {
-    // let url = '';
-    // const url = config.prod.booking;
-    // if (process.env.NODE_ENV === 'production') {
-    //   url += config.prod.booking;
-    // } else if (process.env.NODE_ENV === 'development') {
-    //   url += config.dev.booking
-    // }
     axios.get(`/booking`)
     .then(({data}) => {
       const {

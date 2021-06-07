@@ -10,18 +10,11 @@ const config = require('./config.js');
 
 const app = express();
 
-// const mode = process.env.NODE_ENV;
-// console.log(`hi bebe you are in ${mode}`);
+const mode = process.env.NODE_ENV;
+console.log(`hi bebe you are in ${mode}`);
+//removed from start scripts btw: NODE_ENV=production
 
-// let routes = {};
-// if (mode === 'development' || mode === undefined) {
-//   routes = config.dev;
-// } else if (mode === 'production') {
-//   routes = config.prod;
-// }
-// console.log('routes: ', routes);
-
-const routes = config.prod;
+const ec2_route = "http://ec2-3-15-24-53.us-east-2.compute.amazonaws.com"
 
 app.use(cors());
 
