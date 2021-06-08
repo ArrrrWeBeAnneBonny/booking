@@ -12,9 +12,6 @@ const app = express();
 
 const mode = process.env.NODE_ENV;
 console.log(`hi bebe you are in ${mode}`);
-//removed from start scripts btw: NODE_ENV=production
-
-const ec2_route = "http://ec2-3-15-24-53.us-east-2.compute.amazonaws.com"
 
 app.use(cors());
 
@@ -31,10 +28,9 @@ app.get('/booking', async (req, res) => {
   let init = {};
   const booked = await db_helper.findBookedArray({ campId: campId });
   init.booked = booked.booked;
-  await axios.get(`${routes.overview}/pricing`, { params: { campId: campId } })
+  await axios.get(`${config.production.overview}/pricing`, { params: { campId: campId } })
     .then(async (response) => {
       const site = response.data;
-      console.log('site line 33: ', site);
       init.average_price_per_night = site.averagePricePerNight;
       init.how_far_out = site.monthsOutForBooking;
       init.weeknight_discount = site.weeknightDiscount;
