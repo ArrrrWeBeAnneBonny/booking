@@ -6,22 +6,21 @@ const cors = require('cors');
 const db = require('../database/index.js');
 const db_helper = require('../database/helper.js');
 const helper = require('./helper.js');
+const config = require('../config.js');
 
 const app = express();
 
 const mode = process.env.NODE_ENV;
 console.log(`hi bebe you are in ${mode}`);
 
-// const ec2 = 'https://ec2-3-142-79-153.us-east-2.compute.amazonaws.com';
-
 app.use(cors());
-app.use(cors({ origin: ec2 }));
 
 app.use(express.static(__dirname + '/../client/dist'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/booking', async (req, res) => {
+  console.log('inside /booking')
   let campId = parseInt(req.query.campId);
   if (!campId) {
     campId = 0;
@@ -29,10 +28,9 @@ app.get('/booking', async (req, res) => {
   let init = {};
   const booked = await db_helper.findBookedArray({ campId: campId });
   init.booked = booked.booked;
-  await axios.get('http://localhost:3003/overview/pricing', { params: { campId: campId } })
+  await axios.get(`${config.production.overview}/pricing`, { params: { campId: campId } })
     .then(async (response) => {
       const site = response.data;
-      console.log('site line 33: ', site);
       init.average_price_per_night = site.averagePricePerNight;
       init.how_far_out = site.monthsOutForBooking;
       init.weeknight_discount = site.weeknightDiscount;
@@ -43,6 +41,7 @@ app.get('/booking', async (req, res) => {
       res.status(200).send(JSON.stringify(init));
     })
     .catch(async (err) => {
+      console.log('catching err')
       let init = await db_helper.find({campId: 0});
       init.average_price_per_night = init.price_per_night;
       delete init.price_per_night;
@@ -50,7 +49,7 @@ app.get('/booking', async (req, res) => {
       init.inventory = data.inventory;
       init.current_month = data.current_month;
       res.status(200).send(JSON.stringify(init));
-      });
+    });
 });
 
 app.get('/booking/bookingTotal', async (req, res) => {

@@ -15,14 +15,18 @@
     "altStart": "NODE_ENV=development node ./server/index.js",
     "build-dev": "webpack --config webpack.dev.js",
     "build-prod": "webpack --config webpack.prod.js",
-    "test": "jest"
+    "test": "jest",
+    "deploy": "aws s3 sync ./client/dist/ s3://fec-booking"
   },
   "dependencies": {
+    "aws-sdk": "^2.922.0",
     "axios": "^0.21.1",
     "body-parser": "^1.19.0",
     "browser-sync": "^2.26.14",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "grunt-aws-s3": "^2.0.2",
+    "grunt-s3": "^0.2.0-alpha.3",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
     "mongoose": "^5.12.7",

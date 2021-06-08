@@ -2,18 +2,21 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 const { seedDb } = require('./seed.js');
 
-const mode = process.env.NODE_ENV;
+// const mode = process.env.NODE_ENV;
 
-console.log('mode: ', mode);
+// console.log('mode: ', mode);
 
-let uri = '';
+// let uri = '';
 
-if (mode === "development" || mode === undefined) {
-  uri = "mongodb://localhost:27017/booking";
-} else if (mode === "production") {
-  uri = "mongodb://mongo:27017/booking";
-}
-console.log('connection uri: ', uri);
+// if (mode === "development" || mode === undefined) {
+//   uri = "mongodb://localhost:27017/booking";
+// } else if (mode === "production") {
+//   uri = "mongodb://mongo:27017/booking";
+
+// }
+// console.log('connection uri: ', uri);
+
+const uri = "mongodb://localhost/booking";
 
 mongoose.connect(uri, {
   useNewUrlParser: true,

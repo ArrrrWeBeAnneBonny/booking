@@ -3,6 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
 import moment from 'moment';
+import config from '../../server/config.js';
 
 import CheckInCal from './components/CheckInCal.jsx';
 import CheckOutCal from './components/CheckOutCal.jsx';
@@ -52,13 +53,7 @@ class Booking extends React.Component {
   }
 
   init() {
-    let url = '';
-    if (process.env.NODE_ENV === 'production') {
-      url += 'http://ec2-3-142-79-153.us-east-2.compute.amazonaws.com';
-    } else if (process.env.NODE_ENV === 'development') {
-      url += 'http://localhost:3002/booking'
-    }
-    axios.get(url)
+    axios.get(`/booking`)
     .then(({data}) => {
       const {
         campId,
