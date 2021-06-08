@@ -3,7 +3,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
 import moment from 'moment';
-import config from '../../server/config.js';
 
 import CheckInCal from './components/CheckInCal.jsx';
 import CheckOutCal from './components/CheckOutCal.jsx';
@@ -11,6 +10,7 @@ import Guests from './components/Guests.jsx';
 import BookingButton from './components/BookingButton.jsx';
 import BookingTotal from './components/BookingTotal.jsx';
 
+//Jun 08
 class Booking extends React.Component {
 
   constructor(props) {
@@ -18,6 +18,7 @@ class Booking extends React.Component {
 
     this.state = {
       campId: 0,
+      today: '',
       average_price_per_night: 0,
       calculated_average_price_per_night: 0,
       how_far_out: 0,
@@ -26,6 +27,7 @@ class Booking extends React.Component {
       cleaning_fee: 0,
       max_guests: 0,
       current_month: 0,
+      month_string: '',
       inventory: [],
       check_in_clicked: false,
       checkIn_picked: false,
@@ -42,7 +44,7 @@ class Booking extends React.Component {
 
     this.init= this.init.bind(this);
     this.click = this.click.bind(this);
-    this.makeISODate= this.makeISODate.bind(this);
+    this.update= this.update.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.bookingTotal = this.bookingTotal.bind(this);
     this.checkOut = this.checkOut.bind(this);
@@ -66,8 +68,10 @@ class Booking extends React.Component {
         current_month,
         inventory
       } = data;
+      const today = moment().format().slice(8, 10);
       this.setState({
         campId,
+        today,
         average_price_per_night,
         how_far_out,
         weeknight_discount,
@@ -114,22 +118,17 @@ class Booking extends React.Component {
         // Book button
   }
 
-  makeISODate(day, month) {
-    const date = new Date();
-    const hour = date.getHours();
-    const min = date.getMinutes();
-    const sec = date.getSeconds();
-    const ISO_string =`2021-${month}-${day}T${hour}:${min}.${sec}93Z`;
-    console.log('ISO_string: ', ISO_string)
+  update(checkInMonth_string, checkInDay) {
+    const date = checkInMonth_string + ' ' + checkInDay;
     if (this.state.check_in_date === '') {
       this.setState({
         checkIn_picked: !this.state.checkIn_picked,
-        check_in_date: ISO_string
+        check_in_date: date
       });
     } else {
       this.setState({
         checkOut_picked: !this.state.checkOut_picked,
-        check_out_date: ISO_string
+        check_out_date: date
       });
     }
   }
@@ -145,10 +144,7 @@ class Booking extends React.Component {
   }
 
   render() {
-    // console.log('picked: ', this.state.checkIn_picked)
-    // console.log('in d: ', this.state.check_in_date)
-    // console.log('picked: ', this.state.checkOut_picked)
-    // console.log('out d: ', this.state.check_out_date)
+    console.log('init state: ', this.state)
     if (this.state.checkOut_picked) {
       return (
         <div>
@@ -232,7 +228,7 @@ class Booking extends React.Component {
                       campId={this.state.campId}
                       inventory={this.state.inventory}
                       onSubmit={this.handleSubmit}
-                      update={this.makeISODate}
+                      update={this.update}
                       />
                     </div>
                     <div>
@@ -276,11 +272,11 @@ class Booking extends React.Component {
                     </div>
                     <div>
                       <CheckInCal
-                        month={this.state.current_month}
+                        current_month={this.state.current_month}
                         campId={this.state.campId}
                         inventory={this.state.inventory}
                         submit={this.handleSubmit}
-                        update={this.makeISODate}
+                        update={this.update}
                       />
                     </div>
                     <div>

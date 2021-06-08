@@ -371,9 +371,21 @@ button, html input[type="button"], input[type="reset"], input[type="submit"] {
 }
 
 /* calendar */
-.datepickers.open {
+.currentDatePickerMonth {
+  width: 145px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  font-size: 1.4rem;
+}
+/* .datepickers.open {
+  height: 300px;
+}
+.row.datepickers.open {
+  margin-left: -10px;
+  margin-right: -10px;
   height: 300px;
   position: initial;
+  border-bottom: 1px solid #ebebeb;
 }
 .datepickers {
   background-color: #fff;
@@ -393,11 +405,12 @@ button, html input[type="button"], input[type="reset"], input[type="submit"] {
 }
 .datepicker-container {
   position: relative;
-  border-bottom: 1px solid #ebebeb;
+
 }
 .datepicker.datepicker-inline {
   width: 100%;
   padding: 0;
+  height: 300px;
 }
 .loading {
   padding-top: 130px;
@@ -425,7 +438,7 @@ button, html input[type="button"], input[type="reset"], input[type="submit"] {
   border: 1px solid #ebebeb;
   width: auto;
   height: 36px;
-}
+} */
 table {
   display: table;
   text-indent: initial;

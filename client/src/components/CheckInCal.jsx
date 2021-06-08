@@ -6,27 +6,88 @@ class CheckInCal extends React.Component {
     super(props);
 
     this.state = {
-      month_numb : this.props.month,
-      today: 0
+      today: '',
+      booked: [],
+      current_month_inventory: [],
+      current_month_numb: 0,
+      clicked_month_numb: 0,
+      current_month_string: '',
+      clicked_month_string: '',
+      abbreviated_clicked_month_string: '',
+      nextClicked: false
     };
 
+    this.init = this.init.bind(this);
     this.click = this.click.bind(this);
+    this.nextClick = this.nextClick.bind(this);
+    this.prevClick = this.prevClick.bind(this);
+    this.convertMonthToAbbreviatedString = this.convertMonthToAbbreviatedString.bind(this);
     this.convertMonthToString = this.convertMonthToString.bind(this);
     this.getSundays= this.getSundays.bind(this);
     this.createMonth = this.createMonth.bind(this);
   }
 
+  componentDidMount() {
+    this.init();
+  }
+
+  init() {
+  const today = moment().format().slice(8, 10);
+  const current_month_string = this.convertMonthToString(this.props.current_month);
+  const current_month_inventory = this.createMonth(today, this.props.current_month);
+    this.setState({
+      today: today,
+      booked: this.props.inventory,
+      current_month_inventory: current_month_inventory,
+      current_month_numb: this.props.current_month,
+      clicked_month_numb: 0,
+      current_month_string: current_month_string,
+      clicked_month_string: '',
+      abbreviated_month_string: '',
+    });
+  }
+
   click(e) {
     e.preventDefault();
-    const cell = e.target.innerText;
-    console.log('cell: ', cell);
-    const month = this.state.month_numb;
-    console.log('month: ', month);
-    this.props.update(cell, month);
+    const checkInDay = e.target.innerText;
+    const checkInMonth_number = this.state.clicked_month_numb;
+    const checkInMonth_string = this.convertMonthToString(checkInMonth_number);
+    console.log('checkIndat: ', checkInDay, 'checkInMonth_number: ', checkInMonth_number, 'checkInMonth_string: ', checkInMonth_string )
+    this.props.update(checkInMonth_string, checkInDay);
+  }
+
+  nextClick(e) {
+    e.preventDefault();
+    const newCurrentMonth = this.state.current_month_numb + 1;
+    console.log('newCurrentMonth: ', newCurrentMonth)
+    const newCurrentMonthtring = this.convertMonthToString(newCurrentMonth);
+    console.log('newCurrentAbbreviatedMonthtring : ', newCurrentMonthtring)
+    this.setState({
+      current_month_numb: newCurrentMonth,
+      current_month_string: newCurrentMonthtring,
+      nextClicked: !this.state.nextClicked
+    });
+  }
+
+  prevClick(e) {
+    e.preventDefault();
+    const newCurrentMonth = this.state.current_month_numb - 1;
+    const newCurrentMonthtring = this.convertMonthToString(newCurrentMonth);
+    this.setState({
+      current_month_numb: newCurrentMonth,
+      current_month_string: newCurrentMonthtring,
+    });
+  }
+
+  convertMonthToAbbreviatedString(month) {
+    const months = ['Jan', "Feb", "Mar", "Apr", "May", "Jun",  "Jul", "Aug", "Sep", "Oct", "Nov", "Dece"]
+    const current = months[(month - 1)];
+    return current;
   }
 
   convertMonthToString(month) {
-    const months = ['January', "February", "March", "April", "May", "June",  "July", "August", "September", "October", "November", "December"]
+    const months = ['January', "February", "March", "April", "May", "June",  "July", "August", "September",
+    "October", "November", "December"]
     const current = months[(month - 1)];
     return current;
   }
@@ -110,19 +171,24 @@ class CheckInCal extends React.Component {
     return days;
   }
 
+  // currentInventory() {
+  //   const inventory = this.createMonth(today, month_numb);
+  //   console.log('inventory: ', inventory);
+  //   const week_one = inventory.slice(0, 7);
+  //   const week_two = inventory.slice(7, 14);
+  //   const week_three = inventory.slice(14, 21);
+  //   const week_four = inventory.slice(21, 28);
+  //   const week_five = inventory.slice(28, 35);
+  //   const week_six = inventory.slice(35, 42);
+  // }
+
   render() {
-    const style = {
-      display: 'block'
+    console.log('checkin cal state: ', this.state);
+    const prevStyle = {
+
     };
-    const prev = {
-      visibility: 'hidden'
-    };
-    const booked = this.props.inventory;
-    const hoy = moment().format('dddd');
-    const month_numb = this.props.month;
-    const month = this.convertMonthToString(this.props.month);
-    const today = moment().format().slice(8, 10);
-    const inventory = this.createMonth(today, month_numb);
+    const inventory = this.createMonth(this.state.today, this.state.current_month_numb);
+    console.log('inventory: ', inventory);
     const week_one = inventory.slice(0, 7);
     const week_two = inventory.slice(7, 14);
     const week_three = inventory.slice(14, 21);
@@ -130,18 +196,18 @@ class CheckInCal extends React.Component {
     const week_five = inventory.slice(28, 35);
     const week_six = inventory.slice(35, 42);
     return (
-      <div className="row datepickers open">
+      <div className="datepickers open">
         <div className="loading"></div>
-        <div className="inner">
-          <div className="datepicker-container" id="datepicker-container-check-in" style={style}>
+        <div>
+          <div className="datepicker-container" id="datepicker-container-check-in">
             <div className="datepicker datepicker-inline">
-              <div className="datepicker-days" style={style}>
+              <div className="datepicker-days">
                 <table className="table-condensed">
                   <thead>
                     <tr>
-                      <th className="prev" style={prev}></th>
-                      <th>{month} 2021</th>
-                      <th className="next">></th>
+                      {this.state.nextClicked && <th className="prev" onClick={this.prevClick}>prev</th>}
+                      <th className="currentDatePickerMonth">{this.state.current_month_string} 2021</th>
+                      <th onClick={this.nextClick} className="next">></th>
                     </tr>
                     <tr >
                       <th className="dow">S</th>
