@@ -6,7 +6,7 @@ const cors = require('cors');
 const db = require('../database/index.js');
 const db_helper = require('../database/helper.js');
 const helper = require('./helper.js');
-const config = require('./config.js');
+const config = require('../config.js');
 
 const app = express();
 

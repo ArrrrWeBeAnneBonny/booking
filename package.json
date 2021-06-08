@@ -15,7 +15,8 @@
     "altStart": "NODE_ENV=development node ./server/index.js",
     "build-dev": "webpack --config webpack.dev.js",
     "build-prod": "webpack --config webpack.prod.js",
-    "test": "jest"
+    "test": "jest",
+    "deploy": "aws s3 sync ./client/dist/ s3://fec-booking"
   },
   "dependencies": {
     "aws-sdk": "^2.922.0",
