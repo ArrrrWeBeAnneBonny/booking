@@ -17,7 +17,6 @@ class Guests extends React.Component {
           <div className="label">Guests</div>
           <span className="value">2 guests</span>
           <select name="group_size" id="group_size" className="invisible-input">
-            <option value="1">1 guest</option>
             <option value="2">2 guests</option>
             <option value="3">3 guests</option>
             <option value="4">4 guests</option>

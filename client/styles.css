@@ -12,13 +12,15 @@ body {
 }
 #booking {
   display: flex;
+  position: absolute;
   flex-direction: column;
   font-weight: 400;
   min-height: 100vh;
   height: 100%;
+  width: 100%;
   margin-right: auto;
   margin-left: auto;
-  padding-left: 10px;
+  padding-left: 1500px;
   padding-right: 10px;
 }
 aside.booking-container {
@@ -298,6 +300,9 @@ button, html input[type="button"], input[type="reset"], input[type="submit"] {
   white-space: nowrap;
   vertical-align: baseline;
 }
+.clicked {
+  background-color: #F3F3F3
+}
 .value {
   white-space: nowrap;
   color: #333333;
@@ -376,6 +381,31 @@ button, html input[type="button"], input[type="reset"], input[type="submit"] {
   padding-top: 4px;
   padding-bottom: 4px;
   font-size: 1.4rem;
+}
+.clickedCell {
+  background-color: #40D9AC
+}
+.available {
+  font-size: 1.2em;
+  font-weight: 300;
+  display: table-cell;
+  vertical-align: inherit;
+  border:
+  1px solid #ebebeb;
+  text-align: center;
+}
+.available:hover {
+  background-color: #40D9AC;
+}
+.unavailable {
+  font-size: 1.2em;
+  font-weight: 300;
+  display: table-cell;
+  vertical-align: inherit;
+  border:
+  1px solid #ebebeb;
+  text-align: center;
+  color: #757575
 }
 /* .datepickers.open {
   height: 300px;
@@ -514,9 +544,6 @@ td {
   vertical-align: inherit;
   width: auto;
   height: 36px;
-}
-td.old {
-  color: #999999;
 }
 td.disabled {
   color: #757575 !important;
