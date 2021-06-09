@@ -22,13 +22,13 @@ body {
   width: 50%;
   margin-right: auto;
   margin-left: auto;
-  padding-left: 650px;
+  padding-left: 1000px;
   padding-right: 10px;
 }
 aside.booking-container {
   display: block;
   position: absolute;
-  width: 100%;
+  width: 70%;
   top: -61px;
   z-index: 19;
   margin-top: 0px;
