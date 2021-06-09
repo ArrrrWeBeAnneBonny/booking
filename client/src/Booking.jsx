@@ -130,7 +130,6 @@ class Booking extends React.Component {
 
   update(checkInMonth_string, checkInDay) {
     const date = checkInMonth_string + ' ' + checkInDay;
-    console.log('date: ', date);
     if (this.state.check_in_date === '') {
       this.setState({
         checkIn_picked: !this.state.checkIn_picked,
@@ -229,7 +228,7 @@ class Booking extends React.Component {
                     <div className="row">
                       <div className="col-xs-6 check-in-btn">
                         <div className="label" onClick={this.click}>Check in</div>
-                        <span className="value">{this.state.date}</span>
+                        <span className="value">{this.state.check_in_date}</span>
                       </div>
                       <div className="col-xs-6 check-out-btn">
                         <div className="label clicked" onClick={this.click}>Check out</div>
@@ -238,7 +237,8 @@ class Booking extends React.Component {
                     </div>
                     <div>
                       <CheckOutCal
-                      month={this.state.current_month}
+                      current_month={this.state.current_month}
+                      checkIn={this.state.check_in_date}
                       campId={this.state.campId}
                       inventory={this.state.inventory}
                       onSubmit={this.handleSubmit}

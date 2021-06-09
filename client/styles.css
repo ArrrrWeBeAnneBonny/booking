@@ -12,13 +12,15 @@ body {
 }
 #booking {
   display: flex;
+  position: absolute;
   flex-direction: column;
   font-weight: 400;
   min-height: 100vh;
   height: 100%;
+  width: 100%;
   margin-right: auto;
   margin-left: auto;
-  padding-left: 10px;
+  padding-left: 1500px;
   padding-right: 10px;
 }
 aside.booking-container {

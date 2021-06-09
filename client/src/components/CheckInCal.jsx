@@ -187,7 +187,6 @@ class CheckInCal extends React.Component {
     return days;
   }
 
-  //invoked when next/previous clicked
   availableDays(booked, inventory) {
     const numb_today = Number(this.state.today);
     const today_index = inventory.indexOf(numb_today);
@@ -199,7 +198,6 @@ class CheckInCal extends React.Component {
           future_copy.splice(index, 1);
         }
       });
-      console.log('future: ', future, 'inventory: ', inventory, 'booked: ', booked[0], 'future_copy: ', future_copy);
     } else {
       const diff = this.state.current_month_numb - this.this.state.current_month;
       future_copy.forEach((el, index) => {
@@ -207,7 +205,6 @@ class CheckInCal extends React.Component {
           future_copy.splice(index, 1);
         }
       });
-      console.log('future: ', future, 'booked: ', booked[diff], 'future_copy: ', future_copy);
     }
     this.setState({
       future: future,
@@ -218,7 +215,6 @@ class CheckInCal extends React.Component {
   }
 
   render() {
-    console.log(this.state)
     const inventory = this.createMonth(this.state.today, this.state.current_month_numb);
     const week_one = inventory.slice(0, 7);
     const week_two = inventory.slice(7, 14);
@@ -254,7 +250,7 @@ class CheckInCal extends React.Component {
                     <tbody>
                       <tr onClick={this.click}>
                         {week_one.map((numb, index) => {
-                          return this.state.current_month_available.indexOf(numb) > -1 ?
+                          return this.state.current_month_available.indexOf(numb) === -1 ?
                           <td key={index} className="unavailable" data-item={numb}>{numb}</td>
                           :
                           <td key={index} className="available" data-item={numb}>{numb}</td>
@@ -263,7 +259,7 @@ class CheckInCal extends React.Component {
                       </tr>
                       <tr onClick={this.click}>
                         {week_two.map((numb, index) => {
-                          return this.state.current_month_available.indexOf(numb) > -1 ?
+                          return this.state.current_month_available.indexOf(numb) === -1 ?
                           <td key={index} className="unavailable" data-item={numb}>{numb}</td>
                           :
                           <td key={index} className="available" data-item={numb}>{numb}</td>
@@ -272,7 +268,7 @@ class CheckInCal extends React.Component {
                       </tr>
                       <tr onClick={this.click}>
                         {week_three.map((numb, index) => {
-                          return this.state.current_month_available.indexOf(numb) > -1 ?
+                          return this.state.current_month_available.indexOf(numb) === -1 ?
                           <td key={index} className="unavailable" data-item={numb}>{numb}</td>
                           :
                           <td key={index} className="available" data-item={numb}>{numb}</td>
@@ -281,7 +277,7 @@ class CheckInCal extends React.Component {
                       </tr>
                       <tr onClick={this.click}>
                         {week_four.map((numb, index) => {
-                          return this.state.current_month_available.indexOf(numb) > -1 ?
+                          return this.state.current_month_available.indexOf(numb) === -1 ?
                           <td key={index} className="unavailable" data-item={numb}>{numb}</td>
                           :
                           <td key={index} className="available" data-item={numb}>{numb}</td>
@@ -290,7 +286,7 @@ class CheckInCal extends React.Component {
                       </tr>
                       <tr onClick={this.click}>
                         {week_five.map((numb, index) => {
-                          return this.state.prev_month_unavailable || this.state.current_month_available.indexOf(numb) > -1 ?
+                          return this.state.current_month_available.indexOf(numb) === -1 ?
                           <td key={index} className="unavailable" data-item={numb}>{numb}</td>
                           :
                           <td key={index} className="available" data-item={numb}>{numb}</td>
@@ -299,7 +295,7 @@ class CheckInCal extends React.Component {
                       </tr>
                       <tr onClick={this.click}>
                         {week_six.map((numb, index) => {
-                          return this.state.current_month_available.indexOf(numb) > -1 ?
+                          return this.state.current_month_available.indexOf(numb) === -1 ?
                           <td key={index} className="unavailable" data-item={numb}>{numb}</td>
                           :
                           <td key={index} className="available" data-item={numb}>{numb}</td>
