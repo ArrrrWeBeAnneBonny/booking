@@ -1,7 +1,5 @@
 import React from 'react';
 import moment from 'moment';
-
-//on init gray out all prev dates
 class CheckInCal extends React.Component {
 
   constructor(props) {
@@ -16,6 +14,7 @@ class CheckInCal extends React.Component {
       clicked_month_numb: 0,
       current_month_string: '',
       clicked_month_string: '',
+      clicked_date: '',
       abbreviated_clicked_month_string: '',
       nextClicked: false,
       future: [],
@@ -67,7 +66,8 @@ class CheckInCal extends React.Component {
   click(e) {
     e.preventDefault();
     const checkInMonth_string = this.convertMonthToString(this.state.current_month_numb);
-    const checkInDay = e.target.innerText;
+    const checkInDay = Number(e.target.innerText);
+    console.log('checkInDay: ', checkInDay)
     this.props.update(checkInMonth_string, checkInDay);
   }
 

@@ -34,6 +34,8 @@ class Booking extends React.Component {
       checkOut_picked: false,
       check_in_date: '',
       check_out_date: '',
+      check_in_date_numb: 0,
+      check_out_date_numb: 0,
       book_button: false,
       total_days: 0,
       average_price_X_nights: 0,
@@ -128,17 +130,19 @@ class Booking extends React.Component {
         // Subtotal
   }
 
-  update(checkInMonth_string, checkInDay) {
-    const date = checkInMonth_string + ' ' + checkInDay;
+  update(checkInMonth_string, checkDay) {
+    const date = checkInMonth_string + ' ' + checkDay;
     if (this.state.check_in_date === '') {
       this.setState({
         checkIn_picked: !this.state.checkIn_picked,
-        check_in_date: date
+        check_in_date: date,
+        check_in_date_numb: checkDay
       });
     } else {
       this.setState({
         checkOut_picked: !this.state.checkOut_picked,
-        check_out_date: date
+        check_out_date: date,
+        check_out_date_numb: checkDay
       });
     }
   }
@@ -157,7 +161,6 @@ class Booking extends React.Component {
   }
 
   render() {
-    console.log('main state: ', this.state)
     if (this.state.checkOut_picked) {
       return (
         <div>

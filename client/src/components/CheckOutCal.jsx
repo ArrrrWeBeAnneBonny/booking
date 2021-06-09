@@ -1,5 +1,7 @@
 import React from 'react';
 import moment from 'moment';
+
+//checkIn date on checkOut cal is green
 class CheckOutCal extends React.Component {
   constructor(props) {
     super(props);
@@ -216,7 +218,6 @@ class CheckOutCal extends React.Component {
   }
 
   render() {
-    console.log(this.state)
     const inventory = this.createMonth(this.state.today, this.state.current_month_numb);
     const week_one = inventory.slice(0, 7);
     const week_two = inventory.slice(7, 14);
@@ -224,6 +225,7 @@ class CheckOutCal extends React.Component {
     const week_four = inventory.slice(21, 28);
     const week_five = inventory.slice(28, 35);
     const week_six = inventory.slice(35, 42);
+    const checkIn = this.state.checkIn;
     if (this.state.initialized) {
       return (
         <div className="datepickers open">
