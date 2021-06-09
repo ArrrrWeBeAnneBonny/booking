@@ -4,23 +4,25 @@ html {
   position: relative;
 }
 body {
+  font-family: "Calibre", Helvetica, Arial, sans-serif;
   display: flex;
   flex-direction: column;
+  font-size: 16px;
   font-weight: 400;
   min-height: 100vh;
   height: 100%;
+  line-height: 1.42;
+  color: #333333;
+  background-color: white;
 }
 #booking {
   display: flex;
   position: absolute;
-  flex-direction: column;
-  font-weight: 400;
-  min-height: 100vh;
   height: 100%;
   width: 50%;
   margin-right: auto;
   margin-left: auto;
-  padding-left: 800px;
+  padding-left: 650px;
   padding-right: 10px;
 }
 aside.booking-container {
@@ -29,7 +31,7 @@ aside.booking-container {
   width: 100%;
   top: -61px;
   z-index: 19;
-  margin-top: 360px;
+  margin-top: 0px;
 }
 .booking {
   position: relative;
@@ -57,7 +59,6 @@ aside.booking-container {
   padding-top: 0;
   padding-right: 0;
   padding-left: 0;
-  font-size: 1.8rem;
   color: #333333;
   font-weight: 500;
   display: inline-block;
@@ -81,7 +82,7 @@ aside.booking-container {
   -webkit-box-shadow: 0 1px 5px rgb(0 0 0 / 5%);
   box-shadow: 0 1px 5px rgb(0 0 0 / 5%);
   min-width: 150px;
-  font-size: 1.8rem;
+  /* font-size: 1.8rem; */
 }
 
 /* pricing */
@@ -96,7 +97,7 @@ aside.booking-container {
   justify-content: space-between;
   width: 100%;
   min-width: 150px;
-  font-size: 1.8rem;
+  font-size: 16px;
 }
 .content {
   display: flex;
@@ -107,7 +108,7 @@ aside.booking-container {
   align-items: center;
   display: flex;
   color: #333333;
-  font-size: 2.6rem;
+  font-size: 16px;
   line-height: 0.9;
   margin: 2px 0 0;
   min-height: 2.6rem;
@@ -188,11 +189,10 @@ ul {
   height: 100%;
 }
 
-
 /* buttons */
 .book-cta {
   min-width: 150px;
-  font-size: 1.8rem;
+  font-size: 16px;
 }
 .btn-primary.btn-flashy {
   border: 3px solid #40d9ac;
@@ -220,10 +220,15 @@ ul {
   transition: background-color 0.3s ease 0s, border-color 0.4s ease 0s, color 0.4s ease 0s;
   user-select: none;
 }
+.btn:hover {
+  border: 3px solid #40d9ac;
+  color: #40d9ac;
+  background-color: #fff;
+}
 #booking-btn {
   padding: 10px 15px;
   position: relative;
-  font-size: 1.2em;
+  font-size: 16px;
   margin-bottom: 0;
   text-align: center;
   vertical-align: middle;
@@ -233,6 +238,11 @@ ul {
   border: 1px solid transparent;
   white-space: nowrap;
   user-select: none;
+}
+#booking-btn:hover {
+  border: 3px solid #40d9ac;
+  color: #40d9ac;
+  background-color: #fff;
 }
 .btn-block {
   display: block;
@@ -250,9 +260,9 @@ button, html input[type="button"], input[type="reset"], input[type="submit"] {
 }
 .check-in-btn {
   box-sizing: border-box;
-  font-size: 1.8rem;
   width: 50%;
   text-align: left;
+  font-size: 85%;
   cursor: pointer;
   border-right: 1px solid #ebebeb;
   border-bottom: 1px solid #ebebeb;
@@ -260,9 +270,9 @@ button, html input[type="button"], input[type="reset"], input[type="submit"] {
 }
 .check-out-btn {
   box-sizing: border-box;
-  font-size: 1.8rem;
   width: 50%;
   text-align: left;
+  font-size: 85%;
   cursor: pointer;
   border-right: 1px solid #ebebeb;
   border-bottom: 1px solid #ebebeb;
@@ -278,7 +288,7 @@ button, html input[type="button"], input[type="reset"], input[type="submit"] {
   padding-top: 0;
   padding-right: 0;
   padding-left: 0;
-  font-size: 1.5rem;
+  /* font-size: 1.5rem; */
   color: #333333;
   font-weight: 500;
   text-align: left;
@@ -306,12 +316,54 @@ button, html input[type="button"], input[type="reset"], input[type="submit"] {
 .value {
   white-space: nowrap;
   color: #333333;
-  font-size: 1.5rem;
+  font-size: 85%;
   color: #A0A0A0;
   float: left;
   display: inline-block;
   text-align: center;
 }
+.value.guests {
+  text-align: left;
+}
+/* .invisible-input {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  filter: alpha(opacity=0);
+  font-size: 16px;
+} */
+select {
+  text-rendering: auto;
+  text-transform: none;
+  color: -internal-light-dark(black, white);
+  letter-spacing: normal;
+  word-spacing: normal;
+  text-transform: none;
+  text-indent: 0px;
+  text-shadow: none;
+  display: inline-block;
+  text-align: right;
+  appearance: auto;
+  box-sizing: border-box;
+  align-items: right;
+  white-space: pre;
+  background-color: -internal-light-dark(rgb(255, 255, 255), rgb(59, 59, 59));
+  cursor: default;
+  margin: 0em;
+  font: 400 13.3333px Arial;
+  border-radius: 0px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: -internal-light-dark(rgb(118, 118, 118), rgb(133, 133, 133));
+  border-image: initial;
+}
+select:not(:-internal-list-box) {
+  overflow: visible !important;
+}
+
 /* layout */
 .row {
   margin-left: -10px;
@@ -374,7 +426,9 @@ button, html input[type="button"], input[type="reset"], input[type="submit"] {
 .hidden {
   display: none !important;
 }
-
+.hc-select {
+  position: relative;
+}
 /* calendar */
 .currentDatePickerMonth {
   width: 145px;
