@@ -24,14 +24,18 @@ class Guests extends React.Component {
         <div className="col-xs-12 guests hc-select">
           <div className="label">Guests</div>
           <br></br>
-          <span className="value guests">{this.state.guest_numb} guests</span>
-          <select name="group_size" onChange={this.handleSubmit}>
-            <option value="1">1 guest</option>
-            <option value="2">2 guests</option>
-            <option value="3">3 guests</option>
-            <option value="4">4 guests</option>
-            <option value="5">5 guests</option>
-          </select>
+          <div>
+            <span className="value guests">{this.state.guest_numb} guests
+              <select className="select" name="group_size" onChange={this.handleSubmit} id="select">
+                <option disabled selected value></option>
+                <option value="1">1 guest</option>
+                <option value="2">2 guests</option>
+                <option value="3">3 guests</option>
+                <option value="4">4 guests</option>
+                <option value="5">5 guests</option>
+              </select>
+            </span>
+          </div>
         </div>
       </div>
     );

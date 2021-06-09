@@ -288,7 +288,6 @@ button, html input[type="button"], input[type="reset"], input[type="submit"] {
   padding-top: 0;
   padding-right: 0;
   padding-left: 0;
-  /* font-size: 1.5rem; */
   color: #333333;
   font-weight: 500;
   text-align: left;
@@ -325,45 +324,14 @@ button, html input[type="button"], input[type="reset"], input[type="submit"] {
 .value.guests {
   text-align: left;
 }
-/* .invisible-input {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  height: 100%;
-  width: 100%;
-  opacity: 0;
-  filter: alpha(opacity=0);
-  font-size: 16px;
-} */
 select {
-  text-rendering: auto;
-  text-transform: none;
-  color: -internal-light-dark(black, white);
-  letter-spacing: normal;
-  word-spacing: normal;
-  text-transform: none;
-  text-indent: 0px;
-  text-shadow: none;
-  display: inline-block;
-  text-align: right;
-  appearance: auto;
-  box-sizing: border-box;
-  align-items: right;
-  white-space: pre;
-  background-color: -internal-light-dark(rgb(255, 255, 255), rgb(59, 59, 59));
   cursor: default;
-  margin: 0em;
   font: 400 13.3333px Arial;
-  border-radius: 0px;
-  border-width: 1px;
-  border-style: solid;
-  border-color: -internal-light-dark(rgb(118, 118, 118), rgb(133, 133, 133));
-  border-image: initial;
+  margin-left: 450px;
 }
-select:not(:-internal-list-box) {
-  overflow: visible !important;
+.select:focus {
+  outline: none;
 }
-
 /* layout */
 .row {
   margin-left: -10px;
