@@ -17,10 +17,10 @@ body {
   font-weight: 400;
   min-height: 100vh;
   height: 100%;
-  width: 100%;
+  width: 50%;
   margin-right: auto;
   margin-left: auto;
-  padding-left: 1500px;
+  padding-left: 800px;
   padding-right: 10px;
 }
 aside.booking-container {
