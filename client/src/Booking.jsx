@@ -104,7 +104,18 @@ class Booking extends React.Component {
 
   checkOut(e) {
     e.preventDefault();
-    let bookingTotal = {};
+    //totl numb of dys
+    //find out which dys of week booking occurs on
+      //pply weeknight discount?
+      //subtotl without clening fee
+      //subtot w clening fee
+    // const bookingTotal = {
+    //   check_in_date: this.state.check_in_date,
+    //   check_out_date: this.state.check_out_date,
+    //   guests:
+    //   Cleaningfee:,
+    //   Subtotal:
+    // };
     //update state with:
       //apply weeknight discount?
         // avg price per night (weenight discount applied)?
@@ -115,11 +126,11 @@ class Booking extends React.Component {
         // Average price × 2 nights
         // Cleaning fee
         // Subtotal
-        // Book button
   }
 
   update(checkInMonth_string, checkInDay) {
     const date = checkInMonth_string + ' ' + checkInDay;
+    console.log('date: ', date);
     if (this.state.check_in_date === '') {
       this.setState({
         checkIn_picked: !this.state.checkIn_picked,
@@ -134,7 +145,10 @@ class Booking extends React.Component {
   }
 
   bookingTotal() {
-    return axios.get('http://localhost:3002/booking/bookingTotal', { params: { campId: this.state.campId } })
+    return axios.get('http://localhost:3002/booking/bookingTotal', { params: {
+      campId: this.state.campId,
+      }
+    })
     .then(({data}) => {
       console.log(data)
       })
@@ -144,7 +158,7 @@ class Booking extends React.Component {
   }
 
   render() {
-    console.log('init state: ', this.state)
+    console.log('main state: ', this.state)
     if (this.state.checkOut_picked) {
       return (
         <div>
@@ -215,11 +229,11 @@ class Booking extends React.Component {
                     <div className="row">
                       <div className="col-xs-6 check-in-btn">
                         <div className="label" onClick={this.click}>Check in</div>
-                        <span className="value" onClick={this.click}>Select date</span>
+                        <span className="value">{this.state.date}</span>
                       </div>
                       <div className="col-xs-6 check-out-btn">
-                        <div className="label" onClick={this.click}>Check out</div>
-                        <span className="value" onClick={this.click}>Select date</span>
+                        <div className="label clicked" onClick={this.click}>Check out</div>
+                        <span className="value clicked" onClick={this.click}>Select date</span>
                       </div>
                     </div>
                     <div>
@@ -262,8 +276,8 @@ class Booking extends React.Component {
                   <div className="well-content dates-and-guests">
                     <div className="row">
                       <div className="col-xs-6 check-in-btn">
-                        <div className="label" onClick={this.click}>Check in</div>
-                        <span className="value" onClick={this.click}>Select date</span>
+                        <div className="label clicked" onClick={this.click}>Check in</div>
+                        <span className="value clicked" onClick={this.click}>Select date</span>
                       </div>
                       <div className="col-xs-6 check-out-btn">
                         <div className="label" onClick={this.click}>Check out</div>
