@@ -16,12 +16,13 @@ class Guests extends React.Component {
     this.setState({
       guest_numb: guest
     });
+    this.props.onSubmit(e, guest);
   }
 
   render() {
     return (
       <div className="row">
-        <div className="col-xs-12 guests hc-select">
+        <div className="guests">
           <div className="label">Guests</div>
           <br></br>
           <div>

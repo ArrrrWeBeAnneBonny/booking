@@ -9,8 +9,6 @@ import CheckOutCal from './components/CheckOutCal.jsx';
 import Guests from './components/Guests.jsx';
 import BookingButton from './components/BookingButton.jsx';
 import BookingTotal from './components/BookingTotal.jsx';
-
-//Jun 08
 class Booking extends React.Component {
 
   constructor(props) {
@@ -18,6 +16,7 @@ class Booking extends React.Component {
 
     this.state = {
       campId: 0,
+      updateCheckIn: false,
       today: '',
       average_price_per_night: 0,
       discounted_night: 0,
@@ -41,7 +40,7 @@ class Booking extends React.Component {
       check_in_date_numb: 0,
       check_out_date_numb: 0,
       book_button: false,
-      guests: 0,
+      guests: 2,
       total_days: 0,
       average_price_X_nights: 0,
       subTotal: 0,
@@ -53,6 +52,8 @@ class Booking extends React.Component {
     this.update= this.update.bind(this);
     this.bookingTotal = this.bookingTotal.bind(this);
     this.bookingCalculations = this.bookingCalculations.bind(this);
+    this.submit = this.submit.bind(this);
+    this.updateCheckIn = this.updateCheckIn.bind(this);
   }
 
   componentDidMount() {
@@ -99,30 +100,21 @@ class Booking extends React.Component {
     })
   }
 
-  checkOut(e) {
+  submit(e, guests) {
     e.preventDefault();
-    //totl numb of dys
-    //find out which dys of week booking occurs on
-      //pply weeknight discount?
-      //subtotl without clening fee
-      //subtot w clening fee
-    // const bookingTotal = {
-    //   check_in_date: this.state.check_in_date,
-    //   check_out_date: this.state.check_out_date,
-    //   guests:
-    //   Cleaningfee:,
-    //   Subtotal:
-    // };
-    //update state with:
-      //apply weeknight discount?
-        // avg price per night (weenight discount applied)?
-        //total_days
-        // checkin
-        // checkout
-        // guests (can still modify)
-        // Average price × 2 nights
-        // Cleaning fee
-        // Subtotal
+    const new_guests_numb = Number(guests);
+    this.setState({
+      guests: new_guests_numb
+    });
+  }
+
+  updateCheckIn(e) {
+    console.log('inside updte checkin')
+    e.preventDefault();
+    this.setState({
+      checkIn_picked: !this.state.checkIn_picked,
+      updateCheckIn: !this.state.updateCheckIn
+    });
   }
 
   update(checkInMonth_string, checkDay, month_numb) {
@@ -195,11 +187,8 @@ class Booking extends React.Component {
         weeknight_count ++;
       }
     })
-    console.log('weeknight_count: ', weeknight_count);
     let discount = this.state.weeknight_discount;
-    console.log('discount: ', discount)
     let discounted_night = (this.state.weeknight_discount * this.state.average_price_per_night);
-    console.log('discounted_night: ', discounted_night);
     let subTotal = discount * (this.state.average_price_per_night * weeknight_count);
     let total = 0;
     if (weeknight_count === strRange.length) {
@@ -238,6 +227,7 @@ class Booking extends React.Component {
   }
 
   render() {
+    console.log('main state: ', this.state);
     if (this.state.checkOut_picked) {
       return (
         <div>
@@ -248,7 +238,7 @@ class Booking extends React.Component {
                     <div className="price-banner">
                       <div>
                         <h5 className="nightly-price">${this.state.calculated_average_price_per_night}</h5>
-                        <span>per night (2 guests)</span>
+                        <span>per night ({this.state.guests} guests)</span>
                       </div>
                       <div className="hidden">
                         <button className="btn btn-primary btn-flashy book-cta"></button>
@@ -269,7 +259,10 @@ class Booking extends React.Component {
                       </div>
                     </div>
                     <div>
-                      <Guests guests={this.state.max_guests} />
+                      <Guests
+                        guests={this.state.max_guests}
+                        onSubmit={this.submit}
+                      />
                     </div>
                     <div>
                       <BookingTotal
@@ -297,7 +290,7 @@ class Booking extends React.Component {
                     <div className="price-banner">
                       <div>
                         <h5 className="nightly-price">${this.state.average_price_per_night}</h5>
-                        <span>per night (2 guests)</span>
+                        <span>per night ({this.state.guests} guests)</span>
                       </div>
                       <div className="hidden">
                         <button className="btn btn-primary btn-flashy book-cta"></button>
@@ -309,18 +302,19 @@ class Booking extends React.Component {
                   <div className="well-content dates-and-guests">
                     <div className="row">
                       <div className="col-xs-6 check-in-btn">
-                        <div className="label" onClick={this.click}>Check in</div>
-                        <span className="value">{this.state.check_in_date}</span>
+                        <div className="label" onClick={this.updateCheckIn}>Check in</div>
+                        <span className="value" onClick={this.updateCheckIn}>{this.state.check_in_date}</span>
                       </div>
                       <div className="col-xs-6 check-out-btn">
-                        <div className="label clicked" onClick={this.click}>Check out</div>
-                        <span className="value clicked" onClick={this.click}>Select date</span>
+                        <div className="label clicked">Check out</div>
+                        <span className="value clicked">Select date</span>
                       </div>
                     </div>
                     <div>
                       <CheckOutCal
                       current_month={this.state.current_month}
                       checkIn={this.state.check_in_date}
+                      checkInNumb={this.state.check_in_date_numb}
                       campId={this.state.campId}
                       inventory={this.state.inventory}
                       onSubmit={this.handleSubmit}
@@ -328,7 +322,10 @@ class Booking extends React.Component {
                       />
                     </div>
                     <div>
-                      <Guests guests={this.state.max_guests} />
+                      <Guests
+                        guests={this.state.max_guests}
+                        onSubmit={this.submit}
+                      />
                     </div>
                   </div>
                 </div>
@@ -336,7 +333,7 @@ class Booking extends React.Component {
           </aside>
         </div>
       );
-    } else if (this.state.check_in_clicked) {
+    } else if (this.state.check_in_clicked || this.state.updateCheckIn) {
       return (
         <div>
           <aside className="booking-container">
@@ -346,7 +343,7 @@ class Booking extends React.Component {
                     <div className="price-banner">
                       <div>
                         <h5 className="nightly-price">${this.state.average_price_per_night}</h5>
-                        <span>per night (2 guests)</span>
+                        <span>per night ({this.state.guests} guests)</span>
                       </div>
                       <div className="hidden">
                         <button className="btn btn-primary btn-flashy book-cta"></button>
@@ -376,7 +373,10 @@ class Booking extends React.Component {
                       />
                     </div>
                     <div>
-                      <Guests guests={this.state.max_guests} />
+                      <Guests
+                        guests={this.state.max_guests}
+                        onSubmit={this.submit}
+                      />
                     </div>
                   </div>
                 </div>
@@ -394,7 +394,7 @@ class Booking extends React.Component {
                     <div className="price-banner">
                       <div>
                         <h5 className="nightly-price">${this.state.average_price_per_night}</h5>
-                        <span>per night (2 guests)</span>
+                        <span>per night ({this.state.guests} guests)</span>
                       </div>
                       <div className="hidden">
                         <button className="btn btn-primary btn-flashy book-cta"></button>
@@ -416,7 +416,10 @@ class Booking extends React.Component {
                     </div>
                     <div className="row datepickers">
                     </div>
-                    <Guests guests={this.state.max_guests} />
+                    <Guests
+                      guests={this.state.max_guests}
+                      onSubmit={this.submit}
+                    />
                   </div>
                     <BookingButton bookingType={this.state.instant_book} />
                 </div>

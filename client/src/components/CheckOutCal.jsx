@@ -1,13 +1,12 @@
 import React from 'react';
 import moment from 'moment';
-
-//checkIn date on checkOut cal is green
 class CheckOutCal extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
       checkIn: this.props.checkIn,
+      checkInNumb: this.props.checkInNumb,
       today: moment().format().slice(8, 10),
       booked: this.props.inventory,
       current_month_inventory: [],
@@ -187,7 +186,6 @@ class CheckOutCal extends React.Component {
     return days;
   }
 
-  //invoked when next/previous clicked
   availableDays(booked, inventory) {
     const numb_today = Number(this.state.today);
     const today_index = inventory.indexOf(numb_today);
@@ -225,7 +223,6 @@ class CheckOutCal extends React.Component {
     const week_four = inventory.slice(21, 28);
     const week_five = inventory.slice(28, 35);
     const week_six = inventory.slice(35, 42);
-    const checkIn = this.state.checkIn;
     if (this.state.initialized) {
       return (
         <div>
@@ -250,12 +247,16 @@ class CheckOutCal extends React.Component {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr onClick={this.click}>
+                    <tr>
                       {week_one.map((numb, index) => {
-                        return this.state.current_month_available.indexOf(numb) === -1 ?
-                        <td key={index} className="unavailable" data-item={numb}>{numb}</td>
-                        :
-                        <td key={index} className="available" data-item={numb}>{numb}</td>
+                        if (numb === this.state.checkInNumb) {
+                          return <td key={index} className="selected" data-item={numb}>{numb}</td>
+                        } else {
+                          return this.state.current_month_available.indexOf(numb) === -1 ?
+                          <td key={index} className="unavailable" data-item={numb}>{numb}</td>
+                          :
+                          <td onClick={this.click} key={index} className="available" data-item={numb}>{numb}</td>
+                        }
                         }
                       )}
                     </tr>
