@@ -47,6 +47,7 @@ class CheckInCal extends React.Component {
     const future = current_month_inventory.slice(today_index, current_month_inventory.length);
     const prev = current_month_inventory.slice(0, today_index);
     let future_copy = future.slice();
+    console.log('this.props.inventory: ', this.props.inventory)
     const booked = this.props.inventory;
     future_copy.forEach((el, index) => {
       if (booked[0].indexOf(el) > -1) {

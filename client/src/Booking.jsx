@@ -166,7 +166,7 @@ class Booking extends React.Component {
         <div>
           <aside className="booking-container">
             <div className="booking">
-                <div className="banner-container">
+                <div className="pricing-container">
                   <div className="nightly-pricing-container">
                     <div className="price-banner">
                       <div>
@@ -213,7 +213,7 @@ class Booking extends React.Component {
         <div>
           <aside className="booking-container">
             <div className="booking">
-                <div className="banner-container">
+                <div className="pricing-container">
                   <div className="nightly-pricing-container">
                     <div className="price-banner">
                       <div>
@@ -262,7 +262,7 @@ class Booking extends React.Component {
         <div>
           <aside className="booking-container">
             <div className="booking">
-                <div className="banner-container">
+                <div className="pricing-container">
                   <div className="nightly-pricing-container">
                     <div className="price-banner">
                       <div>
@@ -310,7 +310,7 @@ class Booking extends React.Component {
         <div>
           <aside className="booking-container">
             <div className="booking">
-                <div className="banner-container">
+                <div className="pricing-container">
                   <div className="nightly-pricing-container">
                     <div className="price-banner">
                       <div>
