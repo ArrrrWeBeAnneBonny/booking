@@ -47,7 +47,6 @@ class CheckInCal extends React.Component {
     const future = current_month_inventory.slice(today_index, current_month_inventory.length);
     const prev = current_month_inventory.slice(0, today_index);
     let future_copy = future.slice();
-    console.log('this.props.inventory: ', this.props.inventory)
     const booked = this.props.inventory;
     future_copy.forEach((el, index) => {
       if (booked[0].indexOf(el) > -1) {
@@ -68,8 +67,7 @@ class CheckInCal extends React.Component {
     e.preventDefault();
     const checkInMonth_string = this.convertMonthToString(this.state.current_month_numb);
     const checkInDay = Number(e.target.innerText);
-    console.log('checkInDay: ', checkInDay)
-    this.props.update(checkInMonth_string, checkInDay);
+    this.props.update(checkInMonth_string, checkInDay, this.state.current_month_numb);
   }
 
   nextClick(e) {
@@ -216,6 +214,7 @@ class CheckInCal extends React.Component {
   }
 
   render() {
+    console.log('this.state in checkin cal: ', this.state)
     const inventory = this.createMonth(this.state.today, this.state.current_month_numb);
     const week_one = inventory.slice(0, 7);
     const week_two = inventory.slice(7, 14);
@@ -225,87 +224,84 @@ class CheckInCal extends React.Component {
     const week_six = inventory.slice(35, 42);
     if (this.state.initialized) {
       return (
-        <div className="datepickers open">
-          <div className="loading"></div>
-          <div>
-            <div className="datepicker-container" id="datepicker-container-check-in">
-              <div className="datepicker datepicker-inline">
-                <div className="datepicker-days">
-                  <table className="table-condensed">
-                    <thead>
-                      <tr>
-                        {this.state.nextClicked && <th className="prev" onClick={this.prevClick}>></th>}
-                        <th className="currentDatePickerMonth">{this.state.current_month_string} 2021</th>
-                        <th onClick={this.nextClick} className="next">></th>
-                      </tr>
-                      <tr >
-                        <th className="dow">S</th>
-                        <th className="dow">M</th>
-                        <th className="dow">T</th>
-                        <th className="dow">W</th>
-                        <th className="dow">TH</th>
-                        <th className="dow">F</th>
-                        <th className="dow">S</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr onClick={this.click}>
-                        {week_one.map((numb, index) => {
-                          return this.state.current_month_available.indexOf(numb) === -1 ?
-                          <td key={index} className="unavailable" data-item={numb}>{numb}</td>
-                          :
-                          <td key={index} className="available" data-item={numb}>{numb}</td>
-                          }
-                        )}
-                      </tr>
-                      <tr onClick={this.click}>
-                        {week_two.map((numb, index) => {
-                          return this.state.current_month_available.indexOf(numb) === -1 ?
-                          <td key={index} className="unavailable" data-item={numb}>{numb}</td>
-                          :
-                          <td key={index} className="available" data-item={numb}>{numb}</td>
-                          }
-                        )}
-                      </tr>
-                      <tr onClick={this.click}>
-                        {week_three.map((numb, index) => {
-                          return this.state.current_month_available.indexOf(numb) === -1 ?
-                          <td key={index} className="unavailable" data-item={numb}>{numb}</td>
-                          :
-                          <td key={index} className="available" data-item={numb}>{numb}</td>
-                          }
-                        )}
-                      </tr>
-                      <tr onClick={this.click}>
-                        {week_four.map((numb, index) => {
-                          return this.state.current_month_available.indexOf(numb) === -1 ?
-                          <td key={index} className="unavailable" data-item={numb}>{numb}</td>
-                          :
-                          <td key={index} className="available" data-item={numb}>{numb}</td>
-                          }
-                        )}
-                      </tr>
-                      <tr onClick={this.click}>
-                        {week_five.map((numb, index) => {
-                          return this.state.current_month_available.indexOf(numb) === -1 ?
-                          <td key={index} className="unavailable" data-item={numb}>{numb}</td>
-                          :
-                          <td key={index} className="available" data-item={numb}>{numb}</td>
-                          }
-                        )}
-                      </tr>
-                      <tr onClick={this.click}>
-                        {week_six.map((numb, index) => {
-                          return this.state.current_month_available.indexOf(numb) === -1 ?
-                          <td key={index} className="unavailable" data-item={numb}>{numb}</td>
-                          :
-                          <td key={index} className="available" data-item={numb}>{numb}</td>
-                          }
-                        )}
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
+        <div>
+          <div className="datepicker-container" id="datepicker-container-check-in">
+            <div className="datepicker datepicker-inline">
+              <div className="datepicker-days">
+                <table className="table-condensed">
+                  <thead>
+                    <tr>
+                      {this.state.nextClicked && <th className="prev" onClick={this.prevClick}>></th>}
+                      <th className="currentDatePickerMonth">{this.state.current_month_string} 2021</th>
+                      <th onClick={this.nextClick} className="next">></th>
+                    </tr>
+                    <tr >
+                      <th className="dow">S</th>
+                      <th className="dow">M</th>
+                      <th className="dow">T</th>
+                      <th className="dow">W</th>
+                      <th className="dow">TH</th>
+                      <th className="dow">F</th>
+                      <th className="dow">S</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr onClick={this.click}>
+                      {week_one.map((numb, index) => {
+                        return this.state.current_month_available.indexOf(numb) === -1 ?
+                        <td key={index} className="unavailable" data-item={numb}>{numb}</td>
+                        :
+                        <td key={index} className="available" data-item={numb}>{numb}</td>
+                        }
+                      )}
+                    </tr>
+                    <tr onClick={this.click}>
+                      {week_two.map((numb, index) => {
+                        return this.state.current_month_available.indexOf(numb) === -1 ?
+                        <td key={index} className="unavailable" data-item={numb}>{numb}</td>
+                        :
+                        <td key={index} className="available" data-item={numb}>{numb}</td>
+                        }
+                      )}
+                    </tr>
+                    <tr onClick={this.click}>
+                      {week_three.map((numb, index) => {
+                        return this.state.current_month_available.indexOf(numb) === -1 ?
+                        <td key={index} className="unavailable" data-item={numb}>{numb}</td>
+                        :
+                        <td key={index} className="available" data-item={numb}>{numb}</td>
+                        }
+                      )}
+                    </tr>
+                    <tr onClick={this.click}>
+                      {week_four.map((numb, index) => {
+                        return this.state.current_month_available.indexOf(numb) === -1 ?
+                        <td key={index} className="unavailable" data-item={numb}>{numb}</td>
+                        :
+                        <td key={index} className="available" data-item={numb}>{numb}</td>
+                        }
+                      )}
+                    </tr>
+                    <tr onClick={this.click}>
+                      {week_five.map((numb, index) => {
+                        return this.state.current_month_available.indexOf(numb) === -1 ?
+                        <td key={index} className="unavailable" data-item={numb}>{numb}</td>
+                        :
+                        <td key={index} className="available" data-item={numb}>{numb}</td>
+                        }
+                      )}
+                    </tr>
+                    <tr onClick={this.click}>
+                      {week_six.map((numb, index) => {
+                        return this.state.current_month_available.indexOf(numb) === -1 ?
+                        <td key={index} className="unavailable" data-item={numb}>{numb}</td>
+                        :
+                        <td key={index} className="available" data-item={numb}>{numb}</td>
+                        }
+                      )}
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>

@@ -387,12 +387,14 @@ select {
 .hc-select {
   position: relative;
 }
-/* calendar */
 .currentDatePickerMonth {
   width: 145px;
   padding-top: 4px;
   padding-bottom: 4px;
   font-size: 1.4rem;
+  border-radius: 0;
+  height: auto;
+  text-align: center;
 }
 .clickedCell {
   background-color: #40D9AC
@@ -402,14 +404,15 @@ select {
   font-weight: 300;
   display: table-cell;
   vertical-align: inherit;
-  border:
-  1px solid #ebebeb;
+  border: 1px solid #ebebeb;
   text-align: center;
+  background-color: white;
 }
 .available:hover {
   background-color: #40D9AC;
 }
 .unavailable {
+  position: relative;
   font-size: 1.2em;
   font-weight: 300;
   display: table-cell;
@@ -419,55 +422,20 @@ select {
   text-align: center;
   color: #757575
 }
-/* .datepickers.open {
-  height: 300px;
+.unavailable:before {
+  position: absolute;
+  content: "";
+  left: 0;
+  top: 50%;
+  right: 0;
+  border-top: 2px solid;
+  border-color: black;
+  -webkit-transform:rotate(40deg);
+  -moz-transform:rotate(40deg);
+  -ms-transform:rotate(40deg);
+  -o-transform:rotate(40deg);
+  transform:rotate(40deg);
 }
-.row.datepickers.open {
-  margin-left: -10px;
-  margin-right: -10px;
-  height: 300px;
-  position: initial;
-  border-bottom: 1px solid #ebebeb;
-}
-.datepickers {
-  background-color: #fff;
-  position: relative;
-  z-index: 2;
-  height: 0;
-  top: 0;
-  overflow-y: hidden;
-  transition: height 0.3s ease 0s;
-  padding-top: 130px;
-}
-.datepicker {
-  border-radius: 4px;
-  direction: ltr;
-  cursor: pointer;
-  text-align: center;
-}
-.datepicker-container {
-  position: relative;
-
-}
-.datepicker.datepicker-inline {
-  width: 100%;
-  padding: 0;
-  height: 300px;
-}
-.datepicker.datepicker-inline {
-  width: 100%;
-  background-color: #f3f3f3;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  border-radius: 0;
-  height: auto;
-  font-size: 0.95em;
-  font-size: 1.2em;
-  font-weight: 300;
-  border: 1px solid #ebebeb;
-  width: auto;
-  height: 36px;
-} */
 table {
   display: table;
   text-indent: initial;

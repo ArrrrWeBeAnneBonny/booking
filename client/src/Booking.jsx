@@ -20,6 +20,7 @@ class Booking extends React.Component {
       campId: 0,
       today: '',
       average_price_per_night: 0,
+      discounted_night: 0,
       calculated_average_price_per_night: 0,
       how_far_out: 0,
       weeknight_discount: 0,
@@ -34,22 +35,24 @@ class Booking extends React.Component {
       checkOut_picked: false,
       check_in_date: '',
       check_out_date: '',
+      checkin_string: '',
+      checkout_string: '',
+      range: [],
       check_in_date_numb: 0,
       check_out_date_numb: 0,
       book_button: false,
+      guests: 0,
       total_days: 0,
       average_price_X_nights: 0,
       subTotal: 0,
-      Total: 0,
-      initialized: false
+      Total: 0
     };
 
     this.init= this.init.bind(this);
     this.click = this.click.bind(this);
     this.update= this.update.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
     this.bookingTotal = this.bookingTotal.bind(this);
-    this.checkOut = this.checkOut.bind(this);
+    this.bookingCalculations = this.bookingCalculations.bind(this);
   }
 
   componentDidMount() {
@@ -81,8 +84,7 @@ class Booking extends React.Component {
         cleaning_fee,
         max_guests,
         current_month,
-        inventory,
-        initialized: !this.state.initialized
+        inventory
       });
     })
     .catch((err) => {
@@ -95,13 +97,6 @@ class Booking extends React.Component {
     this.setState({
       check_in_clicked: !this.state.check_in_clicked
     })
-  }
-
-  handleSubmit(e) {
-    console.log('e: ', e);
-    e.preventDefault();
-    this.makeISODate();
-    this.bookingTotal();
   }
 
   checkOut(e) {
@@ -130,26 +125,108 @@ class Booking extends React.Component {
         // Subtotal
   }
 
-  update(checkInMonth_string, checkDay) {
+  update(checkInMonth_string, checkDay, month_numb) {
     const date = checkInMonth_string + ' ' + checkDay;
+    let str =  '';
+    if (month_numb <= 9) {
+      str += `0${month_numb}`;
+    } else {
+      str += `${month_numb}`;
+    }
+    if (checkDay <= 9) {
+      str += `/0${checkDay}/21`;
+    } else {
+      str += `/${checkDay}/21`;
+    }
     if (this.state.check_in_date === '') {
       this.setState({
         checkIn_picked: !this.state.checkIn_picked,
         check_in_date: date,
-        check_in_date_numb: checkDay
+        check_in_date_numb: checkDay,
+        checkin_string: str
       });
     } else {
       this.setState({
         checkOut_picked: !this.state.checkOut_picked,
         check_out_date: date,
-        check_out_date_numb: checkDay
+        check_out_date_numb: checkDay,
+        checkout_string: str
       });
+      this.bookingCalculations(this.state.check_in_date_numb, checkDay, this.state.checkin_string, str)
     }
+  }
+
+  bookingCalculations(inNumb, outNumb, checkinstring, checkoutstring) {
+    const total_days = (outNumb - inNumb);
+    const inMonth = checkinstring.slice(0, 2);
+    const outMonth = checkinstring.slice(0, 2);
+    let range = [];
+    for (let i = (inNumb + 1); i < outNumb; i++) {
+      range.push(i);
+    }
+    let strRange = [];
+    strRange.push(checkinstring);
+    range.forEach(day => {
+      let str = '';
+      if (inMonth === outMonth) {
+        str += `${inMonth}`;
+        if (day <= 9) {
+          str += `/0${day}/21`;
+        } else {
+          str += `/${day}/21`;
+        }
+      } else {
+        str += `${outMonth}`;
+        if (day <= 9) {
+          str += `/0${day}/21`;
+        } else {
+          str += `/${day}/21`;
+        }
+      }
+      strRange.push(str)
+    });
+    let weeknight_count = 0;
+    strRange.push(checkoutstring);
+    strRange.forEach(str => {
+      const weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+      let day = new Date(str).toLocaleString('en-us', {weekday:'long'});
+      console.log('day: ', day);
+      if (weekdays.indexOf(day) > -1) {
+        weeknight_count ++;
+      }
+    })
+    console.log('weeknight_count: ', weeknight_count);
+    let discount = this.state.weeknight_discount;
+    console.log('discount: ', discount)
+    let discounted_night = (this.state.weeknight_discount * this.state.average_price_per_night);
+    console.log('discounted_night: ', discounted_night);
+    let subTotal = discount * (this.state.average_price_per_night * weeknight_count);
+    let total = 0;
+    if (weeknight_count === strRange.length) {
+      total = subTotal;
+    } else {
+      let diff = (strRange.length - weeknight_count);
+      while (diff > 0) {
+        total += this.state.average_price_per_night;
+        diff --;
+      }
+    }
+    total += this.state.cleaning_fee;
+    let calculated_average_price_per_night = (total / total_days);
+    console.log('total: ', total)
+    this.setState({
+      calculated_average_price_per_night: calculated_average_price_per_night,
+      discounted_night: discounted_night,
+      total_days: total_days,
+      subTotal: subTotal,
+      total: total
+    });
   }
 
   bookingTotal() {
     return axios.get('http://localhost:3002/booking/bookingTotal', { params: {
       campId: this.state.campId,
+      booking: this.state.booking
       }
     })
     .then(({data}) => {
@@ -197,8 +274,10 @@ class Booking extends React.Component {
                     <div>
                       <BookingTotal
                       number_nights={this.state.total_days}
-                      average_price_X_nights={this.state.average_price_X_nights}
+                      average_price_X_nights={this.state.calculated_average_price_per_night}
                       cleaning_fee={this.state.cleaning_fee}
+                      subTotal={this.state.subTotal}
+                      total={this.state.total}
                       />
                     </div>
                   </div>

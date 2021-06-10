@@ -21,6 +21,9 @@ class BookingTotal extends React.Component {
             <li className="subtotal-list-item s-fw--medium">Subtotal
               <div>{this.props.subTotal}</div>
             </li>
+            <li className="subtotal-list-item s-fw--medium">Total
+              <div>{this.props.total}</div>
+            </li>
           </ul>
         </div>
         <button id="booking-btn" className="btn btn-block btn-primary btn-flashy" type="button">Book</button>
