@@ -24,7 +24,6 @@ class Guests extends React.Component {
       <div className="row">
         <div className="guests">
           <div className="label">Guests</div>
-          <br></br>
           <div>
             <span className="value guests">{this.state.guest_numb} guests
               <select className="select" name="group_size" onChange={this.handleSubmit} id="select">

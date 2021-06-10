@@ -359,8 +359,8 @@ class Booking extends React.Component {
                         <span className="value clicked" onClick={this.click}>Select date</span>
                       </div>
                       <div className="col-xs-6 check-out-btn">
-                        <div className="label" onClick={this.click}>Check out</div>
-                        <span className="value" onClick={this.click}>Select date</span>
+                        <div className="label">Check out</div>
+                        <span className="value">Select date</span>
                       </div>
                     </div>
                     <div>
@@ -410,8 +410,8 @@ class Booking extends React.Component {
                         <span className="value" onClick={this.click}>Select date</span>
                       </div>
                       <div className="col-xs-6 check-out-btn">
-                        <div className="label" onClick={this.click}>Check out</div>
-                        <span className="value" onClick={this.click}>Select date</span>
+                        <div className="label">Check out</div>
+                        <span className="value">Select date</span>
                       </div>
                     </div>
                     <div className="row datepickers">
