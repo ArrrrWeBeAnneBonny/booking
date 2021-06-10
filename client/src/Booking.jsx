@@ -336,8 +336,6 @@ class Booking extends React.Component {
                       </div>
                     </div>
                     <div className="row datepickers">
-                      <div className="loading"></div>
-                      <div className="inner"></div>
                     </div>
                     <Guests guests={this.state.max_guests} />
                   </div>
