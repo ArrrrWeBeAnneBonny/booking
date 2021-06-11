@@ -2,5 +2,5 @@ node_modules
 .ds_store
 dist/
 notes.js
-config.js
+aws.config.js
 fonts/

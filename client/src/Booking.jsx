@@ -21,6 +21,8 @@ class Booking extends React.Component {
       average_price_per_night: 0,
       discounted_night: 0,
       calculated_average_price_per_night: 0,
+      calculated_average_price_x_days: 0,
+      sub: 0,
       how_far_out: 0,
       weeknight_discount: 0,
       instant_book: false,
@@ -190,6 +192,7 @@ class Booking extends React.Component {
     let discount = this.state.weeknight_discount;
     let discounted_night = (this.state.weeknight_discount * this.state.average_price_per_night);
     let subTotal = discount * (this.state.average_price_per_night * weeknight_count);
+    console.log('subTotal: ', subTotal)
     let total = 0;
     if (weeknight_count === strRange.length) {
       total = subTotal;
@@ -202,9 +205,12 @@ class Booking extends React.Component {
     }
     total += this.state.cleaning_fee;
     let calculated_average_price_per_night = (total / total_days);
+    const calculated_average_price_x_days = (calculated_average_price_per_night * total_days);
+    console.log('calculated_average_price_x_days: ', calculated_average_price_x_days);
     console.log('total: ', total)
     this.setState({
       calculated_average_price_per_night: calculated_average_price_per_night,
+      calculated_average_price_x_days: calculated_average_price_x_days,
       discounted_night: discounted_night,
       total_days: total_days,
       subTotal: subTotal,
@@ -266,6 +272,7 @@ class Booking extends React.Component {
                     </div>
                     <div>
                       <BookingTotal
+                      calculated_average_price_x_days={this.state.calculated_average_price_x_days}
                       number_nights={this.state.total_days}
                       average_price_X_nights={this.state.calculated_average_price_per_night}
                       cleaning_fee={this.state.cleaning_fee}
