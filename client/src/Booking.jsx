@@ -20,9 +20,10 @@ class Booking extends React.Component {
       today: '',
       average_price_per_night: 0,
       discounted_night: 0,
+      discount_applied_to_night: 0,
+      discountedSubTotal: 0,
       calculated_average_price_per_night: 0,
       calculated_average_price_x_days: 0,
-      sub: 0,
       how_far_out: 0,
       weeknight_discount: 0,
       instant_book: false,
@@ -184,31 +185,33 @@ class Booking extends React.Component {
     strRange.forEach(str => {
       const weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
       let day = new Date(str).toLocaleString('en-us', {weekday:'long'});
-      console.log('day: ', day);
       if (weekdays.indexOf(day) > -1) {
         weeknight_count ++;
       }
     })
-    let discount = this.state.weeknight_discount;
-    let discounted_night = (this.state.weeknight_discount * this.state.average_price_per_night);
-    let subTotal = discount * (this.state.average_price_per_night * weeknight_count);
-    console.log('subTotal: ', subTotal)
-    let total = 0;
+    const discounted_night = (this.state.weeknight_discount * this.state.average_price_per_night);
+    const discount_applied_to_night = (this.state.average_price_per_night - discounted_night);
+    const discountedSubTotal = (discount_applied_to_night * weeknight_count);
+    let subTotal = 0;
     if (weeknight_count === strRange.length) {
-      total = subTotal;
+      subTotal = discountedSubTotal;
     } else {
       let diff = (strRange.length - weeknight_count);
       while (diff > 0) {
-        total += this.state.average_price_per_night;
+        subTotal += this.state.average_price_per_night;
         diff --;
       }
     }
-    total += this.state.cleaning_fee;
-    let calculated_average_price_per_night = (total / total_days);
+    console.log('subTotal: ', subTotal);
+    const calculated_average_price_per_night = (subTotal / total_days);
     const calculated_average_price_x_days = (calculated_average_price_per_night * total_days);
-    console.log('calculated_average_price_x_days: ', calculated_average_price_x_days);
-    console.log('total: ', total)
+    console.log('subTotal : ', subTotal);
+    const total = (subTotal + this.state.cleaning_fee);
+    console.log('total: ', total);
     this.setState({
+      discounted_night: discounted_night,
+      discount_applied_to_night: discount_applied_to_night,
+      discountedSubTotal: discountedSubTotal,
       calculated_average_price_per_night: calculated_average_price_per_night,
       calculated_average_price_x_days: calculated_average_price_x_days,
       discounted_night: discounted_night,

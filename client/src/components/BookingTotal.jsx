@@ -12,7 +12,7 @@ class BookingTotal extends React.Component {
         <div className=" bottom-content pricing">
           <ul className="summary">
             <li>
-              <div className="summary-content">Average price x {this.props.number_nights} nights ${this.props.average_price_X_nights}</div>
+              <div className="summary-content">Average price x {this.props.number_nights} nights ${this.props.calculated_average_price_x_days}</div>
             </li>
             <li>
               <div className="summary-content">Cleaning fee ${this.props.cleaning_fee}</div>
