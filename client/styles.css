@@ -307,6 +307,7 @@ button, html input[type="button"], input[type="reset"], input[type="submit"] {
   text-align: left;
   font-size: 85%;
   cursor: pointer;
+  padding-left: 10px;
   border-right: 1px solid #ebebeb;
   border-bottom: 1px solid #ebebeb;
   transition: background-color 0.3s ease 0s;
@@ -393,6 +394,7 @@ select {
   max-width: 317px;
 }
 .currentDatePickerMonth {
+  padding: 10px;
   padding-top: 4px;
   padding-bottom: 4px;
   font-size: 1.4rem;
