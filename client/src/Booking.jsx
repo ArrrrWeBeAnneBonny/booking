@@ -69,8 +69,9 @@ class Booking extends React.Component {
     let url = '';
     if (mode === 'development') {
       url += config.development.booking;
+    } else {
+      url += config.production.booking;
     }
-    console.log('url: ', url); //"http://localhost:3002"
     axios.get(`${url}/booking`)
     .then(({data}) => {
       const {
@@ -243,7 +244,6 @@ class Booking extends React.Component {
   }
 
   render() {
-    console.log('main state: ', this.state);
     if (this.state.checkOut_picked) {
       return (
         <div>
@@ -327,7 +327,7 @@ class Booking extends React.Component {
                         <span className="value clicked">Select date</span>
                       </div>
                     </div>
-                    <div classname="row">
+                    <div className="row">
                       <CheckOutCal
                       current_month={this.state.current_month}
                       checkIn={this.state.check_in_date}
@@ -368,7 +368,7 @@ class Booking extends React.Component {
                     </div>
                   </div>
                 </div>
-                <div className="well">
+                <div className="well open">
                   <div className="dates-and-guests">
                     <div className="row">
                       <div className="col-xs-6 check-in-btn">
@@ -380,19 +380,13 @@ class Booking extends React.Component {
                         <span className="value">Select date</span>
                       </div>
                     </div>
-                    <div classname="row">
+                    <div className="row">
                       <CheckInCal
                         current_month={this.state.current_month}
                         campId={this.state.campId}
                         inventory={this.state.inventory}
                         submit={this.handleSubmit}
                         update={this.update}
-                      />
-                    </div>
-                    <div>
-                      <Guests
-                        guests={this.state.max_guests}
-                        onSubmit={this.submit}
                       />
                     </div>
                   </div>

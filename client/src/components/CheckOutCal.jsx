@@ -5,9 +5,13 @@ class CheckOutCal extends React.Component {
     super(props);
 
     this.state = {
+      clicked: false,
+      clickedStyle: '#40D9AC',
+      checkInDay: 0,
       checkIn: this.props.checkIn,
       checkInNumb: this.props.checkInNumb,
       today: moment().format().slice(8, 10),
+      totalDaysInMonth: 0,
       booked: this.props.inventory,
       current_month_inventory: [],
       current_month: this.props.current_month,
@@ -15,6 +19,7 @@ class CheckOutCal extends React.Component {
       clicked_month_numb: 0,
       current_month_string: '',
       clicked_month_string: '',
+      clicked_date: '',
       abbreviated_clicked_month_string: '',
       nextClicked: false,
       future: [],
@@ -48,6 +53,7 @@ class CheckOutCal extends React.Component {
     const prev = current_month_inventory.slice(0, today_index);
     let future_copy = future.slice();
     const booked = this.props.inventory;
+    const totalDaysInMonth = this.getTotalDaysInMonth(this.props.current_month);
     future_copy.forEach((el, index) => {
       if (booked[0].indexOf(el) > -1) {
         future_copy.splice(index, 1);
@@ -55,6 +61,7 @@ class CheckOutCal extends React.Component {
     });
     this.setState({
       future: future,
+      totalDaysInMonth: totalDaysInMonth,
       prev_month_unavailable: prev,
       current_month_available: future_copy,
       current_month_inventory: current_month_inventory,
@@ -92,6 +99,21 @@ class CheckOutCal extends React.Component {
       current_month_numb: newCurrentMonth,
       current_month_string: newCurrentMonthtring,
     });
+  }
+
+  getTotalDaysInMonth(month) {
+    let days = 0;
+    if (month === 2) {
+      days = 28;
+    }
+    const thirty = [4, 6, 9, 11];
+    const thirtyOne = [1, 3, 5, 7, 8, 10, 12];
+    if (thirty.indexOf(month) === -1) {
+      days = 31;
+    } else {
+      days = 30;
+    }
+    return days;
   }
 
   convertMonthToAbbreviatedString(month) {
@@ -216,6 +238,9 @@ class CheckOutCal extends React.Component {
   }
 
   render() {
+    console.log(this.state)
+    let startPast = this.state.current_month_available[0];
+    let endOfMonthIndex = this.state.current_month_inventory.lastIndexOf(this.state.totalDaysInMonth);
     const inventory = this.createMonth(this.state.today, this.state.current_month_numb);
     const week_one = inventory.slice(0, 7);
     const week_two = inventory.slice(7, 14);
@@ -226,13 +251,11 @@ class CheckOutCal extends React.Component {
     if (this.state.initialized) {
       return (
         <div>
-          <table>
+          <div className="currentDatePickerMonth next" onClick={this.nextClick}> {this.state.current_month_string}
+            2021 >
+          </div>
+          <table className="calendar">
             <thead>
-              <tr>
-                {this.state.nextClicked && <th onClick={this.prevClick}>></th>}
-                <th className="currentDatePickerMonth">{this.state.current_month_string} 2021</th>
-                <th onClick={this.nextClick} className="next">></th>
-              </tr>
               <tr >
                 <th className="dow">S</th>
                 <th className="dow">M</th>
@@ -246,10 +269,39 @@ class CheckOutCal extends React.Component {
             <tbody>
               <tr>
                 {week_one.map((numb, index) => {
+                  let numbIndex = this.state.current_month_inventory.indexOf(numb);
                   if (numb === this.state.checkInNumb) {
                     return <td key={index} className="selected" data-item={numb}>{numb}</td>
                   } else {
-                    return this.state.current_month_available.indexOf(numb) === -1 ?
+                    return this.state.current_month_available.indexOf(numb) === -1 || (numb < startPast && numbIndex <  endOfMonthIndex ) ?
+                    <td key={index} className="unavailable" data-item={numb}>{numb}</td>
+                    :
+                    <td onClick={this.click} key={index} className="available" data-item={numb}>{numb}</td>
+                  }
+                }
+              )}
+              </tr>
+              <tr onClick={this.click}>
+                {week_two.map((numb, index) => {
+                  let numbIndex = this.state.current_month_inventory.indexOf(numb);
+                  if (numb === this.state.checkInNumb) {
+                    return <td key={index} className="selected" data-item={numb}>{numb}</td>
+                  } else {
+                    return this.state.current_month_available.indexOf(numb) === -1 || (numb < startPast && numbIndex <  endOfMonthIndex ) ?
+                    <td key={index} className="unavailable" data-item={numb}>{numb}</td>
+                    :
+                    <td onClick={this.click} key={index} className="available" data-item={numb}>{numb}</td>
+                    }
+                  }
+                )}
+              </tr>
+              <tr onClick={this.click}>
+                {week_three.map((numb, index) => {
+                  let numbIndex = this.state.current_month_inventory.indexOf(numb);
+                  if (numb === this.state.checkInNumb) {
+                    return <td key={index} className="selected" data-item={numb}>{numb}</td>
+                  } else {
+                    return this.state.current_month_available.indexOf(numb) === -1 || (numb < startPast && numbIndex <  endOfMonthIndex ) ?
                     <td key={index} className="unavailable" data-item={numb}>{numb}</td>
                     :
                     <td onClick={this.click} key={index} className="available" data-item={numb}>{numb}</td>
@@ -258,47 +310,44 @@ class CheckOutCal extends React.Component {
                 )}
               </tr>
               <tr onClick={this.click}>
-                {week_two.map((numb, index) => {
-                  return this.state.current_month_available.indexOf(numb) === -1 ?
-                  <td key={index} className="unavailable" data-item={numb}>{numb}</td>
-                  :
-                  <td key={index} className="available" data-item={numb}>{numb}</td>
-                  }
-                )}
-              </tr>
-              <tr onClick={this.click}>
-                {week_three.map((numb, index) => {
-                  return this.state.current_month_available.indexOf(numb) === -1 ?
-                  <td key={index} className="unavailable" data-item={numb}>{numb}</td>
-                  :
-                  <td key={index} className="available" data-item={numb}>{numb}</td>
-                  }
-                )}
-              </tr>
-              <tr onClick={this.click}>
                 {week_four.map((numb, index) => {
-                  return this.state.current_month_available.indexOf(numb) === -1 ?
-                  <td key={index} className="unavailable" data-item={numb}>{numb}</td>
-                  :
-                  <td key={index} className="available" data-item={numb}>{numb}</td>
+                  let numbIndex = this.state.current_month_inventory.indexOf(numb);
+                  if (numb === this.state.checkInNumb) {
+                    return <td key={index} className="selected" data-item={numb}>{numb}</td>
+                  } else {
+                    return this.state.current_month_available.indexOf(numb) === -1 || (numb < startPast && numbIndex <  endOfMonthIndex ) ?
+                    <td key={index} className="unavailable" data-item={numb}>{numb}</td>
+                    :
+                    <td onClick={this.click} key={index} className="available" data-item={numb}>{numb}</td>
+                  }
                   }
                 )}
               </tr>
               <tr onClick={this.click}>
                 {week_five.map((numb, index) => {
-                  return this.state.current_month_available.indexOf(numb) === -1 ?
-                  <td key={index} className="unavailable" data-item={numb}>{numb}</td>
-                  :
-                  <td key={index} className="available" data-item={numb}>{numb}</td>
+                  let numbIndex = this.state.current_month_inventory.indexOf(numb);
+                  if (numb === this.state.checkInNumb) {
+                    return <td key={index} className="selected" data-item={numb}>{numb}</td>
+                  } else {
+                    return this.state.current_month_available.indexOf(numb) === -1 || (numb < startPast && numbIndex <  endOfMonthIndex ) ?
+                    <td key={index} className="unavailable" data-item={numb}>{numb}</td>
+                    :
+                    <td onClick={this.click} key={index} className="available" data-item={numb}>{numb}</td>
+                  }
                   }
                 )}
               </tr>
               <tr onClick={this.click}>
                 {week_six.map((numb, index) => {
-                  return this.state.current_month_available.indexOf(numb) === -1 ?
-                  <td key={index} className="unavailable" data-item={numb}>{numb}</td>
-                  :
-                  <td key={index} className="available" data-item={numb}>{numb}</td>
+                  let numbIndex = this.state.current_month_inventory.indexOf(numb);
+                  if (numb === this.state.checkInNumb) {
+                    return <td key={index} className="selected" data-item={numb}>{numb}</td>
+                  } else {
+                    return this.state.current_month_available.indexOf(numb) === -1 || (numb < startPast && numbIndex <  endOfMonthIndex ) ?
+                    <td key={index} className="unavailable" data-item={numb}>{numb}</td>
+                    :
+                    <td onClick={this.click} key={index} className="available" data-item={numb}>{numb}</td>
+                  }
                   }
                 )}
               </tr>
