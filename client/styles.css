@@ -44,6 +44,9 @@
   font-style:normal;
 }
 /* basic widget rules */
+* {
+  box-sizing: border-box;
+}
 html {
   min-height: 100%;
   position: relative;
@@ -63,17 +66,17 @@ body {
 #booking {
   display: flex;
   position: absolute;
+  max-width: 319px;
   height: 100%;
   width: 319px;
   margin-right: auto;
   margin-left: auto;
-  padding-left: 1000px;
+  padding-left: 1100px;
   padding-right: 10px;
 }
 aside.booking-container {
   position: absolute;
   width: 100%;
-  /* top: -61px; */
   top: 50px;
   z-index: 19;
 }
@@ -82,14 +85,11 @@ aside.booking-container {
   width: 319px;
   z-index: 99;
 }
-
 /* pricing */
 .pricing-container {
   min-height: 74px;
   background-color: #fff;
   color: #757575;
-  border: 1px solid #ebebeb;
-  -webkit-box-shadow: 0 1px 5px rgb(0 0 0 / 5%);
   box-shadow: 0 1px 5px rgb(0 0 0 / 5%);
   min-width: 150px;
 }
@@ -104,7 +104,7 @@ aside.booking-container {
   justify-content: space-between;
   width: 100%;
   min-width: 150px;
-  font-size: 16px;
+  font-size: 12px;
 }
 .content {
   display: flex;
@@ -166,24 +166,41 @@ ul {
   padding-bottom: 0;
   font-size: 1.8rem;
   box-shadow: 0 1px 5px rgb(0 0 0 / 5%);
-  padding-top: 10px;
-  padding-bottom: 10px;
+  background-color: white;
+  padding: 10px;
   color: #333333;
 }
+.datepickers {
+  height: 300px;
+  position: relative;
+  /* z-index: 2; */
+  top: 0;
+  transition: height 0.3s ease 0s;
+}
+.datepicker-container {
+  width: 317px !important;
+  display: block;
+  position: relative;
+  border-bottom: 1px solid #ebebeb;
+  border-radius: 4px;
+  direction: ltr;
+}
 .guests {
+  width: 100%;
   cursor: pointer;
   border-bottom: 1px solid #ebebeb;
-  transition: background-color 0.3s ease 0s;
-  width: 100%;
   float: left;
   min-height: 1px;
   padding-left: 10px;
   padding-right: 10px;
 }
+.th {
+  text-align: center;
+}
 .final-step {
   background-color: white;
   position: relative;
-  z-index: 2;
+  /* z-index: 2; */
   height: 0;
   top: 0;
   overflow-y: hidden;
@@ -316,7 +333,7 @@ button, html input[type="button"], input[type="reset"], input[type="submit"] {
   padding-top: 0;
   padding-right: 0;
   padding-left: 0;
-  font-size: 1.6rem;
+  font-size: 1.3rem;
   color: #333333;
   font-weight: 500;
   text-align: left;
@@ -327,7 +344,7 @@ button, html input[type="button"], input[type="reset"], input[type="submit"] {
 .value {
   white-space: nowrap;
   color: #333333;
-  font-size: 85%;
+  font-size: 1.2rem;
   color: #A0A0A0;
   display: inline-block;
   text-align: center;
@@ -335,18 +352,16 @@ button, html input[type="button"], input[type="reset"], input[type="submit"] {
 .value.guests {
   text-align: left;
   padding-left: 0px;
+  font-size: 1.2rem;
 }
 select {
   cursor: default;
   font: 400 13.3333px Arial;
-  margin-left: 125px;
+  margin-left: 115px;
 }
 #select {
   border:0px;
   outline:0px;
-}
-.select:focus {
-  outline: none;
 }
 /* layout */
 .row {
@@ -361,57 +376,25 @@ select {
   padding-right: 10px;
   width: 50%;
 }
-.col-xs-12 {
-  width: 100%;
-}
 .well {
-  font-size: 1.8rem;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  color: #333333;
-  background-color: white;
-  padding: 10px;
   z-index: 1;
   padding: 0;
   margin-bottom: 0;
   background-color: transparent;
   border: 0;
   transition: top 0.3s ease 0s;
-  border-bottom: 0;
-  border-top: 0;
-  box-shadow: 0 1px 5px rgb(0 0 0 / 5%);
-  background-color: white;
-  border: 1px solid #ebebeb;
-  padding: 10px;
-  font-weight: 500;
-  width: 50%;
-  cursor: pointer;
-  border-right: 1px solid #ebebeb;
-  border-bottom: 1px solid #ebebeb;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  color: #333333;
-  display: block;
-  padding-top: 0;
-  padding-right: 0;
-  padding-left: 0;
-  font-size: 1.8rem;
-  color: #333333;
-  font-weight: 500;
-  width: 100%;
-}
-.well-content {
-  border-bottom: 0;
-  border-top: 0;
-  background-color: white;
-  border: 1px solid #ebebeb;
-  padding: 10px;
+  box-shadow: none;
+  min-height: 20px;
+  border-radius: 2px;
 }
 .hidden {
   display: none !important;
 }
+.calendar-container {
+  display: block;
+  max-width: 317px;
+}
 .currentDatePickerMonth {
-  width: 145px;
   padding-top: 4px;
   padding-bottom: 4px;
   font-size: 1.4rem;
@@ -420,7 +403,7 @@ select {
   text-align: center;
 }
 .available {
-  font-size: 1.2em;
+  font-size: 1em;
   font-weight: 300;
   display: table-cell;
   vertical-align: inherit;
@@ -432,7 +415,7 @@ select {
   background-color: #40D9AC;
 }
 .selected {
-  font-size: 1.2em;
+  font-size: 1em;
   font-weight: 300;
   display: table-cell;
   vertical-align: inherit;
@@ -442,7 +425,7 @@ select {
 }
 .unavailable {
   position: relative;
-  font-size: 1.2em;
+  font-size: 1em;
   font-weight: 300;
   display: table-cell;
   vertical-align: inherit;
@@ -466,25 +449,18 @@ select {
   transform:rotate(40deg);
 }
 table {
+  overflow: scroll;
   display: table;
   text-indent: initial;
   border-color: grey;
-  width: 100%;
   background-color: #f3f3f3;
-  margin: 0;
-  border-collapse: collapse;
   border-spacing: 0;
   user-select: none;
   text-align: center;
   font-size: 0.95em;
-  font-size: 1.2em;
   font-weight: 300;
   border: 1px solid #ebebeb;
-  width: auto;
-  height: 36px;
-}
-.table-condensed {
-  padding: 5px;
+  height: 28px;
 }
 thead {
   display: table-header-group;
@@ -499,16 +475,16 @@ tr {
   border-color: inherit;
   cursor: pointer;
   text-align: center;
-  font-size: 1.2em;
+  font-size: 1.1em;
   font-weight: 300;
   border: 1px solid #ebebeb;
   width: auto;
-  height: 36px;
+  height: 28px;
   text-align: center;
 }
 th {
-  display: table-cell;
-  vertical-align: inherit;
+  /* display: table-cell; */
+  /* vertical-align: inherit; */
   font-weight: bold;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -520,11 +496,10 @@ th {
   text-align: center;
 }
 .next{
-  content: "";
   right: 8px;
 }
 th.dow {
-  height: 20px;
+  height: 18px;
   padding: 0;
   font-size: 0.8em;
   color: #4d4d4d;
@@ -539,25 +514,6 @@ td {
   display: table-cell;
   vertical-align: inherit;
   width: auto;
-  height: 36px;
-}
-td.disabled {
-  color: #757575 !important;
-  background-color: #ebebeb !important;
-  border-color: #ebebeb !important;
-  position: relative;
-  background: none;
-  cursor: default;
-}
-td.disabled:hover {
-  background: none;
-  cursor: default;
-}
-td.day {
-  font-size: 1.2em;
-  font-weight: 300;
-  border: 1px solid #ebebeb;
-  color: #333333;
-  background-color: #fff;
+  height: 28px;
 }
 

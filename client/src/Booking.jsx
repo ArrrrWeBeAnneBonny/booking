@@ -116,7 +116,10 @@ class Booking extends React.Component {
     e.preventDefault();
     this.setState({
       checkIn_picked: !this.state.checkIn_picked,
-      updateCheckIn: !this.state.updateCheckIn
+      updateCheckIn: !this.state.updateCheckIn,
+      check_in_date: '',
+      checkin_string: '',
+      check_in_date_numb: 0
     });
   }
 
@@ -202,12 +205,9 @@ class Booking extends React.Component {
         diff --;
       }
     }
-    console.log('subTotal: ', subTotal);
     const calculated_average_price_per_night = (subTotal / total_days);
     const calculated_average_price_x_days = (calculated_average_price_per_night * total_days);
-    console.log('subTotal : ', subTotal);
     const total = (subTotal + this.state.cleaning_fee);
-    console.log('total: ', total);
     this.setState({
       discounted_night: discounted_night,
       discount_applied_to_night: discount_applied_to_night,
@@ -309,7 +309,7 @@ class Booking extends React.Component {
                   </div>
                 </div>
                 <div className="well">
-                  <div className="well-content dates-and-guests">
+                  <div className="dates-and-guests">
                     <div className="row">
                       <div className="col-xs-6 check-in-btn">
                         <div className="label" onClick={this.updateCheckIn}>Check in</div>
@@ -320,7 +320,7 @@ class Booking extends React.Component {
                         <span className="value clicked">Select date</span>
                       </div>
                     </div>
-                    <div>
+                    <div classname="row">
                       <CheckOutCal
                       current_month={this.state.current_month}
                       checkIn={this.state.check_in_date}
@@ -362,7 +362,7 @@ class Booking extends React.Component {
                   </div>
                 </div>
                 <div className="well">
-                  <div className="well-content dates-and-guests">
+                  <div className="dates-and-guests">
                     <div className="row">
                       <div className="col-xs-6 check-in-btn">
                         <div className="label clicked" onClick={this.click}>Check in</div>
@@ -373,7 +373,7 @@ class Booking extends React.Component {
                         <span className="value">Select date</span>
                       </div>
                     </div>
-                    <div>
+                    <div classname="row">
                       <CheckInCal
                         current_month={this.state.current_month}
                         campId={this.state.campId}
@@ -413,7 +413,7 @@ class Booking extends React.Component {
                   </div>
                 </div>
                 <div className="well">
-                  <div className="well-content dates-and-guests">
+                  <div className="dates-and-guests">
                     <div className="row">
                       <div className="col-xs-6 check-in-btn">
                         <div className="label" onClick={this.click}>Check in</div>
@@ -423,8 +423,6 @@ class Booking extends React.Component {
                         <div className="label">Check out</div>
                         <span className="value">Select date</span>
                       </div>
-                    </div>
-                    <div className="row datepickers">
                     </div>
                     <Guests
                       guests={this.state.max_guests}
