@@ -26,8 +26,7 @@ class CheckInCal extends React.Component {
       future: [],
       prev_month_unavailable: [],
       current_month_available: [],
-      initialized: false,
-      numbers: {}
+      initialized: false
     };
 
     this.init = this.init.bind(this);
@@ -146,6 +145,7 @@ class CheckInCal extends React.Component {
   }
 
   createMonth(today, input_month) {
+    let daysObjects = [];
     let days = [];
     if (input_month === 2) {
       days = Array.from({length: 28}, (_, i) => i + 1);
