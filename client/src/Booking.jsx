@@ -275,7 +275,7 @@ class Booking extends React.Component {
                     <div className="price-banner">
                       <div>
                         <h5 className="nightly-price">${this.state.calculated_average_price_per_night}</h5>
-                        <span>per night ({this.state.guests} guests)</span>
+                        <span className="perNight">per night ({this.state.guests} guests)</span>
                       </div>
                       <div className="hidden">
                         <button className="btn btn-primary btn-flashy book-cta"></button>
@@ -328,7 +328,7 @@ class Booking extends React.Component {
                     <div className="price-banner">
                       <div>
                         <h5 className="nightly-price">${this.state.average_price_per_night}</h5>
-                        <span>per night ({this.state.guests} guests)</span>
+                        <span className="perNight">per night ({this.state.guests} guests)</span>
                       </div>
                       <div className="hidden">
                         <button className="btn btn-primary btn-flashy book-cta"></button>
@@ -381,7 +381,7 @@ class Booking extends React.Component {
                     <div className="price-banner">
                       <div>
                         <h5 className="nightly-price">${this.state.average_price_per_night}</h5>
-                        <span>per night ({this.state.guests} guests)</span>
+                        <span className="perNight">per night ({this.state.guests} guests)</span>
                       </div>
                       <div className="hidden">
                         <button className="btn btn-primary btn-flashy book-cta"></button>
@@ -426,7 +426,7 @@ class Booking extends React.Component {
                     <div className="price-banner">
                       <div>
                         <h5 className="nightly-price">${this.state.average_price_per_night}</h5>
-                        <span>per night ({this.state.guests} guests)</span>
+                        <span className="perNight">per night ({this.state.guests} guests)</span>
                       </div>
                       <div className="hidden">
                         <button className="btn btn-primary btn-flashy book-cta"></button>

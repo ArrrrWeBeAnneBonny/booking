@@ -8,6 +8,8 @@ class CheckInCal extends React.Component {
     this.state = {
       june: 6,
       prev: ['<'],
+      next: {},
+      l: 0,
       clicked: false,
       clickedStyle: '#40D9AC',
       today: moment().format().slice(8, 10),
@@ -39,6 +41,7 @@ class CheckInCal extends React.Component {
     this.createMonth = this.createMonth.bind(this);
     this.availableDays = this.availableDays.bind(this);
     this.getTotalDaysInMonth = this.getTotalDaysInMonth.bind(this);
+    this.createInventory = this.createInventory.bind(this);
   }
 
   componentDidMount() {
@@ -145,7 +148,6 @@ class CheckInCal extends React.Component {
   }
 
   createMonth(today, input_month) {
-    let daysObjects = [];
     let days = [];
     if (input_month === 2) {
       days = Array.from({length: 28}, (_, i) => i + 1);
@@ -199,9 +201,17 @@ class CheckInCal extends React.Component {
       diff --;
     }
     preLoad = preLoad.concat(days);
-    const days_needed = (42 - preLoad.length);
+    let l = preLoad.length;
+    const days_needed = (42 - l);
+    let next = {};
     let next_days = [];
     next_days = Array.from({length: days_needed}, (_, i) => i + 1);
+    let nextMonth = (input_month + 1);
+    next[nextMonth]= next_days;
+    this.setState({
+      next: next,
+      l: l
+    });
     preLoad = preLoad.concat(next_days);
     return preLoad;
   }
@@ -251,16 +261,30 @@ class CheckInCal extends React.Component {
     return future;
   }
 
+  createInventory(i) {
+    let copy = i.slice();
+    let weeks = [];
+    for (let i = 0; i < copy.length; i += 7) {
+      let subSlice = copy.slice(i, i + 7);
+      weeks.push([subSlice]);
+    }
+    return weeks;
+  }
+
   render() {
+    let length = this.state.l;
+    let next_month = (this.props.current_month + 1);
     let startPast = this.state.current_month_available[0];
     let endOfMonthIndex = this.state.current_month_inventory.lastIndexOf(this.state.totalDaysInMonth);
-    const inventory = this.createMonth(this.state.today, this.state.current_month_numb);
-    const week_one = inventory.slice(0, 7);
-    const week_two = inventory.slice(7, 14);
-    const week_three = inventory.slice(14, 21);
-    const week_four = inventory.slice(21, 28);
-    const week_five = inventory.slice(28, 35);
-    const week_six = inventory.slice(35, 42);
+    let inventory = this.createMonth(this.state.today, this.state.current_month_numb);
+    inventory = inventory.slice(0, length);
+    let weeks = this.createInventory(inventory);
+    const week_one = weeks[0];
+    const week_two = weeks[1];
+    const week_three = weeks[2];
+    const week_four = weeks[3];
+    const week_five = weeks[4];
+    let next_days = this.state.next[next_month];
     if (this.state.initialized && this.state.nextClicked) {
       return (
         <div>
@@ -469,6 +493,17 @@ class CheckInCal extends React.Component {
         </div>
       );
     } else if (this.state.initialized) {
+      console.log('week_five: ', week_five);
+      let next_days = this.state.next[next_month];
+      console.log('next_days: ', next_days);
+      const week_six = next_days.slice(-7, next_days.length);
+      let numb = week_six[0];
+      console.log('numb: ', numb);
+      let numb_index = next_days.indexOf(numb);
+      console.log('numb_index: ', numb_index )
+      console.log('week_six: ', week_six);
+      const restOfWeekFive = next_days.slice(0, numb_index);
+      console.log('restOfWeekFive: ', restOfWeekFive);
       return (
         <div className="datepickers">
           <div className="datepicker-container">
