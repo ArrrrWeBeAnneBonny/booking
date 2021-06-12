@@ -53,12 +53,20 @@ app.get('/booking', async (req, res) => {
 });
 
 app.get('/booking/bookingTotal', async (req, res) => {
+  console.log('req: ', req.query.params);
   let campId = req.query.campId;
   if (!campId) {
     campId = 0;
   }
-  let mssg = `new booking created for campId ${campId}`;
-  res.status(200).send(mssg);
+  let booking = {
+    campId: campId,
+    check_in_date: req.query.params.check_in_date,
+    check_out_date: req.query.params.check_out_date,
+    number_nights: req.query.params.number_nights,
+    subTotal: req.query.params.subTotal,
+    total: req.query.params.total
+  };
+  res.status(200).send(booking);
 });
 
 module.exports = app;

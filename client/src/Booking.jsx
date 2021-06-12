@@ -49,7 +49,9 @@ class Booking extends React.Component {
       total_days: 0,
       average_price_X_nights: 0,
       subTotal: 0,
-      Total: 0
+      Total: 0,
+      isoIn: '',
+      isoOut: ''
     };
 
     this.init= this.init.bind(this);
@@ -59,6 +61,7 @@ class Booking extends React.Component {
     this.bookingCalculations = this.bookingCalculations.bind(this);
     this.submit = this.submit.bind(this);
     this.updateCheckIn = this.updateCheckIn.bind(this);
+    this.isoMaker = this.isoMaker.bind(this);
   }
 
   componentDidMount() {
@@ -120,8 +123,26 @@ class Booking extends React.Component {
     });
   }
 
+  isoMaker = function(date) {
+    let month = date.slice(0, 2);
+    let day = date.slice(3, 5);
+    const hour = function(min, max) {
+      return Math.floor(Math.random() * (max - min) + min);
+    }
+    const min = function(min, max) {
+      return Math.floor(Math.random() * (max - min) + min);
+    }
+    const sec = function(min, max) {
+      return Math.floor(Math.random() * (max - min) + min);
+    }
+    const h = hour(0, 23);
+    const m = min(0, 59);
+    const s = sec(0, 60);
+    const str =`2021-${month}-${day}T${h}:${m}.${s}Z`;
+    return str;
+  };
+
   updateCheckIn(e) {
-    console.log('inside updte checkin')
     e.preventDefault();
     if (this.state.checkIn_picked) {
       this.setState({
@@ -183,10 +204,10 @@ class Booking extends React.Component {
   }
 
   bookingCalculations(inNumb, outNumb, checkinstring, checkoutstring) {
+    let range = [];
     const total_days = (outNumb - inNumb);
     const inMonth = checkinstring.slice(0, 2);
     const outMonth = checkinstring.slice(0, 2);
-    let range = [];
     for (let i = (inNumb + 1); i < outNumb; i++) {
       range.push(i);
     }
@@ -237,7 +258,13 @@ class Booking extends React.Component {
     const calculated_average_price_per_night = Math.floor(subTotal / total_days);
     const calculated_average_price_x_days = Math.floor(calculated_average_price_per_night * total_days);
     const total = Math.floor(subTotal + this.state.cleaning_fee);
+    let isoIn =  this.isoMaker(this.state.checkin_string);
+    console.log('inISO: ', isoIn)
+    let isoOut = this.isoMaker(this.state.checkin_string);
+    console.log('outISO: ', isoOut)
     this.setState({
+      isoIn: isoIn,
+      isoOut: isoOut,
       discounted_night: discounted_night,
       discount_applied_to_night: discount_applied_to_night,
       discountedSubTotal: discountedSubTotal,
@@ -251,9 +278,21 @@ class Booking extends React.Component {
   }
 
   bookingTotal() {
-    return axios.get('http://localhost:3002/booking/bookingTotal', { params: {
+    console.log('clicked');
+    const mode = process.env.NODE_ENV;
+    let url = '';
+    if (mode === 'development') {
+      url += config.development.booking;
+    } else {
+      url += config.production.booking;
+    }
+    return axios.get(`${url}/booking/bookingTotal`, { params: {
       campId: this.state.campId,
-      booking: this.state.booking
+      check_in_date: this.state.isoIn,
+      check_out_date: this.state.isoOut,
+      number_nights: this.state.total_days,
+      subTotal: this.state.subTotal,
+      total: this.state.total
       }
     })
     .then(({data}) => {
@@ -309,6 +348,7 @@ class Booking extends React.Component {
                       cleaning_fee={this.state.cleaning_fee}
                       subTotal={this.state.subTotal}
                       total={this.state.total}
+                      bookingTotal={this.bookingTotal}
                       />
                     </div>
                   </div>

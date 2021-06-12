@@ -25,7 +25,7 @@ class BookingTotal extends React.Component {
             </li>
           </ul>
         </div>
-        <button id="booking-btn" className="btn btn-block btn-primary btn-flashy" type="button">Book</button>
+        <button onClick={this.props.bookingTotal} id="booking-btn" className="btn btn-block btn-primary btn-flashy" type="button">Book</button>
         <div className="notes">
           <div className="reminder-text">Don't worry, you won't be charged yet.</div>
         </div>
