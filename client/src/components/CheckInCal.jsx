@@ -85,12 +85,10 @@ class CheckInCal extends React.Component {
   }
 
   nextClick(e) {
+    console.log('inside next')
     e.preventDefault();
-    console.log('this.state.current_month_numb: ', this.state.current_month_numb)
     const newCurrentMonth = this.state.current_month_numb + 1;
-    console.log(newCurrentMonth)
     const newCurrentMonthtring = this.convertMonthToString(newCurrentMonth);
-    console.log(newCurrentMonthtring)
     this.setState({
       current_month_numb: newCurrentMonth,
       current_month_string: newCurrentMonthtring,
@@ -100,14 +98,18 @@ class CheckInCal extends React.Component {
 
   prevClick(e) {
     e.preventDefault();
+    console.log('incoming this.state.current_month_numb: ', this.state.current_month_numb)
     const newCurrentMonth = this.state.current_month_numb - 1;
+    console.log('prev curr month: ', newCurrentMonth)
     if (newCurrentMonth === this.state.june) {
       this.setState({
         nextClicked: !this.state.nextClicked,
+        current_month_numb: newCurrentMonth,
         current_month_string: 'June'
       });
     } else {
       const newCurrentMonthtring = this.convertMonthToString(newCurrentMonth);
+      console.log('prevnew :', newCurrentMonthtring)
       this.setState({
         current_month_numb: newCurrentMonth,
         current_month_string: newCurrentMonthtring,
