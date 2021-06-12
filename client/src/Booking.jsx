@@ -18,6 +18,7 @@ class Booking extends React.Component {
     this.state = {
       campId: 0,
       updateCheckIn: false,
+      updateCheckOut: false,
       today: '',
       average_price_per_night: 0,
       discounted_night: 0,
@@ -122,13 +123,32 @@ class Booking extends React.Component {
   updateCheckIn(e) {
     console.log('inside updte checkin')
     e.preventDefault();
-    this.setState({
-      checkIn_picked: !this.state.checkIn_picked,
-      updateCheckIn: !this.state.updateCheckIn,
-      check_in_date: '',
-      checkin_string: '',
-      check_in_date_numb: 0
-    });
+    if (this.state.checkIn_picked) {
+      this.setState({
+        checkOut_picked: !this.state.checkOut_picked,
+        updateCheckOut: !this.state.updateCheckOut,
+        check_out_date: '',
+        checkout_string: '',
+        check_out_date_numb: 0
+      });
+    } else if (this.state.checkOut_picked) {
+      this.setState({
+        checkOut_picked: !this.state.checkOut_picked,
+        checkIn_picked: !this.state.checkIn_picked,
+        updateCheckIn: !this.state.updateCheckIn,
+        check_in_date: '',
+        checkin_string: '',
+        check_in_date_numb: 0
+      });
+    } else {
+      this.setState({
+        checkIn_picked: !this.state.checkIn_picked,
+        updateCheckIn: !this.state.updateCheckIn,
+        check_in_date: '',
+        checkin_string: '',
+        check_in_date_numb: 0
+      });
+    }
   }
 
   update(checkInMonth_string, checkDay, month_numb) {
@@ -213,9 +233,10 @@ class Booking extends React.Component {
         diff --;
       }
     }
-    const calculated_average_price_per_night = (subTotal / total_days);
-    const calculated_average_price_x_days = (calculated_average_price_per_night * total_days);
-    const total = (subTotal + this.state.cleaning_fee);
+    subTotal = Math.floor(subTotal);
+    const calculated_average_price_per_night = Math.floor(subTotal / total_days);
+    const calculated_average_price_x_days = Math.floor(calculated_average_price_per_night * total_days);
+    const total = Math.floor(subTotal + this.state.cleaning_fee);
     this.setState({
       discounted_night: discounted_night,
       discount_applied_to_night: discount_applied_to_night,
@@ -266,12 +287,12 @@ class Booking extends React.Component {
                   <div className="well-content dates-and-guests">
                     <div className="row">
                       <div className="col-xs-6 check-in-btn">
-                        <div className="label" onClick={this.click}>Check in</div>
-                        <span className="value" onClick={this.click}>{this.state.check_in_date}</span>
+                        <div className="label" onClick={this.updateCheckIn}>Check in</div>
+                        <span className="value" onClick={this.updateCheckIn}>{this.state.check_in_date}</span>
                       </div>
                       <div className="col-xs-6 check-out-btn">
-                        <div className="label" onClick={this.click}>Check out</div>
-                        <span className="value" onClick={this.click}>{this.state.check_out_date}</span>
+                        <div className="label" onClick={this.updateCheckIn}>Check out</div>
+                        <span className="value" onClick={this.updateCheckIn}>{this.state.check_out_date}</span>
                       </div>
                     </div>
                     <div>
@@ -297,7 +318,7 @@ class Booking extends React.Component {
         </div>
       );
     }
-    if (this.state.checkIn_picked) {
+    if (this.state.checkIn_picked || this.state.updateCheckOut) {
       return (
         <div>
           <aside className="booking-container">
