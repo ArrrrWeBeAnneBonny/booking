@@ -27,7 +27,7 @@ class Guests extends React.Component {
           <div>
             <span className="value guests">{this.state.guest_numb} guests
               <select className="select" name="group_size" onChange={this.handleSubmit} id="select">
-                <option disabled selected value></option>
+                <option defaultValue value></option>
                 <option value="1">1 guest</option>
                 <option value="2">2 guests</option>
                 <option value="3">3 guests</option>
