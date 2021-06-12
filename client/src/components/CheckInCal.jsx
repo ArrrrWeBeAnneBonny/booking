@@ -503,7 +503,6 @@ class CheckInCal extends React.Component {
                 </tr>
                 <tr onClick={this.click}>
                   {week_two.map((numb, index) => {
-                    this.state.numbers[numb] = 1;
                     if (numb === this.state.checkInDay) {
                       return <td key={index} className="selected" data-item={numb}>{numb}</td>
                     } else {
@@ -517,7 +516,6 @@ class CheckInCal extends React.Component {
                 </tr>
                 <tr onClick={this.click}>
                   {week_three.map((numb, index) => {
-                    this.state.numbers[numb] = 1;
                     if (numb === this.state.checkInDay) {
                       return <td key={index} className="selected" data-item={numb}>{numb}</td>
                     } else {
@@ -531,7 +529,6 @@ class CheckInCal extends React.Component {
                 </tr>
                 <tr onClick={this.click}>
                   {week_four.map((numb, index) => {
-                    this.state.numbers[numb] = 1;
                     if (numb === this.state.checkInDay) {
                       return <td key={index} className="selected" data-item={numb}>{numb}</td>
                     } else {
@@ -545,7 +542,6 @@ class CheckInCal extends React.Component {
                 </tr>
                 <tr onClick={this.click}>
                   {week_five.map((numb, index) => {
-                    this.state.numbers[numb] = 1;
                     if (numb === this.state.checkInDay) {
                       return <td key={index} className="selected" data-item={numb}>{numb}</td>
                     } else {
@@ -559,7 +555,6 @@ class CheckInCal extends React.Component {
                 </tr>
                 <tr onClick={this.click}>
                   {week_six.map((numb, index) => {
-                    this.state.numbers[numb] = 1;
                     if (numb === this.state.checkInDay) {
                       return <td key={index} className="selected" data-item={numb}>{numb}</td>
                     } else {
