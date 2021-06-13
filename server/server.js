@@ -12,6 +12,12 @@ const app = express();
 
 const mode = process.env.NODE_ENV;
 console.log(`hi bebe you are in ${mode}`);
+let overview_url = '';
+if (mode === 'development') {
+  overview_url += config.development.overview;
+} else {
+  overview_url += config.production.overview;
+}
 
 app.use(cors());
 
@@ -20,7 +26,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/booking', async (req, res) => {
-  console.log('inside /booking')
   let campId = parseInt(req.query.campId);
   if (!campId) {
     campId = 0;
@@ -28,7 +33,8 @@ app.get('/booking', async (req, res) => {
   let init = {};
   const booked = await db_helper.findBookedArray({ campId: campId });
   init.booked = booked.booked;
-  await axios.get(`${config.production.overview}/pricing`, { params: { campId: campId } })
+  let url_path = `${overview_url}/pricing`;
+  await axios.get(`${overview_url}/pricing`, { params: { campId: campId } })
     .then(async (response) => {
       const site = response.data;
       init.average_price_per_night = site.averagePricePerNight;
@@ -53,18 +59,19 @@ app.get('/booking', async (req, res) => {
 });
 
 app.get('/booking/bookingTotal', async (req, res) => {
-  console.log('req: ', req.query.params);
+  const query = req.query;
+  const check_in_date = req.query.check_in_date;
   let campId = req.query.campId;
   if (!campId) {
     campId = 0;
   }
   let booking = {
     campId: campId,
-    check_in_date: req.query.params.check_in_date,
-    check_out_date: req.query.params.check_out_date,
-    number_nights: req.query.params.number_nights,
-    subTotal: req.query.params.subTotal,
-    total: req.query.params.total
+    check_in_date: query.check_in_date,
+    check_out_date: query.check_out_date,
+    number_nights: query.number_nights,
+    subTotal: query.subTotal,
+    total: query.total
   };
   res.status(200).send(booking);
 });

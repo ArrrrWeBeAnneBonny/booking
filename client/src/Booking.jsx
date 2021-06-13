@@ -33,7 +33,7 @@ class Booking extends React.Component {
       max_guests: 0,
       current_month: 0,
       month_string: '',
-      inventory: [],
+      booked: [],
       check_in_clicked: false,
       checkIn_picked: false,
       checkOut_picked: false,
@@ -78,6 +78,7 @@ class Booking extends React.Component {
     }
     axios.get(`${url}/booking`)
     .then(({data}) => {
+      console.log('data: ', data);
       const {
         campId,
         average_price_per_night,
@@ -87,7 +88,7 @@ class Booking extends React.Component {
         cleaning_fee,
         max_guests,
         current_month,
-        inventory
+        booked
       } = data;
       const today = moment().format().slice(8, 10);
       this.setState({
@@ -100,7 +101,7 @@ class Booking extends React.Component {
         cleaning_fee,
         max_guests,
         current_month,
-        inventory
+        booked
       });
     })
     .catch((err) => {
@@ -394,7 +395,7 @@ class Booking extends React.Component {
                       checkIn={this.state.check_in_date}
                       checkInNumb={this.state.check_in_date_numb}
                       campId={this.state.campId}
-                      inventory={this.state.inventory}
+                      inventory={this.state.booked}
                       onSubmit={this.handleSubmit}
                       update={this.update}
                       />
@@ -445,7 +446,7 @@ class Booking extends React.Component {
                       <CheckInCal
                         current_month={this.state.current_month}
                         campId={this.state.campId}
-                        inventory={this.state.inventory}
+                        inventory={this.state.booked}
                         submit={this.handleSubmit}
                         update={this.update}
                       />
