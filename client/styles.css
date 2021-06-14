@@ -403,6 +403,8 @@ select {
   max-width: 317px;
 }
 .currentDatePickerMonth {
+  display: flex;
+  white-space: nowrap;
   padding: 10px;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -505,8 +507,44 @@ th {
   text-align: center;
   text-align: center;
 }
-.next{
-  right: 8px;
+.currentDatePickerMonth.beforeprev {
+  padding-left: 45px;
+}
+#month {
+  padding-left: 75px;
+}
+#prev:before {
+  padding-top: 2.5px;
+  font-size: 24px;
+  content: "\003c";
+  padding-left: 15px;
+  display: flex;
+  float: left;
+  color: #4d4d4d;
+  font-weight: bold;
+}
+#next:before {
+  height: fit-content;
+  content: "\003e";
+  float: right;
+  color: #4d4d4d;
+  padding-left: 85px;
+  font-size: 1.1em;
+  font-weight: bold;
+  display: flex;
+}
+#next:before.afterprev {
+  height: fit-content;
+  content: "\003e";
+  float: right;
+  color: #4d4d4d;
+  padding-left: 95px;
+  font-size: 1.1em;
+  font-weight: bold;
+  display: flex;
+}
+#year {
+  padding-left: 8px;
 }
 th.dow {
   height: 18px;

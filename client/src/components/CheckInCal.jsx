@@ -7,12 +7,14 @@ class CheckInCal extends React.Component {
 
     this.state = {
       june: 6,
-      prev: ['<'],
       clicked: false,
+      monthChanged: false,
       clickedStyle: '#40D9AC',
-      today: moment().format().slice(8, 10),
+      today: this.props.today,
       checkInDay: 0,
       totalDaysInMonth: 0,
+      newCurrentMonth: 0,
+      oldCurrentMonth: 0,
       booked: this.props.inventory,
       current_month_inventory: [],
       current_month: this.props.current_month,
@@ -39,6 +41,7 @@ class CheckInCal extends React.Component {
     this.createMonth = this.createMonth.bind(this);
     this.availableDays = this.availableDays.bind(this);
     this.getTotalDaysInMonth = this.getTotalDaysInMonth.bind(this);
+    this.changeMonth = this.changeMonth.bind(this);
   }
 
   componentDidMount() {
@@ -83,22 +86,26 @@ class CheckInCal extends React.Component {
     this.props.update(checkInMonth_string, checkInDay, this.state.current_month_numb);
   }
 
-  nextClick(e) {
+  nextClick() {
     console.log('inside next')
-    e.preventDefault();
+    const oldCurrentMonth = this.state.current_month_numb;
+    console.log('oldCurrentMonth: ', oldCurrentMonth)
     const newCurrentMonth = this.state.current_month_numb + 1;
     const newCurrentMonthtring = this.convertMonthToString(newCurrentMonth);
     this.setState({
+      oldCurrentMonth: oldCurrentMonth,
       current_month_numb: newCurrentMonth,
-      current_month_string: newCurrentMonthtring,
-      nextClicked: !this.state.nextClicked
+      newCurrentMonth: newCurrentMonth,
+      current_month_string: newCurrentMonthtring
     });
   }
 
-  prevClick(e) {
-    e.preventDefault();
-    console.log('incoming this.state.current_month_numb: ', this.state.current_month_numb)
-    const newCurrentMonth = this.state.current_month_numb - 1;
+  prevClick() {
+    console.log('inside prev')
+    if (this.state.current_month_numb === 6) {
+      return;
+    }
+    const newCurrentMonth = (this.state.current_month_numb - 1);
     console.log('prev curr month: ', newCurrentMonth)
     if (newCurrentMonth === this.state.june) {
       this.setState({
@@ -113,6 +120,26 @@ class CheckInCal extends React.Component {
         current_month_numb: newCurrentMonth,
         current_month_string: newCurrentMonthtring,
       });
+    }
+  }
+
+  changeMonth(e) {
+    e.preventDefault();
+    console.log('inside change month')
+    const button = e.target.id;
+    console.log(button)
+    if (button === 'prev') {
+      this.prevClick();
+    }
+    if (button === 'next' && this.state.nextClicked) {
+      this.nextClick();
+    }
+    if (button === 'next' && !this.state.nextClicked) {
+      //unhide prev button
+      this.setState({
+        nextClicked: !this.state.nextClicked
+      });
+      this.nextClick();
     }
   }
 
@@ -265,8 +292,9 @@ class CheckInCal extends React.Component {
       return (
         <div>
           <div className="datepicker-container">
-            <div className="currentDatePickerMonth next" onClick={this.nextClick} onClick={this.prevClick}>{this.state.prev} {this.state.current_month_string}
-              2021 >
+            <div id="prev" onClick={this.changeMonth}>{this.state.prev}<div className="currentDatePickerMonth" onClick={this.changeMonth}><div id="month">
+              {this.state.current_month_string}</div><div id="year">2021</div><div id="next" onClick={this.changeMonth}>{this.state.next}</div>
+              </div>
             </div>
             <table className="calendar">
               <thead>
@@ -369,8 +397,8 @@ class CheckInCal extends React.Component {
       return (
         <div>
           <div className="datepicker-container">
-            <div className="currentDatePickerMonth next" onClick={this.nextClick}>>{this.state.current_month_string}
-              2021>
+            <div className="currentDatePickerMonth beforeprev"><div id="month">{this.state.current_month_string}
+              </div><div id="year">2021</div><div id="next" onClick={this.changeMonth}></div>
             </div>
             <table className="calendar">
               <thead>
@@ -472,8 +500,7 @@ class CheckInCal extends React.Component {
       return (
         <div className="datepickers">
           <div className="datepicker-container">
-            <div className="currentDatePickerMonth next" onClick={this.nextClick}> {this.state.current_month_string}
-               2021 >
+            <div className="currentDatePickerMonth beforeprev"><div id="month">{this.state.current_month_string}</div><div id="year">2021</div><div id="next" onClick={this.changeMonth}></div>
             </div>
             <table className="calendar">
               <thead>
