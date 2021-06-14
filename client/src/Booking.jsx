@@ -69,14 +69,15 @@ class Booking extends React.Component {
   }
 
   init() {
-    const mode = process.env.NODE_ENV;
-    let url = '';
-    if (mode === 'development') {
-      url += config.development.booking;
-    } else {
-      url += config.production.booking;
-    }
-    axios.get(`${url}/booking`)
+    // const mode = process.env.NODE_ENV;
+    // let url = '';
+    // if (!process.env.NODE_ENV || mode === 'development') {
+    //   url += config.development.booking;
+    // } else {
+    //   url += config.production.booking;
+    // }
+    // axios.get(`${url}booking`)
+    axios.get(`/booking`)
     .then(({data}) => {
       console.log('data: ', data);
       const {
@@ -279,7 +280,6 @@ class Booking extends React.Component {
   }
 
   bookingTotal() {
-    console.log('clicked');
     const mode = process.env.NODE_ENV;
     let url = '';
     if (mode === 'development') {
@@ -287,7 +287,7 @@ class Booking extends React.Component {
     } else {
       url += config.production.booking;
     }
-    return axios.get(`${url}/booking/bookingTotal`, { params: {
+    return axios.get(`${url}bookingTotal`, { params: {
       campId: this.state.campId,
       check_in_date: this.state.isoIn,
       check_out_date: this.state.isoOut,

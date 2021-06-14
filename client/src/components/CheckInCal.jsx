@@ -46,7 +46,6 @@ class CheckInCal extends React.Component {
   }
 
   init() {
-    console.log('this.props.inventory: ', this.props.inventory)
     const today = moment().format().slice(8, 10);
     const current_month_string = this.convertMonthToString(this.props.current_month);
     const current_month_inventory = this.createMonth(today, this.props.current_month);

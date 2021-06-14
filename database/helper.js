@@ -4,6 +4,7 @@ const helper = require('../server/helper.js');
 module.exports = {
 
   find: async ({campId: campId}) => {
+    console.log('in find');
     let init = {};
     await db.Booking.find({campId: campId}).exec()
     .then(data => {
