@@ -1,18 +1,21 @@
 import React from 'react';
 import moment from 'moment';
-class CheckInCal extends React.Component {
+class Calendar extends React.Component {
 
   constructor(props) {
     super(props);
 
     this.state = {
+      check_out_clicked: this.props.check_out_clicked,
       june: 6,
-      prev: ['<'],
       clicked: false,
+      monthChanged: false,
       clickedStyle: '#40D9AC',
-      today: moment().format().slice(8, 10),
+      today: this.props.today,
       checkInDay: 0,
       totalDaysInMonth: 0,
+      newCurrentMonth: 0,
+      oldCurrentMonth: 0,
       booked: this.props.inventory,
       current_month_inventory: [],
       current_month: this.props.current_month,
@@ -39,6 +42,7 @@ class CheckInCal extends React.Component {
     this.createMonth = this.createMonth.bind(this);
     this.availableDays = this.availableDays.bind(this);
     this.getTotalDaysInMonth = this.getTotalDaysInMonth.bind(this);
+    this.changeMonth = this.changeMonth.bind(this);
   }
 
   componentDidMount() {
@@ -83,22 +87,26 @@ class CheckInCal extends React.Component {
     this.props.update(checkInMonth_string, checkInDay, this.state.current_month_numb);
   }
 
-  nextClick(e) {
+  nextClick() {
     console.log('inside next')
-    e.preventDefault();
+    const oldCurrentMonth = this.state.current_month_numb;
+    console.log('oldCurrentMonth: ', oldCurrentMonth)
     const newCurrentMonth = this.state.current_month_numb + 1;
     const newCurrentMonthtring = this.convertMonthToString(newCurrentMonth);
     this.setState({
+      oldCurrentMonth: oldCurrentMonth,
       current_month_numb: newCurrentMonth,
-      current_month_string: newCurrentMonthtring,
-      nextClicked: !this.state.nextClicked
+      newCurrentMonth: newCurrentMonth,
+      current_month_string: newCurrentMonthtring
     });
   }
 
-  prevClick(e) {
-    e.preventDefault();
-    console.log('incoming this.state.current_month_numb: ', this.state.current_month_numb)
-    const newCurrentMonth = this.state.current_month_numb - 1;
+  prevClick() {
+    console.log('inside prev')
+    if (this.state.current_month_numb === 6) {
+      return;
+    }
+    const newCurrentMonth = (this.state.current_month_numb - 1);
     console.log('prev curr month: ', newCurrentMonth)
     if (newCurrentMonth === this.state.june) {
       this.setState({
@@ -113,6 +121,26 @@ class CheckInCal extends React.Component {
         current_month_numb: newCurrentMonth,
         current_month_string: newCurrentMonthtring,
       });
+    }
+  }
+
+  changeMonth(e) {
+    e.preventDefault();
+    console.log('inside change month')
+    const button = e.target.id;
+    console.log(button)
+    if (button === 'prev') {
+      this.prevClick();
+    }
+    if (button === 'next' && this.state.nextClicked) {
+      this.nextClick();
+    }
+    if (button === 'next' && !this.state.nextClicked) {
+      //unhide prev button
+      this.setState({
+        nextClicked: !this.state.nextClicked
+      });
+      this.nextClick();
     }
   }
 
@@ -261,12 +289,119 @@ class CheckInCal extends React.Component {
     const week_four = inventory.slice(21, 28);
     const week_five = inventory.slice(28, 35);
     const week_six = inventory.slice(35, 42);
-    if (this.state.initialized && this.state.nextClicked) {
+    if (this.state.initialized && this.state.check_out_clicked) {
+      return (
+        <div>
+          <div className="currentDatePickerMonth beforeprev"><div id="month">{this.state.current_month_string}</div><div id="year">2021</div><div id="next" onClick={this.changeMonth}></div>
+            </div>
+          <table className="calendar">
+            <thead>
+              <tr >
+                <th className="dow">S</th>
+                <th className="dow">M</th>
+                <th className="dow">T</th>
+                <th className="dow">W</th>
+                <th className="dow">TH</th>
+                <th className="dow">F</th>
+                <th className="dow">S</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                {week_one.map((numb, index) => {
+                  let numbIndex = this.state.current_month_inventory.indexOf(numb);
+                  if (numb === this.state.checkInNumb) {
+                    return <td key={index} className="selected" data-item={numb}>{numb}</td>
+                  } else {
+                    return this.state.current_month_available.indexOf(numb) === -1 || (numb < startPast && numbIndex <  endOfMonthIndex ) ?
+                    <td key={index} className="unavailable" data-item={numb}>{numb}</td>
+                    :
+                    <td onClick={this.click} key={index} className="available" data-item={numb}>{numb}</td>
+                  }
+                }
+              )}
+              </tr>
+              <tr onClick={this.click}>
+                {week_two.map((numb, index) => {
+                  let numbIndex = this.state.current_month_inventory.indexOf(numb);
+                  if (numb === this.state.checkInNumb) {
+                    return <td key={index} className="selected" data-item={numb}>{numb}</td>
+                  } else {
+                    return this.state.current_month_available.indexOf(numb) === -1 || (numb < startPast && numbIndex <  endOfMonthIndex ) ?
+                    <td key={index} className="unavailable" data-item={numb}>{numb}</td>
+                    :
+                    <td onClick={this.click} key={index} className="available" data-item={numb}>{numb}</td>
+                    }
+                  }
+                )}
+              </tr>
+              <tr onClick={this.click}>
+                {week_three.map((numb, index) => {
+                  let numbIndex = this.state.current_month_inventory.indexOf(numb);
+                  if (numb === this.state.checkInNumb) {
+                    return <td key={index} className="selected" data-item={numb}>{numb}</td>
+                  } else {
+                    return this.state.current_month_available.indexOf(numb) === -1 || (numb < startPast && numbIndex <  endOfMonthIndex ) ?
+                    <td key={index} className="unavailable" data-item={numb}>{numb}</td>
+                    :
+                    <td onClick={this.click} key={index} className="available" data-item={numb}>{numb}</td>
+                  }
+                  }
+                )}
+              </tr>
+              <tr onClick={this.click}>
+                {week_four.map((numb, index) => {
+                  let numbIndex = this.state.current_month_inventory.indexOf(numb);
+                  if (numb === this.state.checkInNumb) {
+                    return <td key={index} className="selected" data-item={numb}>{numb}</td>
+                  } else {
+                    return this.state.current_month_available.indexOf(numb) === -1 || (numb < startPast && numbIndex <  endOfMonthIndex ) ?
+                    <td key={index} className="unavailable" data-item={numb}>{numb}</td>
+                    :
+                    <td onClick={this.click} key={index} className="available" data-item={numb}>{numb}</td>
+                  }
+                  }
+                )}
+              </tr>
+              <tr onClick={this.click}>
+                {week_five.map((numb, index) => {
+                  let numbIndex = this.state.current_month_inventory.indexOf(numb);
+                  if (numb === this.state.checkInNumb) {
+                    return <td key={index} className="selected" data-item={numb}>{numb}</td>
+                  } else {
+                    return this.state.current_month_available.indexOf(numb) === -1 || (numb < startPast && numbIndex <  endOfMonthIndex ) ?
+                    <td key={index} className="unavailable" data-item={numb}>{numb}</td>
+                    :
+                    <td onClick={this.click} key={index} className="available" data-item={numb}>{numb}</td>
+                  }
+                  }
+                )}
+              </tr>
+              <tr onClick={this.click}>
+                {week_six.map((numb, index) => {
+                  let numbIndex = this.state.current_month_inventory.indexOf(numb);
+                  if (numb === this.state.checkInNumb) {
+                    return <td key={index} className="selected" data-item={numb}>{numb}</td>
+                  } else {
+                    return this.state.current_month_available.indexOf(numb) === -1 || (numb < startPast && numbIndex <  endOfMonthIndex ) ?
+                    <td key={index} className="unavailable" data-item={numb}>{numb}</td>
+                    :
+                    <td onClick={this.click} key={index} className="available" data-item={numb}>{numb}</td>
+                  }
+                  }
+                )}
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      );
+  } else if (this.state.initialized && this.state.nextClicked) {
       return (
         <div>
           <div className="datepicker-container">
-            <div className="currentDatePickerMonth next" onClick={this.nextClick} onClick={this.prevClick}>{this.state.prev} {this.state.current_month_string}
-              2021 >
+            <div id="prev" onClick={this.changeMonth}>{this.state.prev}<div className="currentDatePickerMonth" onClick={this.changeMonth}><div id="month">
+              {this.state.current_month_string}</div><div id="year">2021</div><div id="next" onClick={this.changeMonth}>{this.state.next}</div>
+              </div>
             </div>
             <table className="calendar">
               <thead>
@@ -364,13 +499,12 @@ class CheckInCal extends React.Component {
           </div>
         </div>
       );
-    }
-    if (this.state.initialized && this.state.clicked) {
+    } else if (this.state.initialized && this.state.clicked) {
       return (
         <div>
           <div className="datepicker-container">
-            <div className="currentDatePickerMonth next" onClick={this.nextClick}>>{this.state.current_month_string}
-              2021>
+            <div className="currentDatePickerMonth beforeprev"><div id="month">{this.state.current_month_string}
+              </div><div id="year">2021</div><div id="next" onClick={this.changeMonth}></div>
             </div>
             <table className="calendar">
               <thead>
@@ -472,8 +606,7 @@ class CheckInCal extends React.Component {
       return (
         <div className="datepickers">
           <div className="datepicker-container">
-            <div className="currentDatePickerMonth next" onClick={this.nextClick}> {this.state.current_month_string}
-               2021 >
+            <div className="currentDatePickerMonth beforeprev"><div id="month">{this.state.current_month_string}</div><div id="year">2021</div><div id="next" onClick={this.changeMonth}></div>
             </div>
             <table className="calendar">
               <thead>
@@ -582,4 +715,4 @@ class CheckInCal extends React.Component {
 
 }
 
-export default CheckInCal;
+export default Calendar;
