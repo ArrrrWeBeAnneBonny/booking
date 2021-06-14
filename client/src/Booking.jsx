@@ -78,7 +78,6 @@ class Booking extends React.Component {
     // axios.get(`${url}booking`)
     axios.get(`/booking`)
     .then(({data}) => {
-      console.log('data: ', data);
       const {
         campId,
         average_price_per_night,
@@ -113,7 +112,6 @@ class Booking extends React.Component {
   click(e) {
     e.preventDefault();
     if (e.target.innerHTML === "Check in") {
-      console.log('check in')
       if (!this.state.checkIn_picked) {
         if (this.state.check_out_clicked) {
           this.setState({
@@ -145,7 +143,6 @@ class Booking extends React.Component {
         });
       }
     } else if (e.target.innerHTML === "Check out") {
-      console.log('check out')
       if (!this.state.checkIn_picked) {
         this.setState({
           check_in_clicked: !this.state.check_in_clicked
@@ -329,7 +326,6 @@ class Booking extends React.Component {
   }
 
   render() {
-    console.log(this.state)
     if (this.state.checkOut_picked) {
       return (
         <div>
@@ -439,7 +435,6 @@ class Booking extends React.Component {
         </div>
       );
     } else if (this.state.check_in_clicked) {
-      {console.log('rendering this')}
       return (
         <div>
           <aside className="booking-container">
