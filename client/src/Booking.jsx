@@ -5,8 +5,7 @@ import axios from 'axios';
 import moment from 'moment';
 import config from '../../config.js';
 
-import CheckInCal from './components/CheckInCal.jsx';
-import CheckOutCal from './components/CheckOutCal.jsx';
+import Calendar from './components/Calendar.jsx';
 import Guests from './components/Guests.jsx';
 import BookingButton from './components/BookingButton.jsx';
 import BookingTotal from './components/BookingTotal.jsx';
@@ -16,7 +15,6 @@ class Booking extends React.Component {
     super(props);
 
     this.state = {
-      //init data from overview or my db
       campId: 0,
       today: '',
       average_price_per_night: 0,
@@ -35,6 +33,7 @@ class Booking extends React.Component {
       calculated_average_price_per_night: 0,
       calculated_average_price_x_days: 0,
       check_in_clicked: false,
+      check_out_clicked: false,
       checkIn_picked: false,
       checkOut_picked: false,
       check_in_date: '',
@@ -60,7 +59,6 @@ class Booking extends React.Component {
     this.bookingTotal = this.bookingTotal.bind(this);
     this.bookingCalculations = this.bookingCalculations.bind(this);
     this.submit = this.submit.bind(this);
-    this.updateCalendarView = this.updateCalendarView.bind(this);
     this.updateCheckOut = this.updateCheckOut.bind(this);
     this.isoMaker = this.isoMaker.bind(this);
   }
@@ -111,11 +109,60 @@ class Booking extends React.Component {
     });
   }
 
+
   click(e) {
     e.preventDefault();
-    this.setState({
-      check_in_clicked: !this.state.check_in_clicked
-    })
+    if (e.target.innerHTML === "Check in") {
+      console.log('check in')
+      if (!this.state.checkIn_picked) {
+        if (this.state.check_out_clicked) {
+          this.setState({
+            check_in_clicked: !this.state.check_in_clicked,
+            check_out_clicked: !this.state.check_out_clicked
+          });
+        } else {
+          this.setState({
+            check_in_clicked: !this.state.check_in_clicked
+          });
+        }
+      } else if (this.state.checkIn_picked && this.state.checkOut_picked) {
+        this.setState({
+          checkIn_picked: !this.state.checkIn_picked,
+          checkOut_picked: !this.state.checkOut_picked,
+          check_out_date: '',
+          checkout_string: '',
+          check_out_date_numb: 0,
+          check_in_date: '',
+          checkin_string: '',
+          check_in_date_numb: 0
+        });
+      } else if (this.state.checkIn_picked && !this.state.checkOut_picked) {
+        this.setState({
+          checkIn_picked: !this.state.checkIn_picked,
+          check_in_date: '',
+          checkin_string: '',
+          check_in_date_numb: 0
+        });
+      }
+    } else if (e.target.innerHTML === "Check out") {
+      console.log('check out')
+      if (!this.state.checkIn_picked) {
+        this.setState({
+          check_in_clicked: !this.state.check_in_clicked
+        });
+      } else if (this.state.checkIn_picked && this.state.checkOut_picked) {
+        this.setState({
+          checkOut_picked: !this.state.checkOut_picked,
+          check_out_date: '',
+          checkout_string: '',
+          check_out_date_numb: 0,
+        });
+      } else if (this.state.checkIn_picked) {
+        this.setState({
+          check_out_clicked: !this.state.check_out_clicked
+        });
+      }
+    }
   }
 
   submit(e, guests) {
@@ -144,36 +191,6 @@ class Booking extends React.Component {
     const str =`2021-${month}-${day}T${h}:${m}.${s}Z`;
     return str;
   };
-
-  updateCalendarView(e) {
-    e.preventDefault();
-    if (this.state.checkIn_picked) {
-      this.setState({
-        checkOut_picked: !this.state.checkOut_picked,
-        updateCheckOut: !this.state.updateCheckOut,
-        check_out_date: '',
-        checkout_string: '',
-        check_out_date_numb: 0
-      });
-    } else if (this.state.checkOut_picked) {
-      this.setState({
-        checkOut_picked: !this.state.checkOut_picked,
-        checkIn_picked: !this.state.checkIn_picked,
-        updateCheckIn: !this.state.updateCheckIn,
-        check_in_date: '',
-        checkin_string: '',
-        check_in_date_numb: 0
-      });
-    } else {
-      this.setState({
-        checkIn_picked: !this.state.checkIn_picked,
-        updateCheckIn: !this.state.updateCheckIn,
-        check_in_date: '',
-        checkin_string: '',
-        check_in_date_numb: 0
-      });
-    }
-  }
 
   updateCheckOut(e) {
     e.preventDefault();
@@ -312,6 +329,7 @@ class Booking extends React.Component {
   }
 
   render() {
+    console.log(this.state)
     if (this.state.checkOut_picked) {
       return (
         <div>
@@ -334,12 +352,12 @@ class Booking extends React.Component {
                   <div className="well-content dates-and-guests">
                     <div className="row">
                       <div className="col-xs-6 check-in-btn">
-                        <div className="label" onClick={this.updateCalendarView}>Check in</div>
-                        <span className="value" onClick={this.updateCalendarView}>{this.state.check_in_date}</span>
+                        <div className="label" onClick={this.click}>Check in</div>
+                        <span className="value" onClick={this.click}>{this.state.check_in_date}</span>
                       </div>
                       <div className="col-xs-6 check-out-btn">
-                        <div className="label" onClick={this.updateCalendarView}>Check out</div>
-                        <span className="value" onClick={this.updateCalendarView}>{this.state.check_out_date}</span>
+                        <div className="label" onClick={this.click}>Check out</div>
+                        <span className="value" onClick={this.click}>{this.state.check_out_date}</span>
                       </div>
                     </div>
                     <div>
@@ -366,7 +384,7 @@ class Booking extends React.Component {
         </div>
       );
     }
-    if (this.state.checkIn_picked || this.state.updateCheckOut || this.state.showCheckOut) {
+    if (this.state.check_out_clicked || this.state.checkIn_picked || this.state.updateCheckOut) {
       return (
         <div>
           <aside className="booking-container">
@@ -388,8 +406,8 @@ class Booking extends React.Component {
                   <div className="dates-and-guests">
                     <div className="row">
                       <div className="col-xs-6 check-in-btn">
-                        <div className="label" onClick={this.updateCalendarView}>Check in</div>
-                        <span className="value" onClick={this.updateCalendarView}>{this.state.check_in_date}</span>
+                        <div className="label" onClick={this.click}>Check in</div>
+                        <span className="value" onClick={this.click}>{this.state.check_in_date}</span>
                       </div>
                       <div className="col-xs-6 check-out-btn">
                         <div className="label clicked">Check out</div>
@@ -397,7 +415,8 @@ class Booking extends React.Component {
                       </div>
                     </div>
                     <div className="row">
-                      <CheckOutCal
+                      <Calendar
+                      check_out_clicked={this.state.check_out_clicked}
                       current_month={this.state.current_month}
                       checkIn={this.state.check_in_date}
                       checkInNumb={this.state.check_in_date_numb}
@@ -419,7 +438,8 @@ class Booking extends React.Component {
           </aside>
         </div>
       );
-    } else if (this.state.check_in_clicked || this.state.updateCheckIn) {
+    } else if (this.state.check_in_clicked) {
+      {console.log('rendering this')}
       return (
         <div>
           <aside className="booking-container">
@@ -441,16 +461,17 @@ class Booking extends React.Component {
                   <div className="dates-and-guests">
                     <div className="row">
                       <div className="col-xs-6 check-in-btn">
-                        <div className="label clicked" onClick={this.click}>Check in</div>
-                        <span className="value clicked" onClick={this.click}>Select date</span>
+                        <div className="label clicked">Check in</div>
+                        <span className="value clicked">Select date</span>
                       </div>
                       <div className="col-xs-6 check-out-btn">
-                        <div className="label" onClick={this.updateCalendarView}>Check out</div>
-                        <span className="value" onClick={this.updateCalendarView}>Select date</span>
+                        <div className="label" onClick={this.click}>Check out</div>
+                        <span className="value" onClick={this.click}>Select date</span>
                       </div>
                     </div>
                     <div className="row">
-                      <CheckInCal
+                      <Calendar
+                        check_out_clicked={this.state.check_out_clicked}
                         current_month={this.state.current_month}
                         today={this.state.today}
                         campId={this.state.campId}
