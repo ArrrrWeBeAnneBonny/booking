@@ -409,6 +409,7 @@ select {
   border-radius: 0;
   height: auto;
   text-align: center;
+  word-wrap: break-word;
 }
 .available {
   font-size: 1em;
@@ -418,6 +419,7 @@ select {
   border: 1px solid #ebebeb;
   text-align: center;
   background-color: white;
+  word-wrap: break-word;
 }
 .available:hover {
   background-color: #40D9AC;
@@ -430,6 +432,7 @@ select {
   border: 1px solid #ebebeb;
   text-align: center;
   background-color: #40D9AC;
+  word-wrap: break-word;
 }
 .unavailable {
   position: relative;
@@ -440,9 +443,11 @@ select {
   border:
   1px solid #ebebeb;
   text-align: center;
-  color: #757575
+  color: #757575;
+  word-wrap: break-word;
 }
 .unavailable:before {
+  word-wrap: break-word;
   content: "";
   left: 0;
   right: 0;

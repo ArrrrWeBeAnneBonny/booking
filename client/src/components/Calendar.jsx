@@ -55,11 +55,24 @@ class Calendar extends React.Component {
     this.init();
   }
 
-  init() {
-    const current_month_booked = this.props.inventory[0];
-    const next_month_booked = this.props.inventory[1];
-    const current_month_string = this.convertMonthToString(this.state.current_month_numb);
-    const currentInventoryObj = this.createMonth(this.state.today, this.state.current_month_numb);
+  init(x, y, z) {
+    let current_month_booked = [];
+    let next_month_booked = [];
+    let current_month_string = '';
+    let currentInventoryObj = {};
+    if (!arguments.length) {
+      current_month_booked = this.props.inventory[0];
+      next_month_booked = this.props.inventory[1];
+      current_month_string = this.convertMonthToString(this.state.current_month_numb);
+      currentInventoryObj = this.createMonth(this.state.today, this.state.current_month_numb);
+    } else {
+      let diff = (y - x);
+      current_month_booked = this.props.inventory[diff];
+      let next = (diff + 1);
+      next_month_booked = this.props.inventory[next];
+      current_month_string = this.convertMonthToString(y);
+      currentInventoryObj = this.createMonth(this.state.today, y);
+    }
     const currentFortyTwoDayMonth = currentInventoryObj.fortyTwoDayMonth;
     const this_month_days = currentInventoryObj.this_month_days;
     const preLoad = currentInventoryObj.preLoad;
@@ -77,25 +90,39 @@ class Calendar extends React.Component {
         return el;
       }
     });
-    console.log('future_available: ', future_available)
-    console.log('this_month_available: ', this_month_available)
     const totalAvailableThisFortyTwoDayPeriod = this_month_available.concat(future_available);
-    console.log('totalAvailableThisFortyTwoDayPeriod: ', totalAvailableThisFortyTwoDayPeriod)
-    this.setState({
-      previousDaysLeadingToToday: previousDaysLeadingToToday,
-      current_month_booked: current_month_booked,
-      next_month_booked: next_month_booked,
-      current_month_string: current_month_string,
-      currentFortyTwoDayMonth: currentFortyTwoDayMonth,
-      this_month_days: this_month_days,
-      preLoad: preLoad,
-      next_month_daze: next_month_daze,
-      future: future,
-      future_available: future_available,
-      totalAvailableCurrMonth: this_month_available,
-      totalAvailableThisFortyTwoDayPeriod: totalAvailableThisFortyTwoDayPeriod,
-      initialized: !this.state.initialized
-    });
+    if (!this.state.initialized) {
+      this.setState({
+        previousDaysLeadingToToday: previousDaysLeadingToToday,
+        current_month_booked: current_month_booked,
+        next_month_booked: next_month_booked,
+        current_month_string: current_month_string,
+        currentFortyTwoDayMonth: currentFortyTwoDayMonth,
+        this_month_days: this_month_days,
+        preLoad: preLoad,
+        next_month_daze: next_month_daze,
+        future: future,
+        future_available: future_available,
+        totalAvailableCurrMonth: this_month_available,
+        totalAvailableThisFortyTwoDayPeriod: totalAvailableThisFortyTwoDayPeriod,
+        initialized: !this.state.initialized
+      });
+    } else {
+      this.setState({
+        previousDaysLeadingToToday: previousDaysLeadingToToday,
+        current_month_booked: current_month_booked,
+        next_month_booked: next_month_booked,
+        current_month_string: current_month_string,
+        currentFortyTwoDayMonth: currentFortyTwoDayMonth,
+        this_month_days: this_month_days,
+        preLoad: preLoad,
+        next_month_daze: next_month_daze,
+        future: future,
+        future_available: future_available,
+        totalAvailableCurrMonth: this_month_available,
+        totalAvailableThisFortyTwoDayPeriod: totalAvailableThisFortyTwoDayPeriod
+      });
+    }
   }
 
   click(e) {
@@ -110,6 +137,7 @@ class Calendar extends React.Component {
   }
 
   nextClick() {
+    console.log('inside nextClick')
     const oldCurrentMonth = this.state.current_month_numb;
     const newCurrentMonth = this.state.current_month_numb + 1;
     const newCurrentMonthtring = this.convertMonthToString(newCurrentMonth);
@@ -119,6 +147,7 @@ class Calendar extends React.Component {
       newCurrentMonth: newCurrentMonth,
       current_month_string: newCurrentMonthtring
     });
+    this.init(oldCurrentMonth, current_month_numb, current_month_string);
   }
 
   prevClick() {
@@ -147,17 +176,35 @@ class Calendar extends React.Component {
     console.log('inside change month')
     const button = e.target.id;
     console.log(button)
+    const oldCurrentMonth = this.state.current_month_numb;
+    let newCurrentMonth = 0;
+    let newCurrentMonthtring = '';
     if (button === 'prev') {
-      this.prevClick();
+      if (this.state.current_month_numb === 6) {
+        return;
+      }
+      newCurrentMonth = (oldCurrentMonth - 1);
+      if (newCurrentMonth === this.state.june) {
+        this.setState({
+          nextClicked: !this.state.nextClicked,
+          current_month_numb: newCurrentMonth,
+          current_month_string: 'June'
+        });
+      } else {
+        newCurrentMonthtring += this.convertMonthToString(newCurrentMonth);
+        this.init(oldCurrentMonth, newCurrentMonth, newCurrentMonthtring);
+      }
     }
-    if (button === 'next' && this.state.nextClicked) {
-      this.nextClick();
-    }
-    if (button === 'next' && !this.state.nextClicked) {
-      this.setState({
+    if (button === 'next') {
+      console.log('inside next')
+      newCurrentMonth = (oldCurrentMonth + 1)
+      newCurrentMonthtring += this.convertMonthToString(newCurrentMonth);
+      if (!this.state.nextClicked) {
+        this.setState({
         nextClicked: !this.state.nextClicked
-      });
-      this.nextClick();
+        });
+      }
+      this.init(oldCurrentMonth, newCurrentMonth, newCurrentMonthtring);
     }
   }
 
@@ -275,7 +322,6 @@ class Calendar extends React.Component {
   }
 
   render() {
-    console.log('totalAvailableThisFortyTwoDayPeriod: ', this.state.totalAvailableThisFortyTwoDayPeriod)
     const inventory = this.state.currentFortyTwoDayMonth;
     const week_one = inventory.slice(0, 7);
     const week_two = inventory.slice(7, 14);
