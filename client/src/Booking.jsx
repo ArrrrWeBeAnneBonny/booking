@@ -50,7 +50,8 @@ class Booking extends React.Component {
       subTotal: 0,
       total: 0,
       isoIn: '',
-      isoOut: ''
+      isoOut: '',
+      this_month_days: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30]
     };
 
     this.init= this.init.bind(this);
@@ -299,15 +300,14 @@ class Booking extends React.Component {
   }
 
   bookingTotal() {
-    // const mode = process.env.NODE_ENV;
-    // let url = '';
-    // if (mode === 'development') {
-    //   url += config.development.booking;
-    // } else {
-    //   url += config.production.booking;
-    // }
-    // return axios.get(`${url}bookingTotal`, { params: {
-    return axios.get(`/bookingTotal`, { params: {
+    const mode = process.env.NODE_ENV;
+    let url = '';
+    if (mode === 'development') {
+      url += config.development.booking;
+    } else {
+      url += config.production.booking;
+    }
+    return axios.get(`${url}bookingTotal`, { params: {
       campId: this.state.campId,
       check_in_date: this.state.isoIn,
       check_out_date: this.state.isoOut,
@@ -325,6 +325,11 @@ class Booking extends React.Component {
   }
 
   render() {
+    // const this_month_available = this.state.this_month_days.filter(el => {
+    //   if (this.state.booked[0].indexOf(el) === -1 && previousDaysLeadingToToday.indexOf(el) === -1) {
+    //     return el;
+    //   }
+    // });
     if (this.state.checkOut_picked) {
       return (
         <div>

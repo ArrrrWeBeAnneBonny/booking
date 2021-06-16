@@ -44,10 +44,7 @@
   font-style:normal;
 }
 /* basic widget rules */
-html {
-  min-height: 100%;
-  position: relative;
-}
+
 body {
   font-family: "Calibre", Helvetica, Arial, sans-serif;
   display: flex;
