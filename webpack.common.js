@@ -7,8 +7,7 @@ module.exports = {
     template: './client/templates/index.html'
   })],
   output: {
-    filename: `booking.js`,
-    //get a file format so i can version my bundle
+    filename: `${Date.now()}.booking.js`,
     path: __dirname + '/client/dist'
   },
   module: {
