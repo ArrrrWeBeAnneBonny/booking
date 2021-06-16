@@ -26,6 +26,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/booking', async (req, res) => {
+  console.log('inside /booking')
   let campId = parseInt(req.query.campId);
   if (!campId) {
     campId = 0;
