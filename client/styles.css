@@ -406,7 +406,8 @@ select {
   border-radius: 0;
   height: auto;
   text-align: center;
-  word-wrap: break-word;
+  white-space: pre-line;
+  overflow:hidden
 }
 .available {
   font-size: 1em;
@@ -416,7 +417,8 @@ select {
   border: 1px solid #ebebeb;
   text-align: center;
   background-color: white;
-  word-wrap: break-word;
+  white-space: pre-line;
+  overflow:hidden
 }
 .available:hover {
   background-color: #40D9AC;
@@ -429,7 +431,8 @@ select {
   border: 1px solid #ebebeb;
   text-align: center;
   background-color: #40D9AC;
-  word-wrap: break-word;
+  white-space: pre-line;
+  overflow:hidden
 }
 .unavailable {
   position: relative;
@@ -441,10 +444,10 @@ select {
   1px solid #ebebeb;
   text-align: center;
   color: #757575;
-  word-wrap: break-word;
+  white-space: pre-line;
+  overflow:hidden
 }
 .unavailable:before {
-  word-wrap: break-word;
   content: "";
   left: 0;
   right: 0;
@@ -455,6 +458,8 @@ select {
   -ms-transform:rotate(40deg);
   -o-transform:rotate(40deg);
   transform:rotate(40deg);
+  white-space: pre-line;
+  overflow:hidden
 }
 .calendar {
   width: 317px !important;
@@ -509,6 +514,9 @@ th {
 }
 #month {
   padding-left: 75px;
+  white-space: pre-line;
+  overflow:hidden;
+  word-wrap: break-word;
 }
 #prev:before {
   padding-top: 2.5px;
@@ -519,6 +527,9 @@ th {
   float: left;
   color: #4d4d4d;
   font-weight: bold;
+  white-space: pre-line;
+  overflow:hidden;
+  word-wrap: break-word;
 }
 #next:before {
   height: fit-content;
@@ -529,6 +540,9 @@ th {
   font-size: 1.1em;
   font-weight: bold;
   display: flex;
+  white-space: pre-line;
+  overflow:hidden;
+  word-wrap: break-word;
 }
 #next:before.afterprev {
   height: fit-content;
@@ -539,6 +553,8 @@ th {
   font-size: 1.1em;
   font-weight: bold;
   display: flex;
+  white-space: pre-line;
+  overflow:hidden;
 }
 #year {
   padding-left: 8px;

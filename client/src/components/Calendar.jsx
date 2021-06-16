@@ -41,8 +41,6 @@ class Calendar extends React.Component {
 
     this.init = this.init.bind(this);
     this.click = this.click.bind(this);
-    this.nextClick = this.nextClick.bind(this);
-    this.prevClick = this.prevClick.bind(this);
     this.convertMonthToAbbreviatedString = this.convertMonthToAbbreviatedString.bind(this);
     this.convertMonthToString = this.convertMonthToString.bind(this);
     this.getSundays= this.getSundays.bind(this);
@@ -56,7 +54,6 @@ class Calendar extends React.Component {
   }
 
   init(x, y, z) {
-    //oldCurrentMonth, newCurrentMonth, newCurrentMonthtring
     let current_month_booked,
         next_month_booked,
         currentFortyTwoDayMonth,
@@ -70,7 +67,7 @@ class Calendar extends React.Component {
     if (!arguments.length) {
       current_month_booked = this.props.inventory[0];
       next_month_booked = this.props.inventory[1];
-      current_month_string = this.convertMonthToString(this.state.current_month_numb);
+      current_month_string = this.convertMonthToAbbreviatedString(this.state.current_month_numb);
       currentInventoryObj = this.createMonth(this.state.today, this.state.current_month_numb);
       this_month_days = currentInventoryObj.this_month_days;
       currentFortyTwoDayMonth = currentInventoryObj.fortyTwoDayMonth;
@@ -82,11 +79,16 @@ class Calendar extends React.Component {
         }
       });
     } else {
-      let diff = (y - x);
+      let diff = 0;
+      if (y < x) {
+        diff = x - y;
+      } else {
+        diff = (y - x);
+      }
       current_month_booked = this.props.inventory[diff];
       let next = (diff + 1);
       next_month_booked = this.props.inventory[next];
-      current_month_string = this.convertMonthToString(y);
+      current_month_string = this.convertMonthToAbbreviatedString(y);
       currentInventoryObj = this.createMonth(this.state.today, y);
       this_month_days = currentInventoryObj.this_month_days;
       currentFortyTwoDayMonth = currentInventoryObj.fortyTwoDayMonth;
@@ -153,46 +155,9 @@ class Calendar extends React.Component {
     this.props.update(checkInMonth_string, checkInDay, this.state.current_month_numb);
   }
 
-  nextClick() {
-    console.log('inside nextClick')
-    const oldCurrentMonth = this.state.current_month_numb;
-    const newCurrentMonth = this.state.current_month_numb + 1;
-    const newCurrentMonthtring = this.convertMonthToString(newCurrentMonth);
-    this.setState({
-      oldCurrentMonth: oldCurrentMonth,
-      current_month_numb: newCurrentMonth,
-      newCurrentMonth: newCurrentMonth,
-      current_month_string: newCurrentMonthtring
-    });
-    this.init(oldCurrentMonth, current_month_numb, current_month_string);
-  }
-
-  prevClick() {
-    if (this.state.current_month_numb === 6) {
-      return;
-    }
-    const newCurrentMonth = (this.state.current_month_numb - 1);
-    if (newCurrentMonth === this.state.june) {
-      this.setState({
-        nextClicked: !this.state.nextClicked,
-        current_month_numb: newCurrentMonth,
-        current_month_string: 'June'
-      });
-    } else {
-      const newCurrentMonthtring = this.convertMonthToString(newCurrentMonth);
-      console.log('prevnew :', newCurrentMonthtring)
-      this.setState({
-        current_month_numb: newCurrentMonth,
-        current_month_string: newCurrentMonthtring,
-      });
-    }
-  }
-
   changeMonth(e) {
     e.preventDefault();
-    console.log('inside change month')
     const button = e.target.id;
-    console.log(button)
     const oldCurrentMonth = this.state.current_month_numb;
     let newCurrentMonth = 0;
     let newCurrentMonthtring = '';
@@ -209,14 +174,13 @@ class Calendar extends React.Component {
           current_month_string: 'June'
         });
       } else {
-        newCurrentMonthtring += this.convertMonthToString(newCurrentMonth);
+        newCurrentMonthtring += this.convertMonthToAbbreviatedString(newCurrentMonth);
         this.init(oldCurrentMonth, newCurrentMonth, newCurrentMonthtring);
       }
     }
     if (button === 'next') {
-      console.log('inside next')
       newCurrentMonth = (oldCurrentMonth + 1)
-      newCurrentMonthtring += this.convertMonthToString(newCurrentMonth);
+      newCurrentMonthtring += this.convertMonthToAbbreviatedString(newCurrentMonth);
       this.init(oldCurrentMonth, newCurrentMonth, newCurrentMonthtring);
       if (!this.state.nextClicked) {
         this.setState({
@@ -242,7 +206,7 @@ class Calendar extends React.Component {
   }
 
   convertMonthToAbbreviatedString(month) {
-    const months = ['Jan', "Feb", "Mar", "Apr", "May", "Jun",  "Jul", "Aug", "Sep", "Oct", "Nov", "Dece"]
+    const months = ['Jan', "Feb", "Mar", "Apr", "May", "Jun",  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
     const current = months[(month - 1)];
     return current;
   }

@@ -51,7 +51,7 @@ class Booking extends React.Component {
       total: 0,
       isoIn: '',
       isoOut: '',
-      this_month_days: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30]
+      bookingInit: false
     };
 
     this.init= this.init.bind(this);
@@ -137,9 +137,13 @@ class Booking extends React.Component {
       } else if (this.state.checkIn_picked && !this.state.checkOut_picked) {
         this.setState({
           checkIn_picked: !this.state.checkIn_picked,
+          checkOut_picked: !this.state.checkOut_picked,
           check_in_date: '',
           checkin_string: '',
-          check_in_date_numb: 0
+          check_in_date_numb: 0,
+          check_out_date: '',
+          checkout_string: '',
+          check_out_date_numb: 0
         });
       }
     } else if (e.target.innerHTML === "Check out") {
@@ -257,7 +261,7 @@ class Booking extends React.Component {
       }
       strRange.push(str)
     });
-    let weeknight_count = 0;
+    let weeknight_count = -1;
     strRange.push(checkoutstring);
     strRange.forEach(str => {
       const weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
@@ -274,6 +278,8 @@ class Booking extends React.Component {
       subTotal = discountedSubTotal;
     } else {
       let diff = (strRange.length - weeknight_count);
+      console.log('strRange.length: ', strRange.length)
+      console.log('diff: ', diff)
       while (diff > 0) {
         subTotal += this.state.average_price_per_night;
         diff --;
@@ -285,6 +291,20 @@ class Booking extends React.Component {
     const total = Math.floor(subTotal + this.state.cleaning_fee);
     let isoIn =  this.isoMaker(this.state.checkin_string);
     let isoOut = this.isoMaker(this.state.checkin_string);
+    if (this.state.bookingInit) {
+      this.setState({
+        isoIn: isoIn,
+        isoOut: isoOut,
+        discount: discount,
+        discount_applied_to_night: discount_applied_to_night,
+        discountedSubTotal: discountedSubTotal,
+        calculated_average_price_per_night: calculated_average_price_per_night,
+        calculated_average_price_x_days: calculated_average_price_x_days,
+        total_days: total_days,
+        subTotal: subTotal,
+        total: total
+      });
+    }
     this.setState({
       isoIn: isoIn,
       isoOut: isoOut,
@@ -295,7 +315,8 @@ class Booking extends React.Component {
       calculated_average_price_x_days: calculated_average_price_x_days,
       total_days: total_days,
       subTotal: subTotal,
-      total: total
+      total: total,
+      bookingInit: !this.state.bookingInit
     });
   }
 
@@ -325,12 +346,7 @@ class Booking extends React.Component {
   }
 
   render() {
-    // const this_month_available = this.state.this_month_days.filter(el => {
-    //   if (this.state.booked[0].indexOf(el) === -1 && previousDaysLeadingToToday.indexOf(el) === -1) {
-    //     return el;
-    //   }
-    // });
-    if (this.state.checkOut_picked) {
+    if (this.state.checkOut_picked && this.state.bookingInit) {
       return (
         <div>
           <aside className="booking-container">
