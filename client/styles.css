@@ -65,7 +65,7 @@ body {
   position: absolute;
   max-width: 319px;
   height: 100%;
-  top: 450px !important;
+  top: 605px !important;
   margin-right: auto;
   margin-left: auto;
   padding-left: 1000px !important;
@@ -443,10 +443,8 @@ select {
   color: #757575
 }
 .unavailable:before {
-  position: absolute;
   content: "";
   left: 0;
-  top: 50%;
   right: 0;
   border-top: 2px solid;
   border-color: black;

@@ -68,16 +68,14 @@ class Booking extends React.Component {
   }
 
   init() {
-    // const mode = process.env.NODE_ENV;
-    // let url = '';
-    // if (!process.env.NODE_ENV || mode === 'development') {
-    //   url += config.development.booking;
-    // } else {
-    //   url += config.production.booking;
-    // }
-    // console.log('url: ', url);
-    // axios.get(`${url}booking`)
-    axios.get(`/booking`)
+    const mode = process.env.NODE_ENV;
+    let url = '';
+    if (!process.env.NODE_ENV || mode === 'development') {
+      url += config.development.booking;
+    } else {
+      url += config.production.booking;
+    }
+    axios.get(`${url}booking`)
     .then(({data}) => {
       const {
         campId,

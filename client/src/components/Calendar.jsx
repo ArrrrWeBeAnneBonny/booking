@@ -33,7 +33,10 @@ class Calendar extends React.Component {
       abbreviated_clicked_month_string: '',
       nextClicked: false,
       future: [],
-      initialized: false
+      initialized: false,
+      future_available: [],
+      totalAvailableCurrMonth: [],
+      previousDaysLeadingToToday: []
     };
 
     this.init = this.init.bind(this);
@@ -74,8 +77,12 @@ class Calendar extends React.Component {
         return el;
       }
     });
+    console.log('future_available: ', future_available)
+    console.log('this_month_available: ', this_month_available)
     const totalAvailableThisFortyTwoDayPeriod = this_month_available.concat(future_available);
+    console.log('totalAvailableThisFortyTwoDayPeriod: ', totalAvailableThisFortyTwoDayPeriod)
     this.setState({
+      previousDaysLeadingToToday: previousDaysLeadingToToday,
       current_month_booked: current_month_booked,
       next_month_booked: next_month_booked,
       current_month_string: current_month_string,
@@ -85,6 +92,7 @@ class Calendar extends React.Component {
       next_month_daze: next_month_daze,
       future: future,
       future_available: future_available,
+      totalAvailableCurrMonth: this_month_available,
       totalAvailableThisFortyTwoDayPeriod: totalAvailableThisFortyTwoDayPeriod,
       initialized: !this.state.initialized
     });
@@ -267,8 +275,7 @@ class Calendar extends React.Component {
   }
 
   render() {
-    // let startPast = this.state.current_month_available[0];
-    // let endOfMonthIndex = this.state.current_month_inventory.lastIndexOf(this.state.totalDaysInMonth);
+    console.log('totalAvailableThisFortyTwoDayPeriod: ', this.state.totalAvailableThisFortyTwoDayPeriod)
     const inventory = this.state.currentFortyTwoDayMonth;
     const week_one = inventory.slice(0, 7);
     const week_two = inventory.slice(7, 14);
@@ -296,11 +303,12 @@ class Calendar extends React.Component {
             <tbody>
               <tr>
                 {week_one.map((numb, index) => {
+                  {console.log('numb: ', numb)}
                   let numbIndex = this.state.current_month_inventory.indexOf(numb);
                   if (numb === this.state.checkInNumb) {
                     return <td key={index} className="selected" data-item={numb}>{numb}</td>
                   } else {
-                    return this.state.totalAvailableThisFortyTwoDayPeriod.indexOf(numb) === -1 ?
+                    return this.state.totalAvailableThisFortyTwoDayPeriod.indexOf(numb) < -1 ?
                     <td key={index} className="unavailable" data-item={numb}>{numb}</td>
                     :
                     <td onClick={this.click} key={index} className="available" data-item={numb}>{numb}</td>
@@ -314,7 +322,7 @@ class Calendar extends React.Component {
                   if (numb === this.state.checkInNumb) {
                     return <td key={index} className="selected" data-item={numb}>{numb}</td>
                   } else {
-                    return this.state.totalAvailableThisFortyTwoDayPeriod.indexOf(numb) === -1 ?
+                    return this.state.preLoad.includes(numb) || this.state.previousDaysLeadingToToday.includes(numb) || !this.state.totalAvailableCurrMonth.includes(numb) ?
                     <td key={index} className="unavailable" data-item={numb}>{numb}</td>
                     :
                     <td onClick={this.click} key={index} className="available" data-item={numb}>{numb}</td>
@@ -328,7 +336,7 @@ class Calendar extends React.Component {
                   if (numb === this.state.checkInNumb) {
                     return <td key={index} className="selected" data-item={numb}>{numb}</td>
                   } else {
-                    return this.state.totalAvailableThisFortyTwoDayPeriod.indexOf(numb) === -1 ?
+                    return this.state.preLoad.includes(numb) || this.state.previousDaysLeadingToToday.includes(numb) || !this.state.totalAvailableCurrMonth.includes(numb) ?
                     <td key={index} className="unavailable" data-item={numb}>{numb}</td>
                     :
                     <td onClick={this.click} key={index} className="available" data-item={numb}>{numb}</td>
@@ -342,7 +350,7 @@ class Calendar extends React.Component {
                   if (numb === this.state.checkInNumb) {
                     return <td key={index} className="selected" data-item={numb}>{numb}</td>
                   } else {
-                    return this.state.totalAvailableThisFortyTwoDayPeriod.indexOf(numb) === -1 ?
+                    return this.state.preLoad.includes(numb) || this.state.previousDaysLeadingToToday.includes(numb) || !this.state.totalAvailableCurrMonth.includes(numb) ?
                     <td key={index} className="unavailable" data-item={numb}>{numb}</td>
                     :
                     <td onClick={this.click} key={index} className="available" data-item={numb}>{numb}</td>
@@ -356,7 +364,7 @@ class Calendar extends React.Component {
                   if (numb === this.state.checkInNumb) {
                     return <td key={index} className="selected" data-item={numb}>{numb}</td>
                   } else {
-                    return this.state.totalAvailableThisFortyTwoDayPeriod.indexOf(numb) === -1 ?
+                    return this.state.preLoad.includes(numb) || this.state.previousDaysLeadingToToday.includes(numb) || !this.state.totalAvailableCurrMonth.includes(numb) ?
                     <td key={index} className="unavailable" data-item={numb}>{numb}</td>
                     :
                     <td onClick={this.click} key={index} className="available" data-item={numb}>{numb}</td>
@@ -370,7 +378,7 @@ class Calendar extends React.Component {
                   if (numb === this.state.checkInNumb) {
                     return <td key={index} className="selected" data-item={numb}>{numb}</td>
                   } else {
-                    return this.state.totalAvailableThisFortyTwoDayPeriod.indexOf(numb) === -1 ?
+                    return this.state.preLoad.includes(numb) || this.state.previousDaysLeadingToToday.includes(numb) || !this.state.totalAvailableCurrMonth.includes(numb) ?
                     <td key={index} className="unavailable" data-item={numb}>{numb}</td>
                     :
                     <td onClick={this.click} key={index} className="available" data-item={numb}>{numb}</td>
@@ -408,7 +416,7 @@ class Calendar extends React.Component {
                     if (numb === this.state.checkInDay) {
                       return <td key={index} className="selected" data-item={numb}>{numb}</td>
                     } else {
-                      return this.state.totalAvailableThisFortyTwoDayPeriod.indexOf(numb) === -1 ?
+                      return this.state.preLoad.includes(numb) || this.state.previousDaysLeadingToToday.includes(numb) || !this.state.totalAvailableCurrMonth.includes(numb) ?
                       <td key={index} className="unavailable" data-item={numb}>{numb}</td>
                       :
                       <td onClick={this.click} key={index} className="available" data-item={numb}>{numb}</td>
@@ -421,7 +429,7 @@ class Calendar extends React.Component {
                     if (numb === this.state.checkInDay) {
                       return <td key={index} className="selected" data-item={numb}>{numb}</td>
                     } else {
-                     return this.state.totalAvailableThisFortyTwoDayPeriod.indexOf(numb) === -1 ?
+                     return this.state.preLoad.includes(numb) || this.state.previousDaysLeadingToToday.includes(numb) || !this.state.totalAvailableCurrMonth.includes(numb) ?
                      <td key={index} className="unavailable" data-item={numb}>{numb}</td>
                      :
                      <td onClick={this.click} key={index} className="available" data-item={numb}>{numb}</td>
@@ -434,7 +442,7 @@ class Calendar extends React.Component {
                     if (numb === this.state.checkInDay) {
                       return <td key={index} className="selected" data-item={numb}>{numb}</td>
                     } else {
-                      return this.state.totalAvailableThisFortyTwoDayPeriod.indexOf(numb) === -1 ?
+                      return this.state.preLoad.includes(numb) || this.state.previousDaysLeadingToToday.includes(numb) || !this.state.totalAvailableCurrMonth.includes(numb) ?
                       <td key={index} className="unavailable" data-item={numb}>{numb}</td>
                       :
                       <td onClick={this.click} key={index} className="available" data-item={numb}>{numb}</td>
@@ -447,7 +455,7 @@ class Calendar extends React.Component {
                     if (numb === this.state.checkInDay) {
                       return <td key={index} className="selected" data-item={numb}>{numb}</td>
                     } else {
-                      return this.state.totalAvailableThisFortyTwoDayPeriod.indexOf(numb) === -1 ?
+                      return this.state.preLoad.includes(numb) || this.state.previousDaysLeadingToToday.includes(numb) || !this.state.totalAvailableCurrMonth.includes(numb) ?
                       <td key={index} className="unavailable" data-item={numb}>{numb}</td>
                       :
                       <td onClick={this.click} key={index} className="available" data-item={numb}>{numb}</td>
@@ -460,7 +468,7 @@ class Calendar extends React.Component {
                    if (numb === this.state.checkInDay) {
                      return <td key={index} className="selected" data-item={numb}>{numb}</td>
                    } else {
-                     return this.state.totalAvailableThisFortyTwoDayPeriod.indexOf(numb) === -1 ?
+                     return this.state.preLoad.includes(numb) || this.state.previousDaysLeadingToToday.includes(numb) || !this.state.totalAvailableCurrMonth.includes(numb) ?
                      <td key={index} className="unavailable" data-item={numb}>{numb}</td>
                      :
                      <td onClick={this.click} key={index} className="available" data-item={numb}>{numb}</td>
@@ -473,7 +481,7 @@ class Calendar extends React.Component {
                     if (numb === this.state.checkInDay) {
                       return <td key={index} className="selected" data-item={numb}>{numb}</td>
                     } else {
-                      return this.state.totalAvailableThisFortyTwoDayPeriod.indexOf(numb) === -1 ?
+                      return this.state.preLoad.includes(numb) || this.state.previousDaysLeadingToToday.includes(numb) || !this.state.totalAvailableCurrMonth.includes(numb) ?
                       <td key={index} className="unavailable" data-item={numb}>{numb}</td>
                       :
                       <td onClick={this.click} key={index} className="available" data-item={numb}>{numb}</td>
@@ -511,7 +519,7 @@ class Calendar extends React.Component {
                     if (numb === this.state.checkInDay) {
                       return <td key={index} className="selected" data-item={numb}>{numb}</td>
                     } else {
-                      return this.state.totalAvailableThisFortyTwoDayPeriod.indexOf(numb) === -1 ?
+                      return this.state.preLoad.includes(numb) || this.state.previousDaysLeadingToToday.includes(numb) || !this.state.totalAvailableCurrMonth.includes(numb) ?
                       <td key={index} className="unavailable" data-item={numb}>{numb}</td>
                       :
                       <td onClick={this.click} key={index} className="available" data-item={numb}>{numb}</td>
@@ -524,7 +532,7 @@ class Calendar extends React.Component {
                     if (numb === this.state.checkInDay) {
                       return <td key={index} className="selected" data-item={numb}>{numb}</td>
                     } else {
-                     return this.state.totalAvailableThisFortyTwoDayPeriod.indexOf(numb) === -1 ?
+                     return this.state.preLoad.includes(numb) || this.state.previousDaysLeadingToToday.includes(numb) || !this.state.totalAvailableCurrMonth.includes(numb) ?
                      <td key={index} className="unavailable" data-item={numb}>{numb}</td>
                      :
                      <td onClick={this.click} key={index} className="available" data-item={numb}>{numb}</td>
@@ -537,7 +545,7 @@ class Calendar extends React.Component {
                     if (numb === this.state.checkInDay) {
                       return <td key={index} className="selected" data-item={numb}>{numb}</td>
                     } else {
-                      return this.state.totalAvailableThisFortyTwoDayPeriod.indexOf(numb) === -1 ?
+                      return this.state.preLoad.includes(numb) || this.state.previousDaysLeadingToToday.includes(numb) || !this.state.totalAvailableCurrMonth.includes(numb) ?
                       <td key={index} className="unavailable" data-item={numb}>{numb}</td>
                       :
                       <td onClick={this.click} key={index} className="available" data-item={numb}>{numb}</td>
@@ -550,7 +558,7 @@ class Calendar extends React.Component {
                     if (numb === this.state.checkInDay) {
                       return <td key={index} className="selected" data-item={numb}>{numb}</td>
                     } else {
-                      return this.state.totalAvailableThisFortyTwoDayPeriod.indexOf(numb) === -1 ?
+                      return this.state.preLoad.includes(numb) || this.state.previousDaysLeadingToToday.includes(numb) || !this.state.totalAvailableCurrMonth.includes(numb) ?
                       <td key={index} className="unavailable" data-item={numb}>{numb}</td>
                       :
                       <td onClick={this.click} key={index} className="available" data-item={numb}>{numb}</td>
@@ -563,7 +571,7 @@ class Calendar extends React.Component {
                    if (numb === this.state.checkInDay) {
                      return <td key={index} className="selected" data-item={numb}>{numb}</td>
                    } else {
-                     return this.state.totalAvailableThisFortyTwoDayPeriod.indexOf(numb) === -1 ?
+                     return this.state.preLoad.includes(numb) || this.state.previousDaysLeadingToToday.includes(numb) || !this.state.totalAvailableCurrMonth.includes(numb) ?
                      <td key={index} className="unavailable" data-item={numb}>{numb}</td>
                      :
                      <td onClick={this.click} key={index} className="available" data-item={numb}>{numb}</td>
@@ -576,7 +584,7 @@ class Calendar extends React.Component {
                     if (numb === this.state.checkInDay) {
                       return <td key={index} className="selected" data-item={numb}>{numb}</td>
                     } else {
-                      return this.state.totalAvailableThisFortyTwoDayPeriod.indexOf(numb) === -1 ?
+                      return this.state.preLoad.includes(numb) || this.state.previousDaysLeadingToToday.includes(numb) || !this.state.totalAvailableCurrMonth.includes(numb) ?
                       <td key={index} className="unavailable" data-item={numb}>{numb}</td>
                       :
                       <td onClick={this.click} key={index} className="available" data-item={numb}>{numb}</td>
@@ -613,7 +621,7 @@ class Calendar extends React.Component {
                     if (numb === this.state.checkInDay) {
                       return <td key={index} className="selected" data-item={numb}>{numb}</td>
                     } else {
-                      return this.state.totalAvailableThisFortyTwoDayPeriod.indexOf(numb) === -1 ?
+                      return this.state.preLoad.includes(numb) || this.state.previousDaysLeadingToToday.includes(numb) || !this.state.totalAvailableCurrMonth.includes(numb) ?
                       <td key={index} className="unavailable" data-item={numb}>{numb}</td>
                       :
                       <td onClick={this.click} key={index} className="available" data-item={numb}>{numb}</td>
@@ -626,7 +634,7 @@ class Calendar extends React.Component {
                     if (numb === this.state.checkInDay) {
                       return <td key={index} className="selected" data-item={numb}>{numb}</td>
                     } else {
-                      return this.state.totalAvailableThisFortyTwoDayPeriod.indexOf(numb) === -1 ?
+                      return this.state.preLoad.includes(numb) || this.state.previousDaysLeadingToToday.includes(numb) || !this.state.totalAvailableCurrMonth.includes(numb) ?
                       <td key={index} className="unavailable" data-item={numb}>{numb}</td>
                       :
                       <td onClick={this.click} key={index} className="available" data-item={numb}>{numb}</td>
@@ -639,7 +647,7 @@ class Calendar extends React.Component {
                     if (numb === this.state.checkInDay) {
                       return <td key={index} className="selected" data-item={numb}>{numb}</td>
                     } else {
-                      return this.state.totalAvailableThisFortyTwoDayPeriod.indexOf(numb) === -1 ?
+                      return this.state.preLoad.includes(numb) || this.state.previousDaysLeadingToToday.includes(numb) || !this.state.totalAvailableCurrMonth.includes(numb) ?
                       <td key={index} className="unavailable" data-item={numb}>{numb}</td>
                       :
                       <td onClick={this.click} key={index} className="available" data-item={numb}>{numb}</td>
@@ -652,7 +660,7 @@ class Calendar extends React.Component {
                     if (numb === this.state.checkInDay) {
                       return <td key={index} className="selected" data-item={numb}>{numb}</td>
                     } else {
-                      return this.state.totalAvailableThisFortyTwoDayPeriod.indexOf(numb) === -1 ?
+                      return this.state.preLoad.includes(numb) || this.state.previousDaysLeadingToToday.includes(numb) || !this.state.totalAvailableCurrMonth.includes(numb) ?
                       <td key={index} className="unavailable" data-item={numb}>{numb}</td>
                       :
                       <td onClick={this.click} key={index} className="available" data-item={numb}>{numb}</td>
@@ -665,7 +673,7 @@ class Calendar extends React.Component {
                     if (numb === this.state.checkInDay) {
                       return <td key={index} className="selected" data-item={numb}>{numb}</td>
                     } else {
-                      return this.state.totalAvailableThisFortyTwoDayPeriod.indexOf(numb) === -1 ?
+                      return this.state.preLoad.includes(numb) || this.state.previousDaysLeadingToToday.includes(numb) || !this.state.totalAvailableCurrMonth.includes(numb) ?
                       <td key={index} className="unavailable" data-item={numb}>{numb}</td>
                       :
                       <td onClick={this.click} key={index} className="available" data-item={numb}>{numb}</td>
@@ -678,7 +686,7 @@ class Calendar extends React.Component {
                     if (numb === this.state.checkInDay) {
                       return <td key={index} className="selected" data-item={numb}>{numb}</td>
                     } else {
-                      return this.state.totalAvailableThisFortyTwoDayPeriod.indexOf(numb) === -1 ?
+                      return this.state.preLoad.includes(numb) || this.state.previousDaysLeadingToToday.includes(numb) || !this.state.totalAvailableCurrMonth.includes(numb) ?
                       <td key={index} className="unavailable" data-item={numb}>{numb}</td>
                       :
                       <td onClick={this.click} key={index} className="available" data-item={numb}>{numb}</td>
