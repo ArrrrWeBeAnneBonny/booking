@@ -44,9 +44,6 @@
   font-style:normal;
 }
 /* basic widget rules */
-/* * {
-  box-sizing: border-box;
-} */
 html {
   min-height: 100%;
   position: relative;
@@ -68,10 +65,10 @@ body {
   position: absolute;
   max-width: 319px;
   height: 100%;
-  top: 605px;
+  top: 450px !important;
   margin-right: auto;
   margin-left: auto;
-  padding-left: 1100px;
+  padding-left: 1000px !important;
   padding-right: 10px;
 }
 aside.booking-container {

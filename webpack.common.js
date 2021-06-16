@@ -1,4 +1,5 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = {
   entry: './client/src/Booking.jsx',
@@ -6,8 +7,21 @@ module.exports = {
   plugins: [new HtmlWebpackPlugin({
     template: './client/templates/index.html'
   })],
+  optimization: {
+    minimize: true,
+    minimizer: [
+      new TerserPlugin({
+        terserOptions: {
+          format: {
+            comments: false,
+          },
+        },
+        extractComments: false,
+      }),
+    ],
+  },
   output: {
-    filename: `${Date.now()}.booking.js`,
+    filename: `booking.js`,
     path: __dirname + '/client/dist'
   },
   module: {
@@ -40,3 +54,14 @@ module.exports = {
     ]
   }
 };
+
+
+// module.exports = {
+//   optimization: {
+//     minimizer: [
+//       new TerserPlugin({
+//         extractComments: false,
+//       }),
+//     ],
+//   },
+// };
