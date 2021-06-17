@@ -69,15 +69,18 @@ class Booking extends React.Component {
   }
 
   init() {
-    const mode = process.env.NODE_ENV;
-    let url = '';
-    if (!process.env.NODE_ENV || mode === 'development') {
-      url += config.development.booking;
-    } else {
-      url += config.production.booking;
-    }
-    axios.get(`${url}booking`)
+    // const mode = process.env.NODE_ENV;
+    // let url = '';
+    // if (!process.env.NODE_ENV || mode === 'development') {
+    //   url += config.development.booking;
+    // } else {
+    //   url += config.production.booking;
+    // }
+    // console.log('url: ', url);
+    // axios.get(`${url}/booking`)
+    axios.get(`/booking`)
     .then(({data}) => {
+      console.log('data: ', data)
       const {
         campId,
         average_price_per_night,
@@ -104,7 +107,18 @@ class Booking extends React.Component {
       });
     })
     .catch((err) => {
-      throw err;
+      this.setState({
+        campId: 0,
+        today: moment().format().slice(8, 10),
+        average_price_per_night: 165,
+        how_far_out: 6,
+        weeknight_discount: 0.2,
+        instant_book: true,
+        cleaning_fee: 15,
+        max_guests: 6,
+        current_month: 6,
+        booked: [[2, 3, 4, 16, 17, 18, 26, 27, 28, 29, 30], [3, 4, 5, 17, 18, 19, 27, 28, 29, 30, 31], [4, 5, 6, 18, 19, 20, 28, 29, 30, 31, 1], [5, 6, 7, 19, 20, 21, 29, 30, 31, 1, 2], [6, 7, 8, 20, 21, 22, 30, 31, 1, 2, 3], [7, 8, 9, 21, 22, 23, 31, 1, 2, 3, 4]]
+      });
     });
   }
 
@@ -321,14 +335,15 @@ class Booking extends React.Component {
   }
 
   bookingTotal() {
-    const mode = process.env.NODE_ENV;
-    let url = '';
-    if (mode === 'development') {
-      url += config.development.booking;
-    } else {
-      url += config.production.booking;
-    }
-    return axios.get(`${url}bookingTotal`, { params: {
+    // const mode = process.env.NODE_ENV;
+    // let url = '';
+    // if (mode === 'development') {
+    //   url += config.development.booking;
+    // } else {
+    //   url += config.production.booking;
+    // }
+    // return axios.get(`${url}bookingTotal`, { params: {
+    return axios.get(`/bookingTotal`, { params: {
       campId: this.state.campId,
       check_in_date: this.state.isoIn,
       check_out_date: this.state.isoOut,

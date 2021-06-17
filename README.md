@@ -1,7 +1,6 @@
-# Project Name
+FEC AnneBonny - HipCamp: Booking Service
 
-> Project description
-
+For our Front End Capstone Project (FEC) at Hack Reactor, we were challenged to replicate an app's item page. All teams in our cohort were named for legendary female pirates! We, Team Anne Bonny, chose to clone Hipcamp,the AirBnB for Camping. We used this sample site (https://www.hipcamp.com/en-US/california/twisselman-ranch/twisselman-s-glamping-by-the-pond) as our guide and set sail for uncharted waters. I opted to build the Booking Service due to the complexity of creating a calendar with 42-day-long months!
 ## Related Projects
 
   - https://github.com/teamName/repo
