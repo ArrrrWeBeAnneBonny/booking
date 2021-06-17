@@ -1,22 +1,24 @@
-FEC AnneBonny - HipCamp: Booking Service
+# FEC AnneBonny - HipCamp: Booking Service
 
-For our Front End Capstone Project (FEC) at Hack Reactor, we were challenged to replicate an app's item page. All teams in our cohort were named for legendary female pirates! We, Team Anne Bonny, chose to clone Hipcamp,the AirBnB for Camping. We used this sample site (https://www.hipcamp.com/en-US/california/twisselman-ranch/twisselman-s-glamping-by-the-pond) as our guide and set sail for uncharted waters. I opted to build the Booking Service due to the complexity of creating a calendar with 42-day-long months!
+For our Front End Capstone Project (FEC) at Hack Reactor, we were challenged to replicate an app's item page. All teams in our cohort were named for legendary female pirates! We, Team Anne Bonny, chose to clone Hipcamp,the AirBnB for Camping. We used [Twisselman's Glamping by the Pond] (https://www.hipcamp.com/en-US/california/twisselman-ranch/twisselman-s-glamping-by-the-pond) as our guide and set sail for uncharted waters. I opted to build the Booking Service due to the complexity of creating a calendar with 42-day-long months!
+
 ## Related Projects
 
-  - https://github.com/teamName/repo
-  - https://github.com/teamName/repo
-  - https://github.com/teamName/repo
-  - https://github.com/teamName/repo
+  - [Overview Service] (https://github.com/ArrrrWeBeAnneBonny/overview.git)
+  - [Photogallery Service] (https://github.com/ArrrrWeBeAnneBonny/photogallery.git)
+  - [Reviews Service] (https://github.com/ArrrrWeBeAnneBonny/reviews.git)
 
 ## Table of Contents
 
 1. [Usage](#Usage)
-1. [Requirements](#requirements)
-1. [Development](#development)
+2. [Requirements](#Requirements)
+3. [Development](#Development)
 
 ## Usage
 
-> Some usage instructions
+> This service contains a calendar and booking widget and has two endpoints that interact with a mongoDb database in order to display mock data about the selected cammpsite, including date availability for bookings, how many months in advance a booking can be made, and the cost of a booking for a selected range of available dates (including weeknight discounts, cleaning fees, etc.).
+
+> ![Booking Service](https://github.com/ArrrrWeBeAnneBonny/booking/blob/main/assets/fec.gif "Booking Service")
 
 ## Requirements
 
