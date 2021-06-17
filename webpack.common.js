@@ -21,7 +21,7 @@ module.exports = {
     ],
   },
   output: {
-    filename: `booking.js`,
+    filename: `${Date.day()}booking.js`,
     path: __dirname + '/client/dist'
   },
   module: {
@@ -54,3 +54,7 @@ module.exports = {
     ]
   }
 };
+
+
+//gulp/grunt task runner to run webpack
+//html plugin docs for getting specific bundle in my html
