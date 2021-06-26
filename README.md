@@ -19,6 +19,7 @@ For our Front End Capstone Project (FEC) at Hack Reactor, we were challenged to 
 > This service contains a calendar and booking widget and has two endpoints that interact with a mongoDb database in order to display mock data about the selected cammpsite, including date availability for bookings, how many months in advance a booking can be made, and the cost of a booking for a selected range of available dates (including weeknight discounts, cleaning fees, etc.).
 
 > ![Booking Service](https://github.com/ArrrrWeBeAnneBonny/booking/blob/main/assets/fec.gif "Booking Service")
+> ![Diagram of How Things are Working in my Service:](https://github.com/ArrrrWeBeAnneBonny/booking/blob/main/assets/diagram.png "Diagram of How Things are Working in my Service")
 
 >1.1 API Endpoints
 >GET ‘/booking/?campId=’
